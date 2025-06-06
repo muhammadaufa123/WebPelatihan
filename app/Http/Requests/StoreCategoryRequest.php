@@ -22,9 +22,10 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-                'name' => ['required', 'string', 'max:255'],
-                'icon' => ['required', 'image', 'mimes:png,jpg,jpeg'],
+            'name' => ['required', 'string', 'max:255'],
+            'icon' => ['required', 'image', 'mimes:png,jpg,jpeg'],
+            'course_type' => ['required', 'in:online,onsite'],
+            'level' => ['required', 'in:beginner,intermediate,advance'],
         ];
     }
 }

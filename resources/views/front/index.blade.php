@@ -22,13 +22,21 @@
                 <li>
                     <a href="{{ route('front.index') }}" class="font-semibold">Home</a>
                 </li>
-        <li>
-            <a href="" class="font-semibold">My Certificate</a>
-        </li>
-        <li>
-            <a href="" class="font-semibold">My Course</a>
-        </li>
-    </ul>
+                <li>
+                    <a href="{{ route('front.index') }}" class="font-semibold">Explore Course</a>
+                </li>
+                <li>
+                    <a href="" class="font-semibold">My Certificate</a>
+                </li>
+                <li>
+                    <a href="" class="font-semibold">My Course</a>
+                </li>
+                <li>
+                    <form action="{{ route('front.index') }}" method="GET" class="flex">
+                        <input type="text" name="search" placeholder="Search" class="rounded px-2 text-black">
+                    </form>
+                </li>
+            </ul>
     @auth
             <div class="flex gap-[10px] items-center">
                 <div class="flex flex-col items-end justify-center">
@@ -38,8 +46,8 @@
                     @endif
                 </div>
                 <div class="w-[56px] h-[56px] overflow-hidden rounded-full flex shrink-0">
-                <a href="{{ route(name: 'dashboard') }}">
-                        <img src="{{Storage::url(Auth::user()->avatar)}}" class="w-full h-full object-cover" alt="photo">
+                    <a href="{{ route('dashboard') }}">
+                        <img src="{{ Storage::url(Auth::user()->avatar) }}" class="w-full h-full object-cover" alt="photo">
                     </a>
                 </div>
             </div>
@@ -70,113 +78,6 @@
             </div>
         </div>
     </div>
-    <section id="Top-Categories" class="max-w-[1200px] mx-auto flex flex-col p-[70px_50px] gap-[30px]">
-        <div class="flex flex-col gap-[30px]">
-            <div class="gradient-badge w-fit p-[8px_16px] rounded-full border border-[#FED6AD] flex items-center gap-[6px]">
-                <div>
-                    <img src="assets/icon/medal-star.svg" alt="icon">
-                </div>
-                <p class="font-medium text-sm text-[#FF6129]">Top Categories</p>
-            </div>
-            <div class="flex flex-col">
-                <h2 class="font-bold text-[40px] leading-[60px]">Browse Courses</h2>
-                <p class="text-[#6D7786] text-lg -tracking-[2%]">Catching up the on demand skills and high paying career this year</p>
-            </div>
-        </div>
-        <div class="grid grid-cols-4 gap-[30px]">
-            <a href="{{route('front.category', 'web-development')}}" class="card flex items-center p-4 gap-3 ring-1 ring-[#DADEE4] rounded-2xl hover:ring-2 hover:ring-[#FF6129] transition-all duration-300">
-                <div class="w-[70px] h-[70px] flex shrink-0">
-                    <img src="assets/icon/Web Development 1.svg" class="object-contain" alt="icon">
-                </div>
-                <p class="font-bold text-lg">Web Development</p>
-            </a>
-            <a href="{{route('front.category', 'inteligent-sensing')}}" class="card flex items-center p-4 gap-3 ring-1 ring-[#DADEE4] rounded-2xl hover:ring-2 hover:ring-[#FF6129] transition-all duration-300">
-                <div class="w-[70px] h-[70px] flex shrink-0">
-                    <img src="assets/icon/Web Development 1.svg" class="object-contain" alt="icon">
-                </div>
-                <p class="font-bold text-lg">Intelligent Sensing</p>
-            </a>
-            <a href="{{route('front.category', 'internet-of-things')}}" class="card flex items-center p-4 gap-3 ring-1 ring-[#DADEE4] rounded-2xl hover:ring-2 hover:ring-[#FF6129] transition-all duration-300">
-                <div class="w-[70px] h-[70px] flex shrink-0">
-                    <img src="assets/icon/Web Development 1.svg" class="object-contain" alt="icon">
-                </div>
-                <p class="font-bold text-lg">Internet of Things</p>
-            </a>
-    </section>
-    <section id="Popular-Courses" class="max-w-[1200px] mx-auto flex flex-col p-[70px_82px_0px] gap-[30px] bg-[#F5F8FA] rounded-[32px]">
-        <div class="flex flex-col gap-[30px] items-center text-center">
-            <div class="gradient-badge w-fit p-[8px_16px] rounded-full border border-[#FED6AD] flex items-center gap-[6px]">
-                <div>
-                    <img src="assets/icon/medal-star.svg" alt="icon">
-                </div>
-                <p class="font-medium text-sm text-[#FF6129]">Popular Courses</p>
-            </div>
-            <div class="flex flex-col">
-                <h2 class="font-bold text-[40px] leading-[60px]">Don’t Missed It, Learn Now</h2>
-                <p class="text-[#6D7786] text-lg -tracking-[2%]">Catching up the on demand skills and high paying career this year</p>
-            </div>
-        </div>
-        <div class="relative">
-            <button class="btn-prev absolute rotate-180 -left-[52px] top-[216px]">
-                <img src="assets/icon/arrow-right.svg" alt="icon">
-            </button>
-            <button class="btn-prev absolute -right-[52px] top-[216px]">
-                <img src="assets/icon/arrow-right.svg" alt="icon">
-            </button>
-            <div id="course-slider" class="w-full">
-
-                @forelse($courses as $course)
-                <div class="course-card w-1/3 px-3 pb-[70px] mt-[2px]">
-                    <div class="flex flex-col rounded-t-[12px] rounded-b-[24px] gap-[32px] bg-white w-full pb-[10px] overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]">
-                        <a href="{{ route('front.details', $course->slug) }}" class="thumbnail w-full h-[200px] shrink-0 rounded-[10px] overflow-hidden">
-                            <img src="{{ Storage::url($course->thumbnail) }}" class="w-full h-full object-cover" alt="thumbnail">
-                        </a>
-                        <div class="flex flex-col px-4 gap-[10px]">
-                            <a href="{{ route('front.details', $course->slug) }}" class="font-semibold text-lg line-clamp-2 hover:line-clamp-none min-h-[56px]">{{$course->name}}</a>
-                            <div class="font-semibold text-lg line-clamp-2 hover:line-clamp-none min-h-[56px]">
-                                {{ $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : 'FREE' }}
-                            </div>
-
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center gap-[2px]">
-                                    <div>
-                                        <img src="assets/icon/star.svg" alt="star">
-                                    </div>
-                                    <div>
-                                        <img src="assets/icon/star.svg" alt="star">
-                                    </div>
-                                    <div>
-                                        <img src="assets/icon/star.svg" alt="star">
-                                    </div>
-                                    <div>
-                                        <img src="assets/icon/star.svg" alt="star">
-                                    </div>
-                                    <div>
-                                        <img src="assets/icon/star.svg" alt="star">
-                                    </div>
-                                </div>
-                                <p class="text-right text-[#6D7786]">{{$course->trainees->count()}}</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 flex shrink-0 rounded-full overflow-hidden">
-                                    <img src="{{Storage::url($course->trainer->user->avatar)}}" class="w-full h-full object-cover" alt="icon">
-                                </div>
-                                <div class="flex flex-col">
-                                    <p class="font-semibold">{{$course->trainer->user->name}}</p>
-                                    <p class="text-[#6D7786]">{{$course->trainer->user->pekerjaan}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @empty
-                <p>
-                    Belum ada data kelas terbaru
-                </p>
-                @endforelse
-            </div>
-        </div>
-    </section>
     <section id="Pricing" class="max-w-[1200px] mx-auto flex justify-between items-center p-[70px_100px]">
         <div class="relative">
             <div class="w-[355px] h-[488px]">

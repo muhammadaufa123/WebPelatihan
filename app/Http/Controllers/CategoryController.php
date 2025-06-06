@@ -53,6 +53,9 @@ class CategoryController extends Controller
 
             $validated['slug'] = Str::slug($validated['name']);
 
+            $validated['course_type'] = $request->input('course_type', 'online');
+            $validated['level'] = $request->input('level', 'beginner');
+
             $category = Category::create($validated);
 
         });
@@ -94,6 +97,8 @@ class CategoryController extends Controller
             }
 
             $validated['slug'] = Str::slug($validated['name']);
+            $validated['course_type'] = $request->input('course_type', $category->course_type);
+            $validated['level'] = $request->input('level', $category->level);
 
             $category ->update($validated);
 

@@ -29,8 +29,14 @@
             <!-- Navigation Menu -->
             <ul class="flex items-center gap-[30px] text-white">
                 <li><a href="{{ route('front.index') }}" class="font-semibold">Home</a></li>
+                <li><a href="{{ route('front.index') }}" class="font-semibold">Explore Course</a></li>
                 <li><a href="#" class="font-semibold">My Certificate</a></li>
                 <li><a href="#" class="font-semibold">My Course</a></li>
+                <li>
+                    <form action="{{ route('front.index') }}" method="GET" class="flex">
+                        <input type="text" name="search" placeholder="Search" class="rounded px-2 text-black">
+                    </form>
+                </li>
             </ul>
 
             @auth

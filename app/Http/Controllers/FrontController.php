@@ -15,13 +15,30 @@ class FrontController extends Controller
     /**
      * Halaman depan menampilkan semua course
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with(['category', 'trainer', 'trainees'])
-                         ->orderByDesc('id')
-                         ->get();
+        $query = Course::with(['category', 'trainer', 'trainees'])->orderByDesc('id');
 
-        return view('front.index', compact('courses'));
+        if ($request->filled('course_type')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('course_type', $request->course_type);
+            });
+        }
+
+        if ($request->filled('level')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('level', $request->level);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $courses = $query->get();
+        $categories = Category::all();
+
+        return view('front.index', compact('courses', 'categories'));
     }
 
     /**
@@ -32,14 +49,31 @@ class FrontController extends Controller
         return view('front.details', compact('course'));
     }
 
-    public function category(Category $category)
+    public function category(Request $request, Category $category)
     {
-        $courses = $category->courses()->get();
+        $query = $category->courses();
 
-    // Ambil kategori lain selain yang aktif
-    $otherCategories = Category::where('id', '!=', $category->id)->get();
+        if ($request->filled('course_type')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('course_type', $request->course_type);
+            });
+        }
 
-    return view('front.category', compact('courses', 'category', 'otherCategories'));
+        if ($request->filled('level')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('level', $request->level);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $courses = $query->get();
+
+        $otherCategories = Category::where('id', '!=', $category->id)->get();
+
+        return view('front.category', compact('courses', 'category', 'otherCategories'));
     }
 
     /**

@@ -21,6 +21,12 @@ Route::get('/details/{course:slug}', [FrontController::class, 'details'])->name(
 Route::get('/category/{category:slug}', [FrontController::class, 'category'])->name('front.category');
 
 Route::middleware(['auth', 'role:trainee'])->group(function () {
+    Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/{course:slug}', [\App\Http\Controllers\CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/{cartItem}', [\App\Http\Controllers\CartController::class, 'destroy'])->name('cart.destroy');
+});
+
+Route::middleware(['auth', 'role:trainee'])->group(function () {
     Route::get('/checkout/{course:slug}', [FrontController::class, 'checkout'])->name('front.checkout');
     Route::post('/checkout/{course:slug}/store', [FrontController::class, 'checkout_store'])->name('front.checkout.store');
 
