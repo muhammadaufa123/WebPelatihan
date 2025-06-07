@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('path_trailer');
             $table->text('about');
             $table->string('thumbnail');
-            $table->foreignId('trainer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('trainer_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

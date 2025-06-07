@@ -70,39 +70,6 @@
             </div>
         </div>
     </div>
-    <section id="Top-Categories" class="max-w-[1200px] mx-auto flex flex-col p-[70px_50px] gap-[30px]">
-        <div class="flex flex-col gap-[30px]">
-            <div class="gradient-badge w-fit p-[8px_16px] rounded-full border border-[#FED6AD] flex items-center gap-[6px]">
-                <div>
-                    <img src="assets/icon/medal-star.svg" alt="icon">
-                </div>
-                <p class="font-medium text-sm text-[#FF6129]">Top Categories</p>
-            </div>
-            <div class="flex flex-col">
-                <h2 class="font-bold text-[40px] leading-[60px]">Browse Courses</h2>
-                <p class="text-[#6D7786] text-lg -tracking-[2%]">Catching up the on demand skills and high paying career this year</p>
-            </div>
-        </div>
-        <div class="grid grid-cols-4 gap-[30px]">
-            <a href="{{route('front.category', 'web-development')}}" class="card flex items-center p-4 gap-3 ring-1 ring-[#DADEE4] rounded-2xl hover:ring-2 hover:ring-[#FF6129] transition-all duration-300">
-                <div class="w-[70px] h-[70px] flex shrink-0">
-                    <img src="assets/icon/Web Development 1.svg" class="object-contain" alt="icon">
-                </div>
-                <p class="font-bold text-lg">Web Development</p>
-            </a>
-            <a href="{{route('front.category', 'inteligent-sensing')}}" class="card flex items-center p-4 gap-3 ring-1 ring-[#DADEE4] rounded-2xl hover:ring-2 hover:ring-[#FF6129] transition-all duration-300">
-                <div class="w-[70px] h-[70px] flex shrink-0">
-                    <img src="assets/icon/Web Development 1.svg" class="object-contain" alt="icon">
-                </div>
-                <p class="font-bold text-lg">Intelligent Sensing</p>
-            </a>
-            <a href="{{route('front.category', 'internet-of-things')}}" class="card flex items-center p-4 gap-3 ring-1 ring-[#DADEE4] rounded-2xl hover:ring-2 hover:ring-[#FF6129] transition-all duration-300">
-                <div class="w-[70px] h-[70px] flex shrink-0">
-                    <img src="assets/icon/Web Development 1.svg" class="object-contain" alt="icon">
-                </div>
-                <p class="font-bold text-lg">Internet of Things</p>
-            </a>
-    </section>
     <section id="Popular-Courses" class="max-w-[1200px] mx-auto flex flex-col p-[70px_82px_0px] gap-[30px] bg-[#F5F8FA] rounded-[32px]">
         <div class="flex flex-col gap-[30px] items-center text-center">
             <div class="gradient-badge w-fit p-[8px_16px] rounded-full border border-[#FED6AD] flex items-center gap-[6px]">
@@ -116,6 +83,12 @@
                 <p class="text-[#6D7786] text-lg -tracking-[2%]">Catching up the on demand skills and high paying career this year</p>
             </div>
             <form method="GET" class="flex gap-4 mt-4">
+                <select name="course_mode_id" class="border rounded p-2">
+                    <option value="">All Category</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category_id')==$category->id?'selected':'' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
                 <select name="course_mode_id" class="border rounded p-2">
                     <option value="">All Modes</option>
                     @foreach($modes as $mode)
@@ -178,15 +151,24 @@
                                 </div>
                                 <p class="text-right text-[#6D7786]">{{$course->trainees->count()}}</p>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 flex shrink-0 rounded-full overflow-hidden">
-                                    <img src="{{Storage::url($course->trainer->user->avatar)}}" class="w-full h-full object-cover" alt="icon">
-                                </div>
-                                <div class="flex flex-col">
-                                    <p class="font-semibold">{{$course->trainer->user->name}}</p>
-                                    <p class="text-[#6D7786]">{{$course->trainer->user->pekerjaan}}</p>
-                                </div>
+                            
+                        @php
+                            $trainerUser = optional($course->trainer?->user);
+                        @endphp
+
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 flex shrink-0 rounded-full overflow-hidden">
+                                <img
+                                    src="{{ $trainerUser->avatar ? Storage::url($trainerUser->avatar) : asset('images/default-avatar.png') }}"
+                                    class="w-full h-full object-cover"
+                                    alt="avatar">
                             </div>
+                            <div class="flex flex-col">
+                                <p class="font-semibold">{{ $trainerUser->name ?? 'Unknown Trainer' }}</p>
+                                <p class="text-[#6D7786]">{{ $trainerUser->pekerjaan ?? '-' }}</p>
+                            </div>
+                        </div>
+
                         </div>
                     </div>
                 </div>

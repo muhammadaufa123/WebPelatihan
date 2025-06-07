@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Traits\HasRoles;
 
 class CourseController extends Controller
@@ -43,49 +44,75 @@ class CourseController extends Controller
 
     public function store(StoreCourseRequest $request)
 {
-    $trainer = Trainer::where('user_id', Auth::id())->first();
+    $user = Auth::user();
+    $trainer = null;
 
-    if (!$trainer) {
+    if ($user->hasRole('trainer')) {
+        $trainer = Trainer::where('user_id', $user->id)->first();
+        if (!$trainer) {
+            return redirect()->route('admin.courses.index')
+                ->withErrors(['trainer' => 'Trainer record not found for this user.']);
+        }
+    } elseif (!$user->hasRole('admin')) {
         return redirect()->route('admin.courses.index')
-            ->withErrors(['trainer' => 'Unauthorized or invalid trainer']);
+            ->withErrors(['trainer' => 'Unauthorized action.']);
     }
 
-    DB::transaction(function () use ($request, $trainer) {
-        $validated = $request->validated();
+    try {
+        $validated = $request->validated(); // ← ini akan otomatis throw ValidationException jika gagal
+    } catch (ValidationException $e) {
+        return redirect()->back()
+            ->withErrors($e->errors())
+            ->withInput();
+    }
+
+    try {
+        DB::beginTransaction();
 
         // Upload thumbnail
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
         }
 
-        // Generate unique slug
+        // Generate slug unik
         $slug = Str::slug($validated['name']);
         $count = Course::where('slug', 'like', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
 
         $validatedData = array_merge($validated, [
             'slug' => $slug,
-            'trainer_id' => $trainer->id,
+            'trainer_id' => $trainer ? $trainer->id : null,
             'price' => $validated['price'] ?? 0,
         ]);
 
-        // Create course
+        // Simpan course
         $course = Course::create($validatedData);
 
-        // Insert course keypoints if available
+        // Simpan keypoints jika ada
         if (!empty($validated['course_keypoints'])) {
             foreach ($validated['course_keypoints'] as $keypointText) {
                 if (!empty($keypointText)) {
                     $course->course_keypoints()->create([
-                        'name' => $keypointText
+                        'name' => $keypointText,
                     ]);
                 }
             }
         }
-    });
 
-    return redirect()->route('admin.courses.index')->with('success', 'Course successfully created.');
+        DB::commit();
+
+        return redirect()->route('admin.courses.index')->with('success', 'Course successfully created.');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error('Error saat menyimpan course: ' . $e->getMessage());
+
+        return redirect()->back()
+            ->withErrors(['error' => 'Gagal menyimpan course. Coba lagi.'])
+            ->withInput();
+    }
 }
+
 
 
     public function show(Course $course)

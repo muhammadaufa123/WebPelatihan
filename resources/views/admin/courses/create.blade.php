@@ -22,19 +22,19 @@
 
                     <div>
                         <x-input-label for="name" :value="__('Name')" />
-                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                        <input type="text" name="name" value="{{ old('name') }}" class="border rounded px-3 py-2 w-full">
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
                         <x-input-label for="path_trailer" :value="__('Path Trailer')" />
-                        <x-text-input id="path_trailer" class="block mt-1 w-full" type="text" name="path_trailer" :value="old('path_trailer')" required />
+                        <input type="text" name="path_trailer" value="{{ old('path_trailer') }}" class="border rounded px-3 py-2 w-full" required>
                         <x-input-error :messages="$errors->get('path_trailer')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="thumbnail" :value="__('thumbnail')" />
-                        <x-text-input id="thumbnail" class="block mt-1 w-full" type="file" name="thumbnail" required autofocus autocomplete="thumbnail" />
+                        <x-input-label for="thumbnail" :value="__('Thumbnail')" />
+                        <input type="file" name="thumbnail" class="border rounded px-3 py-2 w-full" required>
                         <x-input-error :messages="$errors->get('thumbnail')" class="mt-2" />
                     </div>
 
@@ -45,8 +45,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="category" :value="__('category')" />
-
+                        <x-input-label for="category" :value="__('Category')" />
                         <select name="category_id" id="category_id" class="py-3 rounded-lg pl-3 w-full border border-slate-300">
                             <option value="">Choose category</option>
                             @forelse($categories as $category)
@@ -54,8 +53,7 @@
                             @empty
                             @endforelse
                         </select>
-
-                        <x-input-error :messages="$errors->get('category')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
@@ -81,26 +79,24 @@
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="about" :value="__('about')" />
-                        <textarea name="about" id="about" cols="30" rows="5" class="border border-slate-300 rounded-xl w-full"></textarea>
+                        <x-input-label for="about" :value="__('About')" />
+                        <textarea name="about" id="about" cols="30" rows="5" class="border border-slate-300 rounded-xl w-full">{{ old('about') }}</textarea>
                         <x-input-error :messages="$errors->get('about')" class="mt-2" />
                     </div>
 
                     <hr class="my-5">
 
                     <div class="mt-4">
-                        
                         <div class="flex flex-col gap-y-5">
-                            <x-input-label for="keypoints" :value="__('keypoints')" />
+                            <x-input-label for="keypoints" :value="__('Keypoints')" />
                             @for ($i = 0; $i < 4; $i++)
                                 <input type="text" class="py-3 rounded-lg border-slate-300 border" placeholder="Write your copywriting" name="course_keypoints[]">
                             @endfor
                         </div>
-                        <x-input-error :messages="$errors->get('keypoints')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('course_keypoints')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">
-            
                         <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                             Add New Course
                         </button>
