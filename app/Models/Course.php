@@ -16,7 +16,6 @@ class Course extends Model
         'path_trailer',
         'thumbnail',
         'price',
-        'trainer',
         'category_id',
         'trainer_id',
         'course_mode_id',
