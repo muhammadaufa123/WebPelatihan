@@ -16,6 +16,7 @@ use App\Http\Controllers\{
     TalentController,
     RecruiterController,
     TalentDiscoveryController,
+    CourseMaterialController,
 };
 // ====================
 // FRONTEND ROUTES
@@ -78,6 +79,10 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role:admin|trainer')->group(function () {
             Route::resource('courses', CourseController::class);
             Route::resource('course_videos', CourseVideoController::class);
+
+            // Course Materials
+            Route::get('courses/materials', [CourseMaterialController::class, 'index'])->name('materials.index');
+            Route::post('courses/materials', [CourseMaterialController::class, 'store'])->name('materials.store');
 
             Route::get('/add/video/{course:id}', [CourseVideoController::class, 'create'])->name('course.add_video');
             Route::post('/add/video/save/{course:id}', [CourseVideoController::class, 'store'])->name('course.add_video.save');
