@@ -75,12 +75,13 @@ class FinalQuizController extends Controller
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'passing_score' => 'required|integer|min:0|max:100',
+            'order' => 'nullable|integer|min:0',
             'is_hidden_from_trainee' => 'sometimes|boolean', // Add this validation
             'questions' => 'required|array|min:1',
             'questions.*.text' => 'required|string',
-            'questions.*.options' => 'required|array|size:4', 
+            'questions.*.options' => 'required|array|size:4',
             'questions.*.options.*.text' => 'required|string',
-            'questions.*.correct_option' => 'required|integer|min:0|max:3', 
+            'questions.*.correct_option' => 'required|integer|min:0|max:3',
         ]);
 
         DB::beginTransaction();
@@ -91,6 +92,7 @@ class FinalQuizController extends Controller
                 'course_id'     => $validatedData['course_id'],
                 'title'         => $validatedData['title'],
                 'passing_score' => $validatedData['passing_score'],
+                'order'        => $validatedData['order'] ?? 0,
                 'is_hidden_from_trainee' => $request->has('is_hidden_from_trainee'), // Process checkbox
             ]);
 
@@ -140,7 +142,7 @@ class FinalQuizController extends Controller
             }
         }
 
-        $quiz = $course->finalQuizzes()->with(['questions.options'])->first();
+        $quiz = $course->finalQuizzes()->orderBy('order')->with(['questions.options'])->first();
 
         if (!$quiz) {
             return redirect()->route('admin.course_quiz.create', $course)->with('info', 'No quiz found for this course. You can create one.');
@@ -166,9 +168,10 @@ class FinalQuizController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'passing_score' => 'required|integer|min:0|max:100',
+            'order' => 'nullable|integer|min:0',
             'is_hidden_from_trainee' => 'sometimes|boolean', // Add this validation
             'questions' => 'required|array|min:1',
-            'questions.*.id' => 'nullable|exists:quiz_questions,id', 
+            'questions.*.id' => 'nullable|exists:quiz_questions,id',
             'questions.*.text' => 'required|string', 
             'questions.*.options' => 'required|array|size:4',
             'questions.*.options.*.id' => 'nullable|exists:quiz_options,id', 
@@ -185,6 +188,7 @@ class FinalQuizController extends Controller
             $finalQuiz->update([
                 'title'         => $validatedData['title'],
                 'passing_score' => $validatedData['passing_score'],
+                'order'        => $validatedData['order'] ?? $finalQuiz->order,
                 'is_hidden_from_trainee' => $request->has('is_hidden_from_trainee'), // Process checkbox
             ]);
 

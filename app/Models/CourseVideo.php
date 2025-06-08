@@ -13,7 +13,8 @@ class CourseVideo extends Model
     protected $fillable = [
         'name',
         'path_video',
-        'course_id'
+        'course_id',
+        'order'
     ];
 
     public function course(){

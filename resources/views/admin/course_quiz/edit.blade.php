@@ -49,9 +49,15 @@
 
                     <div class="mb-4">
                         <x-input-label for="passing_score" value="Passing Score (%)" />
-                        <x-text-input id="passing_score" name="passing_score" type="number" class="w-full" 
+                        <x-text-input id="passing_score" name="passing_score" type="number" class="w-full"
                                       min="0" max="100" value="{{ old('passing_score', $quiz->passing_score) }}" required />
                         <x-input-error :messages="$errors->get('passing_score')" class="mt-2" />
+                    </div>
+
+                    <div class="mb-4">
+                        <x-input-label for="order" value="Order" />
+                        <x-text-input id="order" name="order" type="number" class="w-full" value="{{ old('order', $quiz->order) }}" min="0" />
+                        <x-input-error :messages="$errors->get('order')" class="mt-2" />
                     </div>
 
                     <div class="mb-4">

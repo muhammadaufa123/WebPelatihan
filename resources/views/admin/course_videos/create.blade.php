@@ -48,6 +48,12 @@
                         <x-input-error :messages="$errors->get('path_video')" class="mt-2" />
                     </div>
 
+                    <div class="mt-4">
+                        <x-input-label for="order" :value="__('Order')" />
+                        <x-text-input id="order" class="block mt-1 w-full" type="number" name="order" :value="old('order', 0)" min="0" />
+                        <x-input-error :messages="$errors->get('order')" class="mt-2" />
+                    </div>
+
                     <div class="flex items-center justify-end mt-4">
             
                         <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">

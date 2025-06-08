@@ -42,7 +42,7 @@ class Course extends Model
     }
 
     public function course_videos(){
-        return $this->hasMany(CourseVideo::class);
+        return $this->hasMany(CourseVideo::class)->orderBy('order');
     }
 
     public function course_keypoints(){
@@ -63,12 +63,12 @@ public function subscribeTransactions()
 
 public function finalQuizzes()
 {
-    return $this->hasMany(FinalQuiz::class);
+    return $this->hasMany(FinalQuiz::class)->orderBy('order');
 }
 
 public function finalQuiz()
 {
-    return $this->hasOne(FinalQuiz::class);
+    return $this->hasOne(FinalQuiz::class)->orderBy('order');
 }
 
 

@@ -14,6 +14,7 @@ class FinalQuiz extends Model
         'title',
         'passing_score',
         'is_hidden_from_trainee', // Add this line
+        'order'
     ];
 
     protected $casts = [

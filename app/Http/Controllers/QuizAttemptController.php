@@ -12,6 +12,7 @@ class QuizAttemptController extends Controller
     public function show(Course $course) // Laravel akan otomatis mengambil objek Course berdasarkan ID dari URL
     {
         $quiz = FinalQuiz::where('course_id', $course->id)
+                         ->orderBy('order')
                          ->with('questions.options') // Pastikan relasi 'options' ada di model QuizQuestion
                          ->firstOrFail(); // Ambil kuis pertama yang terkait dengan kursus ini
 

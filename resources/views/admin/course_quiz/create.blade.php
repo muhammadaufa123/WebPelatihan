@@ -30,6 +30,11 @@
                     </div>
 
                     <div class="mb-4">
+                        <x-input-label for="order" value="Order" />
+                        <x-text-input id="order" name="order" type="number" class="w-full" value="{{ old('order', 0) }}" min="0" />
+                    </div>
+
+                    <div class="mb-4">
                         <label for="is_hidden_from_trainee" class="block text-sm font-medium text-gray-700 mb-1">Visibility</label>
                         <div class="flex items-center">
                             <input id="is_hidden_from_trainee" name="is_hidden_from_trainee" type="checkbox" value="1" 
