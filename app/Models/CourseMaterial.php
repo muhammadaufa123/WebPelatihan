@@ -4,23 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CourseVideo extends Model
+class CourseMaterial extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
-        'name',
-        'path_video',
-        'course_id',
         'course_module_id',
+        'title',
+        'path_material',
         'order',
     ];
-
-    public function course(){
-        return $this->belongsTo(Course::class);
-    }
 
     public function module()
     {

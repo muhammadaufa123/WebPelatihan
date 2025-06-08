@@ -11,9 +11,11 @@ class FinalQuiz extends Model
 
     protected $fillable = [
         'course_id',
+        'course_module_id',
         'title',
         'passing_score',
-        'is_hidden_from_trainee', // Add this line
+        'is_hidden_from_trainee',
+        'order',
     ];
 
     protected $casts = [
@@ -23,6 +25,11 @@ class FinalQuiz extends Model
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function module()
+    {
+        return $this->belongsTo(CourseModule::class, 'course_module_id');
     }
 
     public function questions()

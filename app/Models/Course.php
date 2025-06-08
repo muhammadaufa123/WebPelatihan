@@ -45,6 +45,11 @@ class Course extends Model
         return $this->hasMany(CourseVideo::class);
     }
 
+    public function modules()
+    {
+        return $this->hasMany(CourseModule::class);
+    }
+
     public function course_keypoints(){
         return $this->hasMany(CourseKeypoint::class);
     }
