@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     CategoryController,
     CourseController,
     CourseVideoController,
+    ModuleController,
     SubscribeTransactionController,
     TrainerController,
     FinalQuizController,
@@ -78,6 +79,7 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role:admin|trainer')->group(function () {
             Route::resource('courses', CourseController::class);
             Route::resource('course_videos', CourseVideoController::class);
+            Route::resource('courses.modules', ModuleController::class);
 
             Route::get('/add/video/{course:id}', [CourseVideoController::class, 'create'])->name('course.add_video');
             Route::post('/add/video/save/{course:id}', [CourseVideoController::class, 'store'])->name('course.add_video.save');

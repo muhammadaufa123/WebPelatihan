@@ -71,5 +71,10 @@ public function finalQuiz()
     return $this->hasOne(FinalQuiz::class);
 }
 
+public function modules()
+{
+    return $this->hasMany(\App\Models\Module::class);
+}
+
 
 }

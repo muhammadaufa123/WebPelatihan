@@ -100,15 +100,29 @@
                             @endphp
                             @for ($i = 0; $i < 4; $i++)
                                 <input type="text" class="py-3 rounded-lg border-slate-300 border" placeholder="Write your keypoint" name="course_keypoints[]" value="{{ $keypoints[$i] ?? '' }}">
-                            @endfor
-                        </div>
-                        <x-input-error :messages="$errors->get('keypoints')" class="mt-2" />
-                    </div>
+                    @endfor
+                </div>
+                <x-input-error :messages="$errors->get('keypoints')" class="mt-2" />
+            </div>
 
-                    <div class="flex items-center justify-end mt-4">
-                        <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
-                            Update Course
-                        </button>
+            {{-- Modules management --}}
+            <div class="mt-8">
+                <h3 class="text-lg font-bold mb-2">Modules</h3>
+                <a href="{{ route('admin.modules.index', $course) }}" class="text-indigo-700 underline">Manage Modules</a>
+            </div>
+
+            {{-- Materials, Videos, Quizzes placeholders --}}
+            <div class="mt-8 flex flex-col gap-y-2">
+                <h3 class="text-lg font-bold">Materials & Videos</h3>
+                <p class="text-sm text-slate-500">Manage materials and videos from the module management page.</p>
+                <h3 class="text-lg font-bold mt-4">Quizzes</h3>
+                <a href="{{ route('admin.course_quiz.edit', $course) }}" class="text-indigo-700 underline">Manage Quiz</a>
+            </div>
+
+            <div class="flex items-center justify-end mt-4">
+                <button type="submit" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                    Update Course
+                </button>
                     </div>
                 </form>
 
