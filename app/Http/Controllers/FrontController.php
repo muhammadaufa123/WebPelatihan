@@ -96,6 +96,9 @@ class FrontController extends Controller
                              ->with('error', 'Kamu belum membeli akses ke kelas ini.');
         }
 
+        // Muat modul beserta video dan materi
+        $course->load(['modules.videos', 'modules.materials']);
+
         // Ambil video dari relasi
         $video = $course->course_videos->firstWhere('id', $courseVideoId);
 
@@ -136,7 +139,7 @@ class FrontController extends Controller
             ->where('course_id', $course->id)
             ->first();
 
-        return view('front.learning', compact('course', 'video', 'certificate'));
+        return view('front.learning', compact('course', 'video', 'certificate', 'progress'));
     }
 
     /**
