@@ -28,33 +28,64 @@
             <div class="flex flex-col gap-4">
                 <div class="group p-[12px_16px] flex items-center gap-[10px] bg-[#E9EFF3] rounded-full hover:bg-[#3525B3] transition-all">
                     <div class="text-black group-hover:text-white">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M11.97 2C6.45 2 1.97 6.48 1.97 12s4.48 10 10 10 10-4.48 10-10S17.5 2 11.97 2Zm3 12.23-2.9 1.67c-.36.21-.76.31-1.15.31s-.79-.1-1.15-.31c-.72-.42-1.15-1.16-1.15-2V10.55c0-.83.43-1.57 1.15-1.99.72-.42 1.6-.42 2.32 0l2.9 1.67c.72.42 1.15 1.16 1.15 1.99s-.43 1.57-1.15 1.99Z" fill="currentColor"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M11.97 2C6.45 2 1.97 6.48 1.97 12s4.48 10 10 10 10-4.48 10-10S17.52 2 11.97 2Zm3 12.23-2.9 1.67c-.36.21-.76.31-1.15.31s-.79-.1-1.15-.31c-.72-.42-1.15-1.16-1.15-2V10.55c0-.83.43-1.57 1.15-1.99.72-.42 1.6-.42 2.32 0l2.9 1.67c.72.42 1.15 1.16 1.15 1.99s-.43 1.57-1.15 1.99Z" fill="currentColor"/></svg>
                     </div>
                     <a href="{{ route('front.details', $course ) }}">
                         <p class="font-semibold group-hover:text-white">Course Trailer</p>
                     </a>
                 </div>
 
-                @foreach($course->course_videos as $video)
-                    @php
-                        $isActive = request()->get('courseVideoId') == $video->id;
-                        $hasAccess = Auth::check() && Auth::user()->hasActiveSubscription($course);
-                    @endphp
+                @foreach($course->modules as $module)
+                    <p class="font-semibold mt-4">{{ $module->name }}</p>
+                    @foreach($module->videos as $video)
+                        @php
+                            $isActive = request()->get('courseVideoId') == $video->id;
+                            $hasAccess = Auth::check() && Auth::user()->hasActiveSubscription($course);
+                            $completedVideos = $progress->completed_videos ?? [];
+                        @endphp
 
-                    @if($hasAccess || $course->price == 0)
-                        <a href="{{ route('front.learning', [$course, 'courseVideoId' => $video->id]) }}" class="group p-[12px_16px] flex items-center gap-[10px] rounded-full transition-all duration-300 {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3] hover:bg-[#3525B3]' }}">
-                            <div class="text-black group-hover:text-white {{ $isActive ? 'text-white' : '' }}">
-                                ▶️
+                        @if($hasAccess || $course->price == 0)
+                            <a href="{{ route('front.learning', [$course, 'courseVideoId' => $video->id]) }}" class="group p-[12px_16px] flex items-center gap-[10px] rounded-full transition-all duration-300 {{ $isActive ? 'bg-[#3525B3]' : 'bg-[#E9EFF3] hover:bg-[#3525B3]' }}">
+                                <div class="text-black group-hover:text-white {{ $isActive ? 'text-white' : '' }}">
+                                    ▶️
+                                </div>
+                                <p class="font-semibold {{ $isActive ? 'text-white' : 'group-hover:text-white text-black' }}">
+                                    {{ $video->name }}
+                                </p>
+                                @if(in_array($video->id, $completedVideos))
+                                    <span class="ml-auto text-green-500">✓</span>
+                                @endif
+                            </a>
+                        @else
+                            <div class="group p-[12px_16px] flex items-center gap-[10px] bg-[#E9EFF3] rounded-full opacity-50 cursor-not-allowed">
+                                <div class="text-black">🔒</div>
+                                <p class="font-semibold text-black">{{ $video->name }} <span class="text-xs text-red-500">(PRO)</span></p>
                             </div>
-                            <p class="font-semibold {{ $isActive ? 'text-white' : 'group-hover:text-white text-black' }}">
-                                {{ $video->name }}
-                            </p>
-                        </a>
-                    @else
-                        <div class="group p-[12px_16px] flex items-center gap-[10px] bg-[#E9EFF3] rounded-full opacity-50 cursor-not-allowed">
-                            <div class="text-black">🔒</div>
-                            <p class="font-semibold text-black">{{ $video->name }} <span class="text-xs text-red-500">(PRO)</span></p>
-                        </div>
+                        @endif
+                    @endforeach
+
+                    @if($module->materials->count())
+                        <p class="font-medium mt-2 ml-4">Materials:</p>
+                        <ul class="ml-8 flex flex-col gap-1">
+                            @foreach($module->materials as $material)
+                                <li>
+                                    <a href="{{ Storage::url($material->file_path) }}" class="text-blue-500" download>{{ $material->name }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    @if(isset($module->tasks) && count($module->tasks))
+                        <p class="font-medium mt-2 ml-4">Tasks:</p>
+                        <ul class="ml-8 flex flex-col gap-1">
+                            @foreach($module->tasks as $task)
+                                <li>
+                                    {{ $task->name }}
+                                    @if($task->is_completed ?? false)
+                                        <span class="ml-2 text-green-500">✓</span>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
                     @endif
                 @endforeach
             </div>

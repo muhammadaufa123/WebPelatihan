@@ -46,6 +46,11 @@ class Course extends Model
         return $this->hasMany(CourseVideo::class);
     }
 
+    public function modules()
+    {
+        return $this->hasMany(CourseModule::class)->orderBy('order');
+    }
+
     public function course_keypoints(){
         return $this->hasMany(CourseKeypoint::class);
     }

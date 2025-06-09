@@ -19,4 +19,14 @@ class CourseModule extends Model
     {
         return $this->hasMany(CourseMaterial::class);
     }
+
+    public function videos()
+    {
+        return $this->hasMany(CourseVideo::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }
