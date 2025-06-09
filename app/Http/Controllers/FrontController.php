@@ -46,6 +46,8 @@ class FrontController extends Controller
      */
     public function details(Course $course)
     {
+        $course->load(['category', 'trainer.user', 'trainees', 'course_videos', 'course_keypoints', 'modules']);
+
         return view('front.details', compact('course'));
     }
 
@@ -75,6 +77,8 @@ class FrontController extends Controller
      */
     public function learning(Course $course, $courseVideoId)
     {
+        $course->load(['category', 'trainer.user', 'trainees', 'course_videos', 'course_keypoints', 'modules']);
+
         $user = Auth::user();
 
         // Cek apakah user punya akses ke course ini

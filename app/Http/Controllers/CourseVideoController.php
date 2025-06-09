@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCourseVideoRequest;
 use App\Models\Course;
-use App\Models\CourseVideo;
+use App\Models\{CourseVideo, CourseModule};
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -23,8 +23,9 @@ class CourseVideoController extends Controller
      */
     public function create(Course $course)
     {
-        //
-        return view('admin.course_videos.create', compact('course'));
+        $modules = CourseModule::where('course_id', $course->id)->get();
+
+        return view('admin.course_videos.create', compact('course', 'modules'));
 
     }
 
@@ -61,8 +62,9 @@ class CourseVideoController extends Controller
      */
     public function edit(CourseVideo $courseVideo)
     {
-        //
-        return view('admin.course_videos.edit', compact('courseVideo'));
+        $modules = CourseModule::where('course_id', $courseVideo->course_id)->get();
+
+        return view('admin.course_videos.edit', compact('courseVideo', 'modules'));
 
     }
 

@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Course;
+use App\Models\CourseVideo;
+use App\Models\CourseMaterial;
+use App\Models\ModuleTask;
 
 class CourseModule extends Model
 {
@@ -15,9 +19,9 @@ class CourseModule extends Model
         'order',
     ];
 
-    public function materials()
+    public function course()
     {
-        return $this->hasMany(CourseMaterial::class);
+        return $this->belongsTo(Course::class);
     }
 
     public function videos()
@@ -25,8 +29,13 @@ class CourseModule extends Model
         return $this->hasMany(CourseVideo::class);
     }
 
-    public function course()
+    public function materials()
     {
-        return $this->belongsTo(Course::class);
+        return $this->hasMany(CourseMaterial::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(ModuleTask::class);
     }
 }

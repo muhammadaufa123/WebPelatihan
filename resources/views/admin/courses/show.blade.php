@@ -79,6 +79,46 @@
                 </div>
                 @empty
                 @endforelse
+
+                <hr class="my-5">
+
+                <div class="flex flex-row justify-between items-center mb-4">
+                    <div class="flex flex-col">
+                        <h3 class="text-indigo-950 text-xl font-bold">Modules</h3>
+                        <p class="text-slate-500 text-sm">{{ $course->modules->count() }}</p>
+                    </div>
+                    <a href="{{ route('admin.curriculum.index', $course) }}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                        Manage Curriculum
+                    </a>
+                </div>
+
+                @foreach($course->modules as $module)
+                    <div class="border rounded p-4 mb-3">
+                        <h4 class="font-semibold">{{ $module->name }} <span class="text-sm text-gray-500">(Order: {{ $module->order }})</span></h4>
+                        <div class="ml-4 mt-2">
+                            <h5 class="font-semibold">Videos</h5>
+                            <ul class="list-disc list-inside">
+                                @foreach($module->videos as $v)
+                                    <li>{{ $v->name }}</li>
+                                @endforeach
+                            </ul>
+
+                            <h5 class="font-semibold mt-2">Materials</h5>
+                            <ul class="list-disc list-inside">
+                                @foreach($module->materials as $m)
+                                    <li>{{ $m->name }}</li>
+                                @endforeach
+                            </ul>
+
+                            <h5 class="font-semibold mt-2">Tasks</h5>
+                            <ul class="list-disc list-inside">
+                                @foreach($module->tasks as $t)
+                                    <li>{{ $t->name }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endforeach
                 
             </div>
         </div>

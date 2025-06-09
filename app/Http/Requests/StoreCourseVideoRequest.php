@@ -22,9 +22,10 @@ class StoreCourseVideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'course_module_id' => 'required|exists:course_modules,id',
             'name' => 'required|string|max:255',
             'path_video' => 'required|string|max:255',
+            'order' => 'nullable|integer',
         ];
     }
 }

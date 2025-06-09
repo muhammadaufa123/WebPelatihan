@@ -9,6 +9,10 @@ use App\Http\Controllers\{
     CourseController,
     CourseVideoController,
     CourseMaterialController,
+    CourseModuleController,
+    ModuleVideoController,
+    ModuleMaterialController,
+    ModuleTaskController,
     SubscribeTransactionController,
     TrainerController,
     FinalQuizController,
@@ -87,6 +91,17 @@ Route::middleware('auth')->group(function () {
             Route::post('/add/video/save/{course:id}', [CourseVideoController::class, 'store'])->name('course.add_video.save');
 
             Route::post('course-materials', [CourseMaterialController::class, 'store'])->name('course_materials.store');
+
+            Route::prefix('curriculum')->name('curriculum.')->group(function () {
+                Route::get('course/{course}', [CourseModuleController::class, 'index'])->name('index');
+                Route::post('course/{course}', [CourseModuleController::class, 'store'])->name('store');
+                Route::put('module/{courseModule}', [CourseModuleController::class, 'update'])->name('update');
+                Route::delete('module/{courseModule}', [CourseModuleController::class, 'destroy'])->name('destroy');
+
+                Route::post('module/{courseModule}/videos', [ModuleVideoController::class, 'store'])->name('videos.store');
+                Route::post('module/{courseModule}/materials', [ModuleMaterialController::class, 'store'])->name('materials.store');
+                Route::post('module/{courseModule}/tasks', [ModuleTaskController::class, 'store'])->name('tasks.store');
+            });
 
           // Final Quiz Management Routes
           Route::get('course-quiz', [FinalQuizController::class, 'index'])->name('course_quiz.index');
