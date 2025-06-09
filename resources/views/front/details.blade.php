@@ -80,20 +80,25 @@
         <div class="max-w-[1100px] w-full mx-auto flex flex-col gap-3">
             <h1 class="title font-extrabold text-[30px] leading-[45px]">{{$course->name}}</h1>
             <p class="font-semibold text-lg">{{ $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : 'FREE' }}</p>
-            <form action="{{ route('cart.store', $course->slug) }}" method="POST" class="my-2">
-                @csrf
-                <button class="px-4 py-2 bg-[#FF6129] text-white rounded">Add to Cart</button>
-            </form>
-            @auth
-                @if($course->price > 0)
-                    <a href="{{ route('front.pricing', $course->slug) }}" class="px-4 py-2 bg-[#FF6129] text-white rounded inline-block mb-2">Bergabung Sekarang</a>
-                @else
-                    <form action="{{ route('courses.join', $course->slug) }}" method="POST" class="mb-2">
-                        @csrf
-                        <button class="px-4 py-2 bg-[#FF6129] text-white rounded">Bergabung Sekarang</button>
-                    </form>
-                @endif
-            @endauth
+            @php
+                $hasJoined = auth()->check() && auth()->user()->hasActiveSubscription($course);
+            @endphp
+            @unless($hasJoined)
+                <form action="{{ route('cart.store', $course->slug) }}" method="POST" class="my-2">
+                    @csrf
+                    <button class="px-4 py-2 bg-[#FF6129] text-white rounded">Add to Cart</button>
+                </form>
+                @auth
+                    @if($course->price > 0)
+                        <a href="{{ route('front.pricing', $course->slug) }}" class="px-4 py-2 bg-[#FF6129] text-white rounded inline-block mb-2">Bergabung Sekarang</a>
+                    @else
+                        <form action="{{ route('courses.join', $course->slug) }}" method="POST" class="mb-2">
+                            @csrf
+                            <button class="px-4 py-2 bg-[#FF6129] text-white rounded">Bergabung Sekarang</button>
+                        </form>
+                    @endif
+                @endauth
+            @endunless
             <div class="flex items-center gap-5">
                 <div class="flex items-center gap-[6px]">
                     <div>
