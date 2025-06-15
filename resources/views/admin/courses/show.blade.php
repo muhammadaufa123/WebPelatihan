@@ -119,6 +119,28 @@
                         </div>
                     </div>
                 @endforeach
+
+                <hr class="my-5">
+
+                <div class="flex flex-row justify-between items-center mb-4">
+                    <div class="flex flex-col">
+                        <h3 class="text-indigo-950 text-xl font-bold">Meetings</h3>
+                        <p class="text-slate-500 text-sm">{{ $course->meetings->count() }}</p>
+                    </div>
+                    <a href="{{ route('admin.courses.meetings.index', $course) }}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">Manage Meetings</a>
+                </div>
+
+                @foreach($course->meetings as $meeting)
+                    <div class="border rounded p-4 mb-3 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-semibold">{{ $meeting->title }}</h4>
+                            <p class="text-sm text-gray-600">{{ $meeting->start_datetime->format('d M Y H:i') }} - {{ $meeting->end_datetime->format('d M Y H:i') }}</p>
+                            @if($meeting->location)
+                                <p class="text-sm text-gray-600">{{ $meeting->location }}</p>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
                 
             </div>
         </div>
