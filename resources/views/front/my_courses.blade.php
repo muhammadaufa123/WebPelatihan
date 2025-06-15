@@ -60,7 +60,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($courses as $course)
                 <div class="flex flex-col rounded-xl bg-white overflow-hidden transition-all hover:ring-2 hover:ring-[#FF6129]">
-                    <a href="{{ route('front.details', $course->slug) }}" class="w-full h-48 overflow-hidden">
+                    <a href="{{ route('front.details', $course->slug) }}" class="thumbnail w-full h-[200px] shrink-0 rounded-[10px] overflow-hidden">
                         <img src="{{ $course->thumbnail_url }}" class="w-full h-full object-cover" alt="thumbnail">
                     </a>
                     <div class="p-4 flex flex-col gap-2">

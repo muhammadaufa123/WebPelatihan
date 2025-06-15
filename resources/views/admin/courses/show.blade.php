@@ -12,7 +12,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
                 <div class="item-card flex flex-row gap-y-10 justify-between items-center">
                     <div class="flex flex-row items-center gap-x-3">
-                        <img src="{{ Storage::disk('public')->url($course->thumbnail) }}" alt="" class="rounded-2xl object-cover w-[200px] h-[150px]">
+                        <img src="{{ Storage::disk('public')->url($course->thumbnail) }}" alt="" class="rounded-2xl object-cover w-[160px] h-[120px]">
                         <div class="flex flex-col">
                             <h3 class="text-indigo-950 text-xl font-bold">{{$course->name}}</h3>
                             <p class="text-slate-500 text-sm">{{$course->category->name}}</p>
