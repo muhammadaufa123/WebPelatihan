@@ -29,7 +29,7 @@
                     <div class="item-card flex flex-col md:flex-row gap-y-10 justify-between md:items-center">
                         <div class="flex flex-row items-center gap-x-3">
                             <img src="{{ Storage::disk('public')->url($course->thumbnail) }}" alt="{{ $course->name }}"
-                                class="rounded-2xl object-cover w-[120px] h-[90px]">
+                                class="rounded-2xl object-cover w-[100px] h-[75px]">
                             <div class="flex flex-col">
                                 <h3 class="text-indigo-950 text-xl font-bold">{{ $course->name }}</h3>
                                 <p class="text-slate-500 text-sm">{{ $course->category->name }}</p>

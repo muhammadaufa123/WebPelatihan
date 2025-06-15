@@ -50,7 +50,7 @@
 
                     <div class="mt-4">
                         <x-input-label for="thumbnail" :value="__('Thumbnail')" />
-                        <img src="{{ Storage::disk('public')->url($course->thumbnail) }}" alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
+                        <img src="{{ Storage::disk('public')->url($course->thumbnail) }}" alt="" class="rounded-2xl object-cover w-[100px] h-[75px]">
                         <x-text-input id="thumbnail" class="block mt-1 w-full" type="file" name="thumbnail" autocomplete="thumbnail" />
                         <x-input-error :messages="$errors->get('thumbnail')" class="mt-2" />
                     </div>
