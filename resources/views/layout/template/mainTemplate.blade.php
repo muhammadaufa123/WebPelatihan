@@ -7,19 +7,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.shortname') }} | {{ $title }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="{{ url('/asset/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+    <!-- Vite CSS & JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link href="{{ url('/asset/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    {{-- <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet"> --}}
-    <link rel="icon" type="image/png" href="{{ url('/asset/img/cbt.png') }}" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-    <script src="{{ url('/asset/js/jquery-3.7.0.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('asset/js/ijaboCropTool.min.css') }}">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/icon/cbt.png') }}" />
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <style>
         body {
             font-family: 'Poppins';
@@ -31,9 +37,22 @@
             color: inherit;
             /* Menggunakan warna teks warisan (sesuai dengan elemen induk) */
         }
+
+        /* Sidebar toggle button styling */
+        .sidebar-toggler {
+            color: rgba(255, 255, 255, 0.5);
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .sidebar-toggler:hover {
+            color: #fff;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="{{ url('/asset/css/jquery.datetimepicker.min.css') }}" />
 
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
@@ -145,19 +164,14 @@
         feather.replace()
     </script>
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ url('/asset/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url('/asset/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="{{ url('/asset/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-    <!-- Bootstrap core JavaScript-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="{{ url('/asset/js/sb-admin-2.min.js') }}"></script>
-    <script src="{{ url('/asset/js/jquery.datetimepicker.full.min.js') }}"></script>
+    <!-- jQuery Easing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    <!-- Date Time Picker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
     <!-- Page-specific scripts -->
     @yield('scripts')

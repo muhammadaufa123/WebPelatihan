@@ -15,6 +15,7 @@ class CourseMeeting extends Model
         'start_datetime',
         'end_datetime',
         'location',
+        'description',
     ];
 
     protected $casts = [
