@@ -248,7 +248,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <span class="text-gray-500 text-xs">
-                                    Untuk: {{ $request->talentUser ? $request->talentUser->name : 'Unknown Talent' }}
+                                    Untuk: {{ $request->talent && $request->talent->user ? $request->talent->user->name : ($request->talentUser ? $request->talentUser->name : 'Unknown Talent') }}
                                 </span>
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $request->getStatusBadgeColorClasses() }}">
                                     <i class="{{ $request->getStatusIcon() }} mr-1"></i>
@@ -375,7 +375,7 @@
                                 {{ $project->assignments->count() }} assigned talents
                             </div>
                             <div class="flex space-x-2">
-                                <a href="{{ route('projects.show', $project) }}"
+                                <a href="{{ route('admin.projects.show', $project) }}"
                                    class="px-3 py-1 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-200 text-sm">
                                     <i class="fas fa-eye mr-1"></i>Details
                                 </a>

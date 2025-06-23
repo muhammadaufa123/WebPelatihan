@@ -195,6 +195,10 @@ Route::middleware('auth')->group(function () {
         Route::patch('talent-admin/talent/{talent}/toggle-status', [TalentAdminController::class, 'toggleTalentStatus'])->name('talent_admin.toggle_talent_status');
         Route::patch('talent-admin/recruiter/{recruiter}/toggle-status', [TalentAdminController::class, 'toggleRecruiterStatus'])->name('talent_admin.toggle_recruiter_status');
 
+        // Export Routes for Talent Admin
+        Route::get('talent-admin/export/requests-summary', [TalentAdminController::class, 'exportRequestsSummary'])->name('talent_admin.export_requests_summary');
+        Route::get('talent-admin/export/requests-detailed', [TalentAdminController::class, 'exportRequestsDetailed'])->name('talent_admin.export_requests_detailed');
+
         // New Analytics Routes for Phase 1
         Route::get('talent-admin/analytics', [TalentAdminController::class, 'analytics'])->name('talent_admin.analytics');
         Route::get('talent-admin/api/conversion-analytics', [TalentAdminController::class, 'getConversionAnalytics'])->name('talent_admin.api.conversion_analytics');
@@ -249,6 +253,10 @@ Route::middleware('auth')->group(function () {
         Route::get('recruiter/request-details/{request}', [RecruiterController::class, 'requestDetails'])->name('recruiter.request_details');
         Route::get('recruiter/scouting-report/{talent}', [RecruiterController::class, 'getScoutingReport'])->name('recruiter.scouting_report');
         Route::get('recruiter/talent/{talent}/redflag-history', [RecruiterController::class, 'getTalentRedflagHistory'])->name('recruiter.talent_redflag_history');
+
+        // Talent details routes for recruiters
+        Route::get('recruiter/talents/{talent}/details', [RecruiterController::class, 'getTalentDetails'])->name('recruiter.talent_details');
+        Route::get('recruiter/users/{user}/talent-details', [RecruiterController::class, 'getTalentDetailsByUserId'])->name('recruiter.talent_details_by_user');
 
         // Enhanced Analytics & Recommendations API
         Route::prefix('recruiter/api')->name('recruiter.api.')->group(function () {
@@ -412,6 +420,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Project routes for recruiters
     Route::resource('projects', ProjectController::class);
+
+    // Project export routes
+    Route::get('projects/export/project-history', [ProjectController::class, 'exportProjectHistory'])
+        ->name('projects.export_project_history');
+    Route::get('projects/export/completed-projects', [ProjectController::class, 'exportCompletedProjects'])
+        ->name('projects.export_completed_projects');
+    Route::get('projects/export/talent-participation', [ProjectController::class, 'exportTalentParticipation'])
+        ->name('projects.export_talent_participation');
+
     Route::post('projects/{project}/request-extension', [ProjectController::class, 'requestExtension'])
         ->name('projects.request-extension');
     Route::post('projects/{project}/request-closure', [ProjectController::class, 'requestClosure'])

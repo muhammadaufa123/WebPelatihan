@@ -10,7 +10,47 @@
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Kelola Permintaan Talent</h1>
             <p class="text-gray-600">Tinjau dan kelola permintaan akuisisi talent</p>
         </div>
-        <div class="mt-4 sm:mt-0">
+        <div class="mt-4 sm:mt-0 flex space-x-3">
+            <!-- Export Dropdown -->
+            <div class="relative inline-block text-left">
+                <button type="button"
+                        class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                        id="exportMenuButton"
+                        onclick="toggleExportDropdown()">
+                    <i class="fas fa-download mr-2"></i>
+                    Export Reports
+                    <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+
+                <div id="exportDropdown"
+                     class="hidden absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                    <div class="py-2">
+                        <div class="px-4 py-2 border-b border-gray-100">
+                            <p class="text-sm font-semibold text-gray-900">Download Reports</p>
+                            <p class="text-xs text-gray-500">Export current filtered data</p>
+                        </div>
+                        <a href="#"
+                           onclick="exportReport('summary')"
+                           class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-800 transition-colors">
+                            <i class="fas fa-chart-pie mr-3 text-green-600"></i>
+                            <div>
+                                <div class="font-medium">Summary Report</div>
+                                <div class="text-xs text-gray-500">Overview with statistics</div>
+                            </div>
+                        </a>
+                        <a href="#"
+                           onclick="exportReport('detailed')"
+                           class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors">
+                            <i class="fas fa-table mr-3 text-blue-600"></i>
+                            <div>
+                                <div class="font-medium">Detailed Report</div>
+                                <div class="text-xs text-gray-500">Complete data analysis</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <span class="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
                 <i class="fas fa-shield-alt mr-2"></i>
                 Administrator Talent
@@ -48,17 +88,11 @@
                                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                                 onchange="document.getElementById('filterForm').submit();">
                             <option value="">Semua Status</option>
-                            <option value="pending_review" {{ request('status') == 'pending_review' ? 'selected' : '' }}>Menunggu Review</option>
-                            <option value="talent_awaiting_admin" {{ request('status') == 'talent_awaiting_admin' ? 'selected' : '' }}>Talent Setuju - Menunggu Admin</option>
-                            <option value="admin_awaiting_talent" {{ request('status') == 'admin_awaiting_talent' ? 'selected' : '' }}>Admin Setuju - Menunggu Talent</option>
-                            <option value="both_accepted" {{ request('status') == 'both_accepted' ? 'selected' : '' }}>Kedua Pihak Setuju</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Review</option>
                             <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
                             <option value="meeting_arranged" {{ request('status') == 'meeting_arranged' ? 'selected' : '' }}>Pertemuan Diatur</option>
-                            <option value="agreement_reached" {{ request('status') == 'agreement_reached' ? 'selected' : '' }}>Kesepakatan Tercapai</option>
-                            <option value="onboarded" {{ request('status') == 'onboarded' ? 'selected' : '' }}>Bergabung</option>
-                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
                             <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
                         </select>
                     </div>
                     <div>
@@ -167,18 +201,58 @@
                                         </div>
                                     </td>
                                     <td class="py-6 px-4">
-                                        @if($request->project_end_date)
-                                            <div class="text-gray-900 font-medium text-sm">{{ $request->project_end_date->format('d M Y') }}</div>
-                                            <div class="text-gray-500 text-xs">
-                                                @if($request->project_end_date->isPast())
-                                                    <i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>
-                                                    <span class="text-red-600 font-medium">Overdue</span>
-                                                @elseif($request->project_end_date->diffInDays() <= 7)
-                                                    <i class="fas fa-clock text-orange-500 mr-1"></i>
-                                                    <span class="text-orange-600 font-medium">Due Soon</span>
-                                                @else
-                                                    <i class="fas fa-calendar text-green-500 mr-1"></i>
-                                                    <span class="text-green-600">{{ $request->project_end_date->diffForHumans() }}</span>
+                                        @php
+                                            // Determine which end date to display
+                                            $endDate = null;
+                                            $source = '';
+
+                                            if($request->project && $request->project->expected_end_date) {
+                                                $endDate = $request->project->expected_end_date;
+                                                $source = 'project';
+                                            } elseif($request->project_end_date) {
+                                                $endDate = $request->project_end_date;
+                                                $source = 'request';
+                                            }
+                                        @endphp
+
+                                        @if($endDate)
+                                            <div class="space-y-1">
+                                                <div class="text-gray-900 font-medium text-sm">
+                                                    {{ $endDate->format('d M Y') }}
+                                                    @if($source === 'project')
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 ml-1">
+                                                            <i class="fas fa-project-diagram mr-1"></i>Project
+                                                        </span>
+                                                    @else
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 ml-1">
+                                                            <i class="fas fa-calendar mr-1"></i>Request
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <div class="text-xs flex items-center">
+                                                    @if($endDate->isPast())
+                                                        <i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>
+                                                        <span class="text-red-600 font-medium">{{ $endDate->diffForHumans() }} (Overdue)</span>
+                                                    @elseif($endDate->diffInDays() <= 7)
+                                                        <i class="fas fa-clock text-orange-500 mr-1"></i>
+                                                        <span class="text-orange-600 font-medium">{{ $endDate->diffForHumans() }} (Due Soon)</span>
+                                                    @else
+                                                        <i class="fas fa-calendar-check text-green-500 mr-1"></i>
+                                                        <span class="text-green-600">{{ $endDate->diffForHumans() }}</span>
+                                                    @endif
+                                                </div>
+                                                @if($request->project && $request->project->status)
+                                                    <div class="text-xs">
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                                                            @if($request->project->status === 'active') bg-green-100 text-green-800
+                                                            @elseif($request->project->status === 'completed') bg-blue-100 text-blue-800
+                                                            @elseif($request->project->status === 'overdue') bg-red-100 text-red-800
+                                                            @elseif($request->project->status === 'pending_admin') bg-yellow-100 text-yellow-800
+                                                            @else bg-gray-100 text-gray-800
+                                                            @endif">
+                                                            {{ ucwords(str_replace('_', ' ', $request->project->status)) }}
+                                                        </span>
+                                                    </div>
                                                 @endif
                                             </div>
                                         @else
@@ -610,6 +684,70 @@ document.addEventListener('keydown', function(e) {
         if (!modal.classList.contains('hidden')) {
             closeStatusModal();
         }
+    }
+});
+
+// Export functionality
+function toggleExportDropdown() {
+    const dropdown = document.getElementById('exportDropdown');
+    dropdown.classList.toggle('hidden');
+}
+
+function exportReport(type) {
+    // Get current filter values
+    const currentUrl = new URL(window.location.href);
+    const status = currentUrl.searchParams.get('status') || '';
+    const search = currentUrl.searchParams.get('search') || '';
+
+    // Close dropdown
+    document.getElementById('exportDropdown').classList.add('hidden');
+
+    // Show loading state
+    const button = document.getElementById('exportMenuButton');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Generating...';
+    button.disabled = true;
+
+    // Build export URL based on type
+    let exportUrl = '';
+    if (type === 'summary') {
+        exportUrl = '{{ route("talent_admin.export_requests_summary") }}';
+    } else if (type === 'detailed') {
+        exportUrl = '{{ route("talent_admin.export_requests_detailed") }}';
+    }
+
+    // Add current filters to export URL
+    const params = new URLSearchParams();
+    if (status) params.append('status', status);
+    if (search) params.append('search', search);
+
+    if (params.toString()) {
+        exportUrl += '?' + params.toString();
+    }
+
+    // Create hidden link and trigger download
+    const link = document.createElement('a');
+    link.href = exportUrl;
+    link.download = true;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Reset button state after download starts
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }, 2000);
+}
+
+// Close export dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('exportDropdown');
+    const button = document.getElementById('exportMenuButton');
+
+    if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+        dropdown.classList.add('hidden');
     }
 });
 </script>

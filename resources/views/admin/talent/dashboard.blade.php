@@ -1,6 +1,6 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'Talent Dashboard')
+@section('title', 'Dashboard Talenta')
 @section('container')
 
 {{-- Include Talent Request Notifications --}}
@@ -13,15 +13,15 @@
         <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">Welcome back, {{ $user->name }}! 👋</h1>
-                    <p class="text-blue-100 text-lg">Ready to explore new opportunities and showcase your talent?</p>
+                    <h1 class="text-3xl font-bold mb-2">Selamat datang kembali, {{ $user->name }}! 👋</h1>
+                    <p class="text-blue-100 text-lg">Siap untuk menjelajahi peluang baru dan menunjukkan talenta Anda?</p>
                 </div>
                 <div class="hidden md:block">
                     <div class="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
                         <i class="fas fa-star text-4xl text-yellow-300 mb-2"></i>
-                        <div class="text-sm font-medium">Talent Status</div>
+                        <div class="text-sm font-medium">Status Talenta</div>
                         <div class="text-xs opacity-90">
-                            {{ $user->is_active_talent ? 'Active' : 'Inactive' }}
+                            {{ $user->is_active_talent ? 'Aktif' : 'Tidak Aktif' }}
                         </div>
                     </div>
                 </div>
@@ -40,28 +40,28 @@
                     <div class="flex-1">
                         <h3 class="text-xl font-bold mb-2 flex items-center">
                             <i class="fas fa-flag mr-2"></i>
-                            Account Status Alert
+                            Peringatan Status Akun
                         </h3>
                         <p class="text-red-100 mb-2">
-                            Your talent account has been flagged and requires attention. This may affect your ability to access certain opportunities.
+                            Akun talenta Anda telah ditandai dan memerlukan perhatian. Ini mungkin mempengaruhi kemampuan Anda untuk mengakses peluang tertentu.
                         </p>
                         @if($talent->redflag_reason)
                             <div class="bg-red-500/20 backdrop-blur-sm rounded-lg p-3 mt-3">
-                                <div class="text-sm font-medium text-red-200 mb-1">Reason:</div>
+                                <div class="text-sm font-medium text-red-200 mb-1">Alasan:</div>
                                 <div class="text-red-100">{{ $talent->redflag_reason }}</div>
                             </div>
                         @endif
                         <div class="mt-4">
                             <p class="text-red-200 text-sm">
                                 <i class="fas fa-info-circle mr-1"></i>
-                                Please contact the talent administrator for assistance with resolving this issue.
+                                Silakan hubungi administrator talenta untuk bantuan menyelesaikan masalah ini.
                             </p>
                         </div>
                     </div>
                     <div class="flex-shrink-0">
                         <button onclick="showContactModal()" class="bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg px-4 py-2 text-sm font-medium transition-colors">
                             <i class="fas fa-envelope mr-1"></i>
-                            Contact Admin
+                            Hubungi Admin
                         </button>
                     </div>
                 </div>
@@ -78,10 +78,10 @@
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-bold text-gray-800">{{ $profileCompleteness }}%</div>
-                        <div class="text-sm text-gray-500">Complete</div>
+                        <div class="text-sm text-gray-500">Lengkap</div>
                     </div>
                 </div>
-                <div class="text-sm font-medium text-gray-700 mb-2">Profile Status</div>
+                <div class="text-sm font-medium text-gray-700 mb-2">Status Profil</div>
                 <div class="w-full bg-gray-200 rounded-full h-2">
                     <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $profileCompleteness }}%"></div>
                 </div>
@@ -98,17 +98,17 @@
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-bold text-gray-800">{{ $jobOpportunities->count() }}</div>
-                        <div class="text-sm text-gray-500">Available</div>
+                        <div class="text-sm text-gray-500">Tersedia</div>
                     </div>
                 </div>
-                <div class="text-sm font-medium text-gray-700">Job Opportunities</div>
+                <div class="text-sm font-medium text-gray-700">Peluang Kerja</div>
                 <div class="text-xs {{ $talent && $talent->redflagged ? 'text-yellow-600' : 'text-green-600' }} font-medium">
                     @if($talent && $talent->redflagged)
-                        Account flagged - contact support
+                        Akun ditandai - hubungi support
                     @elseif($jobOpportunities->where('created_at', '>=', now()->subDays(7))->count() > 0)
-                        +{{ $jobOpportunities->where('created_at', '>=', now()->subDays(7))->count() }} new this week
+                        +{{ $jobOpportunities->where('created_at', '>=', now()->subDays(7))->count() }} baru minggu ini
                     @else
-                        Check back for new opportunities
+                        Periksa kembali untuk peluang baru
                     @endif
                 </div>
             </div>
@@ -121,11 +121,11 @@
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-bold text-gray-800">{{ $talentStats['total_applications'] }}</div>
-                        <div class="text-sm text-gray-500">Sent</div>
+                        <div class="text-sm text-gray-500">Dikirim</div>
                     </div>
                 </div>
-                <div class="text-sm font-medium text-gray-700">Applications</div>
-                <div class="text-xs text-purple-600 font-medium">{{ $talentStats['pending_applications'] }} pending review</div>
+                <div class="text-sm font-medium text-gray-700">Aplikasi</div>
+                <div class="text-xs text-purple-600 font-medium">{{ $talentStats['pending_applications'] }} menunggu review</div>
             </div>
 
             {{-- Completed Collaborations --}}
@@ -136,11 +136,11 @@
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-bold text-gray-800">{{ $talentStats['completed_collaborations'] }}</div>
-                        <div class="text-sm text-gray-500">Completed</div>
+                        <div class="text-sm text-gray-500">Selesai</div>
                     </div>
                 </div>
-                <div class="text-sm font-medium text-gray-700">Collaborations</div>
-                <div class="text-xs text-orange-600 font-medium">{{ $talentStats['approved_applications'] }} projects delivered successfully</div>
+                <div class="text-sm font-medium text-gray-700">Kolaborasi</div>
+                <div class="text-xs text-orange-600 font-medium">{{ $talentStats['approved_applications'] }} proyek berhasil diselesaikan</div>
             </div>
         </div>
 
@@ -152,8 +152,8 @@
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100">
                     <div class="p-6 border-b border-gray-100">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-xl font-bold text-gray-800">🚀 Latest Opportunities</h2>
-                            <a href="{{ route('talent.my_requests') }}" data-testid="view-all-link" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All</a>
+                            <h2 class="text-xl font-bold text-gray-800">🚀 Peluang Terbaru</h2>
+                            <a href="{{ route('talent.my_requests') }}" data-testid="view-all-link" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Lihat Semua</a>
                         </div>
                     </div>
                     <div class="p-6 space-y-4">
@@ -163,19 +163,19 @@
                                 <div class="flex items-start space-x-3">
                                     <i class="fas fa-exclamation-triangle text-yellow-600 text-lg mt-1"></i>
                                     <div class="flex-1">
-                                        <h4 class="text-sm font-semibold text-yellow-800 mb-1">Account Status Notice</h4>
+                                        <h4 class="text-sm font-semibold text-yellow-800 mb-1">Pemberitahuan Status Akun</h4>
                                         <p class="text-yellow-700 text-sm mb-2">
-                                            Your account has been flagged. While you can still view and respond to opportunities,
-                                            please contact support to resolve any issues.
+                                            Akun Anda telah ditandai. Meskipun Anda masih dapat melihat dan merespons peluang,
+                                            silakan hubungi support untuk menyelesaikan masalah apa pun.
                                         </p>
                                         @if($talent->redflag_reason)
                                             <div class="text-xs text-yellow-600 italic">
-                                                Reason: {{ $talent->redflag_reason }}
+                                                Alasan: {{ $talent->redflag_reason }}
                                             </div>
                                         @endif
                                     </div>
                                     <button onclick="showContactModal()" class="text-yellow-700 hover:text-yellow-800 text-xs underline whitespace-nowrap">
-                                        Contact Support
+                                        Hubungi Support
                                     </button>
                                 </div>
                             </div>
@@ -194,12 +194,12 @@
                                             {{-- Pre-approved Badge --}}
                                             @if(isset($opportunity['is_pre_approved']) && $opportunity['is_pre_approved'])
                                                 <span class="px-2 py-1 bg-emerald-500 text-white text-xs rounded-full font-bold">
-                                                    <i class="fas fa-star mr-1"></i>PRE-APPROVED
+                                                    <i class="fas fa-star mr-1"></i>PRA-DISETUJUI
                                                 </span>
                                             @elseif($opportunity['posted_date']->diffInDays() <= 3)
-                                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">New</span>
+                                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">Baru</span>
                                             @else
-                                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">Available</span>
+                                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">Tersedia</span>
                                             @endif
                                         </div>
                                         <p class="text-gray-600 text-sm mb-2">{{ $opportunity['company'] }} • Remote</p>
@@ -228,26 +228,26 @@
                                         @if(isset($opportunity['can_accept']) && $opportunity['can_accept'])
                                             <button onclick="acceptRequest({{ $opportunity['request_id'] }})"
                                                     class="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition-colors">
-                                                <i class="fas fa-check mr-1"></i> Accept
+                                                <i class="fas fa-check mr-1"></i> Terima
                                             </button>
                                             <button onclick="rejectRequest({{ $opportunity['request_id'] }})"
                                                     class="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors">
-                                                <i class="fas fa-times mr-1"></i> Decline
+                                                <i class="fas fa-times mr-1"></i> Tolak
                                             </button>
                                         @elseif(isset($opportunity['can_reject']) && $opportunity['can_reject'])
                                             <button onclick="rejectRequest({{ $opportunity['request_id'] }})"
                                                     class="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors">
-                                                <i class="fas fa-times mr-1"></i> Decline
+                                                <i class="fas fa-times mr-1"></i> Tolak
                                             </button>
                                         @else
                                             <button class="px-4 py-2 bg-gray-400 text-white text-sm rounded-lg cursor-not-allowed" disabled>
-                                                {{ isset($opportunity['both_parties_accepted']) && $opportunity['both_parties_accepted'] ? 'Accepted' : 'Pending' }}
+                                                {{ isset($opportunity['both_parties_accepted']) && $opportunity['both_parties_accepted'] ? 'Diterima' : 'Menunggu' }}
                                             </button>
                                         @endif
 
                                         <button onclick="viewRequestDetails({{ $opportunity['request_id'] }})"
                                                 class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">
-                                            <i class="fas fa-eye mr-1"></i> Details
+                                            <i class="fas fa-eye mr-1"></i> Detail
                                         </button>
                                     </div>
                                 </div>
@@ -255,8 +255,8 @@
                         @empty
                             <div class="text-center py-8">
                                 <i class="fas fa-briefcase text-gray-300 text-4xl mb-4"></i>
-                                <p class="text-gray-500">No job opportunities available at the moment.</p>
-                                <p class="text-gray-400 text-sm">Check back later for new opportunities!</p>
+                                <p class="text-gray-500">Tidak ada peluang kerja yang tersedia saat ini.</p>
+                                <p class="text-gray-400 text-sm">Periksa kembali nanti untuk peluang baru!</p>
                             </div>
                         @endforelse
                     </div>
@@ -265,7 +265,7 @@
                 {{-- Recent Activity --}}
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100">
                     <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-xl font-bold text-gray-800">📋 Recent Activity</h2>
+                        <h2 class="text-xl font-bold text-gray-800">📋 Aktivitas Terbaru</h2>
                     </div>
                     <div class="p-6 space-y-4">
                         @forelse($recentActivity as $activity)
@@ -281,8 +281,8 @@
                         @empty
                             <div class="text-center py-8">
                                 <i class="fas fa-history text-gray-300 text-4xl mb-4"></i>
-                                <p class="text-gray-500">No recent activity yet.</p>
-                                <p class="text-gray-400 text-sm">Start applying to jobs or completing courses!</p>
+                                <p class="text-gray-500">Belum ada aktivitas terbaru.</p>
+                                <p class="text-gray-400 text-sm">Mulai melamar pekerjaan atau menyelesaikan kursus!</p>
                             </div>
                         @endforelse
                     </div>
@@ -292,7 +292,7 @@
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100">
                     <div class="p-6 border-b border-gray-100">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-xl font-bold text-gray-800">🏆 Collaboration History</h2>
+                            <h2 class="text-xl font-bold text-gray-800">🏆 Riwayat Kolaborasi</h2>
                             <span class="text-sm text-gray-500">{{ $jobHistory->count() }} total</span>
                         </div>
                     </div>
@@ -339,12 +339,12 @@
                                         @elseif($job['is_in_progress'])
                                             <div class="flex items-center text-blue-600 text-sm">
                                                 <i class="fas fa-spinner fa-pulse mr-1"></i>
-                                                <span>In Progress</span>
+                                                <span>Sedang Berlangsung</span>
                                             </div>
                                         @endif
                                         <button onclick="viewJobDetails({{ $job['id'] }})"
                                                 class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200 transition-colors">
-                                            <i class="fas fa-eye mr-1"></i> View Details
+                                            <i class="fas fa-eye mr-1"></i> Lihat Detail
                                         </button>
                                     </div>
                                 </div>
@@ -352,8 +352,8 @@
                         @empty
                             <div class="text-center py-8">
                                 <i class="fas fa-briefcase text-gray-300 text-4xl mb-4"></i>
-                                <p class="text-gray-500">No collaboration history yet.</p>
-                                <p class="text-gray-400 text-sm">Accept job opportunities to start building your portfolio!</p>
+                                <p class="text-gray-500">Belum ada riwayat kolaborasi.</p>
+                                <p class="text-gray-400 text-sm">Terima peluang kerja untuk mulai membangun portofolio Anda!</p>
                             </div>
                         @endforelse
                     </div>
@@ -365,7 +365,7 @@
                 {{-- Profile Quick Actions --}}
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100">
                     <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-800">⚡ Quick Actions</h2>
+                        <h2 class="text-lg font-bold text-gray-800">⚡ Aksi Cepat</h2>
                     </div>
                     <div class="p-6 space-y-3">
                         {{-- Red Flag Status Action --}}
@@ -380,7 +380,7 @@
                                         <div class="text-xs text-red-600">Resolve to continue</div>
                                     </div>
                                     <button onclick="showContactModal()" class="text-red-600 hover:text-red-700 text-xs underline">
-                                        Contact
+                                        Hubungi
                                     </button>
                                 </div>
                             </div>
@@ -391,8 +391,8 @@
                                 <i class="fas fa-user-edit text-blue-600"></i>
                             </div>
                             <div class="ml-3">
-                                <div class="text-sm font-medium text-gray-800">Edit Profile</div>
-                                <div class="text-xs text-gray-500">Update your information</div>
+                                <div class="text-sm font-medium text-gray-800">Edit Profil</div>
+                                <div class="text-xs text-gray-500">Perbarui informasi Anda</div>
                             </div>
                         </a>
                         <a href="#" onclick="document.getElementById('resumeUpload').click()" class="flex items-center p-3 rounded-lg hover:bg-green-50 transition-colors group">
@@ -401,16 +401,16 @@
                             </div>
                             <div class="ml-3">
                                 <div class="text-sm font-medium text-gray-800">Upload Resume</div>
-                                <div class="text-xs text-gray-500">Keep it updated</div>
+                                <div class="text-xs text-gray-500">Tetap perbarui</div>
                             </div>
                         </a>
-                        <a href="#" onclick="showAlert('Skill Assessment feature coming soon!', 'info')" class="flex items-center p-3 rounded-lg hover:bg-purple-50 transition-colors group">
+                        <a href="#" onclick="showAlert('Fitur Penilaian Keahlian akan segera hadir!', 'info')" class="flex items-center p-3 rounded-lg hover:bg-purple-50 transition-colors group">
                             <div class="bg-purple-100 p-2 rounded-lg group-hover:bg-purple-200 transition-colors">
                                 <i class="fas fa-cogs text-purple-600"></i>
                             </div>
                             <div class="ml-3">
-                                <div class="text-sm font-medium text-gray-800">Skill Assessment</div>
-                                <div class="text-xs text-gray-500">Test your abilities</div>
+                                <div class="text-sm font-medium text-gray-800">Penilaian Keahlian</div>
+                                <div class="text-xs text-gray-500">Uji kemampuan Anda</div>
                             </div>
                         </a>
                         <!-- Hidden file input for resume upload -->
@@ -421,7 +421,7 @@
                 {{-- Skill Progress --}}
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100">
                     <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-800">🎯 Skill Progress</h2>
+                        <h2 class="text-lg font-bold text-gray-800">🎯 Progress Keahlian</h2>
                     </div>
                     <div class="p-6 space-y-4">
                         @forelse($userSkills as $skill)
@@ -441,8 +441,8 @@
                         @empty
                             <div class="text-center py-8">
                                 <i class="fas fa-cogs text-gray-300 text-4xl mb-4"></i>
-                                <p class="text-gray-500">No skills tracked yet.</p>
-                                <p class="text-gray-400 text-sm">Complete courses to build your skill profile!</p>
+                                <p class="text-gray-500">Belum ada keahlian yang dilacak.</p>
+                                <p class="text-gray-400 text-sm">Selesaikan kursus untuk membangun profil keahlian Anda!</p>
                             </div>
                         @endforelse
                     </div>
@@ -452,7 +452,7 @@
                 <div class="bg-white rounded-xl shadow-lg border border-gray-100">
                     <div class="p-6 border-b border-gray-100">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-bold text-gray-800">� Recent Requests</h2>
+                            <h2 class="text-lg font-bold text-gray-800">📝 Permintaan Terbaru</h2>
                             <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">{{ $recentRequests->count() }}</span>
                         </div>
                     </div>
@@ -464,17 +464,25 @@
                                     <i class="fas fa-briefcase text-blue-600 text-sm"></i>
                                 </div>
                                 <div class="flex-1">
-                                    <div class="text-sm font-medium text-gray-800">{{ $request->project_title ?? 'New opportunity' }}</div>
-                                    <div class="text-xs text-gray-500">from {{ $request->recruiter->user->name ?? 'Recruiter' }}</div>
+                                    <div class="text-sm font-medium text-gray-800">{{ $request->project_title ?? 'Peluang baru' }}</div>
+                                    <div class="text-xs text-gray-500">dari {{ $request->recruiter->user->name ?? 'Perekrut' }}</div>
                                 </div>
                                 <span class="px-2 py-1 bg-{{ $request->status === 'pending' ? 'yellow' : ($request->status === 'accepted' ? 'green' : 'red') }}-100 text-{{ $request->status === 'pending' ? 'yellow' : ($request->status === 'accepted' ? 'green' : 'red') }}-800 text-xs rounded-full">
-                                    {{ ucfirst($request->status) }}
+                                    @if($request->status === 'pending')
+                                        Menunggu
+                                    @elseif($request->status === 'accepted')
+                                        Diterima
+                                    @elseif($request->status === 'rejected')
+                                        Ditolak
+                                    @else
+                                        {{ ucfirst($request->status) }}
+                                    @endif
                                 </span>
                             </div>
                         @empty
                             <div class="text-center py-4">
                                 <i class="fas fa-inbox text-gray-300 text-2xl mb-2"></i>
-                                <p class="text-gray-500 text-sm">No requests yet</p>
+                                <p class="text-gray-500 text-sm">Belum ada permintaan</p>
                             </div>
                         @endforelse
                     </div>
@@ -495,7 +503,7 @@
             <!-- Modal Header -->
             <div class="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-medium text-white" id="modal-title">Request Details</h3>
+                    <h3 class="text-lg font-medium text-white" id="modal-title">Detail Permintaan</h3>
                     <button type="button" class="text-white hover:text-gray-200 transition-colors" onclick="closeRequestModal()">
                         <i class="fas fa-times text-xl"></i>
                     </button>
@@ -506,7 +514,7 @@
             <div id="modalContent" class="px-6 py-6">
                 <div class="text-center py-8">
                     <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
-                    <p class="text-gray-600">Loading request details...</p>
+                    <p class="text-gray-600">Memuat detail permintaan...</p>
                 </div>
             </div>
         </div>
@@ -600,7 +608,7 @@ function acceptRequest(requestId) {
         return;
     }
 
-    if (!confirm('Are you sure you want to accept this collaboration request?')) {
+    if (!confirm('Apakah Anda yakin ingin menerima permintaan kolaborasi ini?')) {
         return;
     }
 
@@ -615,8 +623,8 @@ function acceptRequest(requestId) {
         modalContent.innerHTML = `
             <div class="text-center py-8">
                 <i class="fas fa-spinner fa-spin text-4xl text-green-600 mb-4"></i>
-                <p class="text-gray-600">Processing your acceptance...</p>
-                <p class="text-gray-500 text-sm mt-2">Please wait while we update the request status.</p>
+                <p class="text-gray-600">Memproses penerimaan Anda...</p>
+                <p class="text-gray-500 text-sm mt-2">Silakan tunggu sementara kami memperbarui status permintaan.</p>
             </div>
         `;
     }
@@ -634,15 +642,15 @@ function acceptRequest(requestId) {
         processingAction = false;
 
         if (data.success) {
-            showAlert('Request accepted successfully! ' + data.message, 'success');
+            showAlert('Permintaan berhasil diterima! ' + data.message, 'success');
 
             // Simple reload after success
             setTimeout(() => {
-                console.log('Reloading page after successful acceptance...');
+                console.log('Memuat ulang halaman setelah penerimaan berhasil...');
                 location.reload();
             }, 2000);
         } else {
-            showAlert('Error: ' + (data.message || 'Failed to accept request'), 'error');
+            showAlert('Error: ' + (data.message || 'Gagal menerima permintaan'), 'error');
             // Restore original modal content on error
             if (modalContent && originalContent) {
                 modalContent.innerHTML = originalContent;
@@ -652,7 +660,7 @@ function acceptRequest(requestId) {
     .catch(error => {
         console.error('Error accepting request:', error);
         processingAction = false;
-        showAlert('Network error occurred. Please try again.', 'error');
+        showAlert('Terjadi error jaringan. Silakan coba lagi.', 'error');
         // Restore original modal content on error
         if (modalContent && originalContent) {
             modalContent.innerHTML = originalContent;
@@ -667,7 +675,7 @@ function rejectRequest(requestId) {
         return;
     }
 
-    if (!confirm('Are you sure you want to decline this collaboration request?')) {
+    if (!confirm('Apakah Anda yakin ingin menolak permintaan kolaborasi ini?')) {
         return;
     }
 
@@ -682,8 +690,8 @@ function rejectRequest(requestId) {
         modalContent.innerHTML = `
             <div class="text-center py-8">
                 <i class="fas fa-spinner fa-spin text-4xl text-red-600 mb-4"></i>
-                <p class="text-gray-600">Processing your decline...</p>
-                <p class="text-gray-500 text-sm mt-2">Please wait while we update the request status.</p>
+                <p class="text-gray-600">Memproses penolakan Anda...</p>
+                <p class="text-gray-500 text-sm mt-2">Silakan tunggu sementara kami memperbarui status permintaan.</p>
             </div>
         `;
     }
@@ -701,15 +709,15 @@ function rejectRequest(requestId) {
         processingAction = false;
 
         if (data.success) {
-            showAlert('Request declined successfully.', 'success');
+            showAlert('Permintaan berhasil ditolak.', 'success');
 
             // Simple reload after success
             setTimeout(() => {
-                console.log('Reloading page after successful rejection...');
+                console.log('Memuat ulang halaman setelah penolakan berhasil...');
                 location.reload();
             }, 2000);
         } else {
-            showAlert('Error: ' + (data.message || 'Failed to decline request'), 'error');
+            showAlert('Error: ' + (data.message || 'Gagal menolak permintaan'), 'error');
             // Restore original modal content on error
             if (modalContent && originalContent) {
                 modalContent.innerHTML = originalContent;
@@ -719,7 +727,7 @@ function rejectRequest(requestId) {
     .catch(error => {
         console.error('Error rejecting request:', error);
         processingAction = false;
-        showAlert('Network error occurred. Please try again.', 'error');
+        showAlert('Terjadi error jaringan. Silakan coba lagi.', 'error');
         // Restore original modal content on error
         if (modalContent && originalContent) {
             modalContent.innerHTML = originalContent;
@@ -747,14 +755,14 @@ function openModal() {
 
         if (!modalInitialized) {
             console.error('Modal initialization failed. Cannot open modal.');
-            showAlert('Error: Modal system not ready. Please refresh the page and try again.', 'error');
+            showAlert('Error: Sistem modal tidak siap. Silakan refresh halaman dan coba lagi.', 'error');
             return false;
         }
 
         modal = document.getElementById('talentRequestDetailsModal');
         if (!modal) {
             console.error('Modal initialized, but element still not found.');
-            showAlert('Error: Modal component issue. Please refresh.', 'error');
+            showAlert('Error: Masalah komponen modal. Silakan refresh.', 'error');
             return false;
         }
     }
@@ -778,7 +786,7 @@ function viewJobDetails(jobId) {
     modalContent.innerHTML = `
         <div class="text-center py-8">
             <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
-            <p class="text-gray-600">Loading collaboration details...</p>
+            <p class="text-gray-600">Memuat detail kolaborasi...</p>
         </div>
     `;
 
@@ -862,7 +870,7 @@ function viewJobDetails(jobId) {
             modalContent.innerHTML = `
                 <div class="text-center py-8">
                     <i class="fas fa-exclamation-circle text-4xl text-red-600 mb-4"></i>
-                    <p class="text-gray-600">Error loading collaboration details.</p>
+                    <p class="text-gray-600">Error memuat detail kolaborasi.</p>
                 </div>
             `;
         }
@@ -872,9 +880,9 @@ function viewJobDetails(jobId) {
         modalContent.innerHTML = `
             <div class="text-center py-8">
                 <i class="fas fa-wifi text-4xl text-red-600 mb-4"></i>
-                <p class="text-gray-600">Network error occurred.</p>
+                <p class="text-gray-600">Terjadi error jaringan.</p>
                 <button onclick="viewJobDetails(${jobId})" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-refresh mr-2"></i>Retry
+                    <i class="fas fa-refresh mr-2"></i>Coba Lagi
                 </button>
             </div>
         `;
@@ -891,7 +899,7 @@ function viewRequestDetails(requestId) {
     modalContent.innerHTML = `
         <div class="text-center py-8">
             <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
-            <p class="text-gray-600">Loading request details...</p>
+            <p class="text-gray-600">Memuat detail permintaan...</p>
         </div>
     `;
 
@@ -1008,28 +1016,27 @@ function viewRequestDetails(requestId) {
                     </div>
                 `;
             }
-        } else {
-            modalContent.innerHTML = `
-                <div class="text-center py-8">
-                    <i class="fas fa-exclamation-circle text-4xl text-red-600 mb-4"></i>
-                    <p class="text-gray-600">Error loading request details.</p>
-                    <p class="text-gray-500 text-sm mt-2">${data.message || 'Invalid response format'}</p>
-                </div>
-            `;
+        } else {                modalContent.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-exclamation-circle text-4xl text-red-600 mb-4"></i>
+                        <p class="text-gray-600">Error memuat detail permintaan.</p>
+                        <p class="text-gray-500 text-sm mt-2">${data.message || 'Format respons tidak valid'}</p>
+                    </div>
+                `;
         }
     })
     .catch(error => {
         clearTimeout(timeoutId);
         console.error('Error fetching request details:', error);
 
-        let errorMessage = 'Network error occurred.';
-        let errorDetail = 'Please check your internet connection and try again.';
+        let errorMessage = 'Terjadi error jaringan.';
+        let errorDetail = 'Silakan periksa koneksi internet Anda dan coba lagi.';
 
         if (error.name === 'AbortError') {
-            errorMessage = 'Request timed out.';
-            errorDetail = 'The server took too long to respond. Please try again.';
+            errorMessage = 'Permintaan timeout.';
+            errorDetail = 'Server terlalu lama merespons. Silakan coba lagi.';
         } else if (error.message.includes('HTTP')) {
-            errorMessage = 'Server error occurred.';
+            errorMessage = 'Terjadi error server.';
             errorDetail = error.message;
         }
 
@@ -1039,7 +1046,7 @@ function viewRequestDetails(requestId) {
                 <p class="text-gray-600">${errorMessage}</p>
                 <p class="text-gray-500 text-sm mt-2">${errorDetail}</p>
                 <button onclick="viewRequestDetails(${requestId})" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-refresh mr-2"></i>Retry
+                    <i class="fas fa-refresh mr-2"></i>Coba Lagi
                 </button>
             </div>
         `;
@@ -1129,33 +1136,35 @@ function handleResumeUpload(input) {
         const maxSize = 5 * 1024 * 1024; // 5MB
 
         if (file.size > maxSize) {
-            showAlert('File size must be less than 5MB', 'error');
+            showAlert('Ukuran file harus kurang dari 5MB', 'error');
             return;
         }
 
+        }
+
         // Here you would typically upload the file to your server
-        showAlert('Resume upload feature will be implemented soon!', 'info');
+        showAlert('Fitur upload resume akan segera diimplementasikan!', 'info');
     }
 }
 
 // Show contact modal for red-flagged talents
 function showContactModal() {
     // Create a simple alert or modal for contacting admin
-    const message = `For assistance with your account status, please contact our support team:\n\n` +
+    const message = `Untuk bantuan dengan status akun Anda, silakan hubungi tim support kami:\n\n` +
                    `Email: talent-support@webpelatihan.com\n` +
-                   `Phone: +62-XXX-XXXX-XXXX\n\n` +
-                   `Please include your name and describe any questions you may have about your account.`;
+                   `Telepon: +62-XXX-XXXX-XXXX\n\n` +
+                   `Silakan sertakan nama Anda dan jelaskan pertanyaan yang Anda miliki tentang akun Anda.`;
 
-    if (confirm(message + '\n\nWould you like to copy the email address to your clipboard?')) {
+    if (confirm(message + '\n\nApakah Anda ingin menyalin alamat email ke clipboard?')) {
         // Copy email to clipboard if supported
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText('talent-support@webpelatihan.com').then(() => {
-                showAlert('Email address copied to clipboard!', 'success');
+                showAlert('Alamat email berhasil disalin ke clipboard!', 'success');
             }).catch(() => {
-                showAlert('Please manually copy: talent-support@webpelatihan.com', 'info');
+                showAlert('Silakan salin manual: talent-support@webpelatihan.com', 'info');
             });
         } else {
-            showAlert('Please manually copy: talent-support@webpelatihan.com', 'info');
+            showAlert('Silakan salin manual: talent-support@webpelatihan.com', 'info');
         }
     }
 }

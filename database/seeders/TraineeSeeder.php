@@ -10,6 +10,7 @@ use App\Models\CourseTrainee;
 use App\Models\CourseProgress;
 use App\Models\Certificate;
 use App\Models\Trainer;
+use App\Models\Talent;
 use App\Models\FinalQuiz;
 use App\Models\QuizAttempt;
 use Illuminate\Database\Seeder;
@@ -18,7 +19,7 @@ use Faker\Factory as Faker;
 class TraineeSeeder extends Seeder
 {
     /**
-     * Seed 3 trainee users with completed LMS courses for testing.
+     * Seed 20 trainee users with completed LMS courses and talent roles for testing.
      */
     public function run(): void
     {
@@ -32,15 +33,17 @@ class TraineeSeeder extends Seeder
         $this->createSampleCourses();
 
         // ===============================================
-        // TRAINEE PROFILES
+        // TRAINEE PROFILES (20 TOTAL FOR TESTING)
         // ===============================================
         $traineeProfiles = [
+            // Original 3 trainees
             [
                 'name' => 'Alex Student',
                 'email' => 'trainee@test.com',
                 'pekerjaan' => 'Computer Science Student',
                 'courses' => ['Complete Web Development Bootcamp', 'Advanced JavaScript Programming'],
                 'available_for_scouting' => true,
+                'assign_talent_role' => true,
             ],
             [
                 'name' => 'Brenda Learner',
@@ -48,6 +51,7 @@ class TraineeSeeder extends Seeder
                 'pekerjaan' => 'Aspiring Data Analyst',
                 'courses' => ['Laravel Framework Mastery', 'React.js Frontend Development'],
                 'available_for_scouting' => true,
+                'assign_talent_role' => true,
             ],
             [
                 'name' => 'Charles Coder',
@@ -55,6 +59,145 @@ class TraineeSeeder extends Seeder
                 'pekerjaan' => 'Software Engineering Intern',
                 'courses' => ['Complete Web Development Bootcamp', 'React.js Frontend Development'],
                 'available_for_scouting' => false, // Example of one not yet available
+                'assign_talent_role' => true,
+            ],
+
+            // Additional 17 trainees with talent roles
+            [
+                'name' => 'Diana Developer',
+                'email' => 'talent1@test.com',
+                'pekerjaan' => 'Frontend Developer',
+                'courses' => ['React.js Frontend Development', 'Advanced JavaScript Programming'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Edward Engineer',
+                'email' => 'talent2@test.com',
+                'pekerjaan' => 'Full Stack Developer',
+                'courses' => ['Complete Web Development Bootcamp', 'Laravel Framework Mastery'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Fiona Frontend',
+                'email' => 'talent3@test.com',
+                'pekerjaan' => 'UI/UX Developer',
+                'courses' => ['Complete Web Development Bootcamp', 'React.js Frontend Development'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'George Garcia',
+                'email' => 'talent4@test.com',
+                'pekerjaan' => 'Backend Developer',
+                'courses' => ['Laravel Framework Mastery', 'Advanced JavaScript Programming'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Hannah Hacker',
+                'email' => 'talent5@test.com',
+                'pekerjaan' => 'Software Developer',
+                'courses' => ['Complete Web Development Bootcamp', 'Laravel Framework Mastery', 'React.js Frontend Development'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Ian Interface',
+                'email' => 'talent6@test.com',
+                'pekerjaan' => 'Frontend Specialist',
+                'courses' => ['React.js Frontend Development', 'Advanced JavaScript Programming'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Julia JavaScript',
+                'email' => 'talent7@test.com',
+                'pekerjaan' => 'JavaScript Developer',
+                'courses' => ['Advanced JavaScript Programming', 'React.js Frontend Development'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Kevin Kotlin',
+                'email' => 'talent8@test.com',
+                'pekerjaan' => 'Web Developer',
+                'courses' => ['Complete Web Development Bootcamp'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Luna Laravel',
+                'email' => 'talent9@test.com',
+                'pekerjaan' => 'PHP Developer',
+                'courses' => ['Laravel Framework Mastery', 'Complete Web Development Bootcamp'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Marcus Mobile',
+                'email' => 'talent10@test.com',
+                'pekerjaan' => 'Mobile App Developer',
+                'courses' => ['React.js Frontend Development', 'Advanced JavaScript Programming'],
+                'available_for_scouting' => false, // Some not available for variety
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Nina Node',
+                'email' => 'talent11@test.com',
+                'pekerjaan' => 'Node.js Developer',
+                'courses' => ['Advanced JavaScript Programming', 'Laravel Framework Mastery'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Oliver Object',
+                'email' => 'talent12@test.com',
+                'pekerjaan' => 'Senior Developer',
+                'courses' => ['Complete Web Development Bootcamp', 'Laravel Framework Mastery', 'Advanced JavaScript Programming'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Petra Python',
+                'email' => 'talent13@test.com',
+                'pekerjaan' => 'Full Stack Engineer',
+                'courses' => ['Laravel Framework Mastery', 'React.js Frontend Development'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Quinn Query',
+                'email' => 'talent14@test.com',
+                'pekerjaan' => 'Database Developer',
+                'courses' => ['Laravel Framework Mastery'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Rosa React',
+                'email' => 'talent15@test.com',
+                'pekerjaan' => 'React Specialist',
+                'courses' => ['React.js Frontend Development', 'Advanced JavaScript Programming'],
+                'available_for_scouting' => false,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Samuel Stack',
+                'email' => 'talent16@test.com',
+                'pekerjaan' => 'Tech Lead',
+                'courses' => ['Complete Web Development Bootcamp', 'Laravel Framework Mastery', 'React.js Frontend Development', 'Advanced JavaScript Programming'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
+            ],
+            [
+                'name' => 'Tina TypeScript',
+                'email' => 'talent17@test.com',
+                'pekerjaan' => 'Frontend Engineer',
+                'courses' => ['Advanced JavaScript Programming', 'React.js Frontend Development'],
+                'available_for_scouting' => true,
+                'assign_talent_role' => true,
             ]
         ];
 
@@ -71,12 +214,19 @@ class TraineeSeeder extends Seeder
                 'password' => bcrypt('password123'),
                 'email_verified_at' => now(),
                 'available_for_scouting' => $traineeProfile['available_for_scouting'],
-                'is_active_talent' => false, // Will be enabled after conversion
+                'is_active_talent' => $traineeProfile['assign_talent_role'] ?? false,
             ]);
 
             // Assign trainee role if not already assigned
             if (!$traineeUser->hasRole('trainee')) {
                 $traineeUser->assignRole('trainee');
+            }
+
+            // Assign talent role if specified
+            if ($traineeProfile['assign_talent_role'] ?? false) {
+                if (!$traineeUser->hasRole('talent')) {
+                    $traineeUser->assignRole('talent');
+                }
             }
 
             // Get courses for this trainee
@@ -125,9 +275,21 @@ class TraineeSeeder extends Seeder
                 $traineeUser->addSkillFromCourse($course);
             }
 
+            // Create Talent record if user has talent role
+            if ($traineeProfile['assign_talent_role'] ?? false) {
+                Talent::firstOrCreate([
+                    'user_id' => $traineeUser->id
+                ], [
+                    'is_active' => true,
+                    'redflagged' => false, // Clean talent record
+                    'redflag_reason' => null,
+                    'scouting_metrics' => null, // Will be populated later by the system
+                ]);
+            }
+
             // Update user with learning-based profile data
             $traineeUser->update([
-                'talent_bio' => $this->generateLearningBasedBio($traineeUser->name, count($courses)),
+                'talent_bio' => $this->generateLearningBasedBio($traineeUser->name, count($courses), $traineeProfile['assign_talent_role'] ?? false),
             ]);
 
             $skills = $traineeUser->getTalentSkillsArray();
@@ -137,12 +299,13 @@ class TraineeSeeder extends Seeder
             $this->command->info("      ✓ Generated skills: " . implode(', ', array_slice($skillNames, 0, 4)) . (count($skillNames) > 4 ? '...' : ''));
         }
 
-        $this->command->info('✅ Created all trainees with LMS completion data successfully!');
+        $this->command->info('✅ Created all 20 trainees with LMS completion data successfully!');
         $this->command->info('');
         $this->command->info('🧪 TEST SCENARIOS:');
-        $this->command->info('   - Login with any of the 3 trainee accounts (password: password123)');
-        $this->command->info('   - Two are available for scouting, one is not.');
-        $this->command->info('   - All have completed courses and generated skills.');
+        $this->command->info('   - Login with any of the 20 trainee/talent accounts (password: password123)');
+        $this->command->info('   - Most are available for scouting with talent roles assigned');
+        $this->command->info('   - All have completed courses and generated skills');
+        $this->command->info('   - Perfect for testing recruiter talent request functionality');
     }
 
     /**
@@ -267,10 +430,21 @@ class TraineeSeeder extends Seeder
     }
 
     /**
-     * Generate a bio based on learning achievements
+     * Generate a bio based on learning achievements and role
      */
-    private function generateLearningBasedBio(string $name, int $courseCount): string
+    private function generateLearningBasedBio(string $name, int $courseCount, bool $isTalent = false): string
     {
+        if ($isTalent) {
+            $talentBios = [
+                "Experienced developer with {$courseCount} completed certifications. Proven track record in delivering high-quality web applications and working with cross-functional teams. Passionate about clean code and modern development practices.",
+                "Full-stack developer who completed {$courseCount} comprehensive courses. Specializes in creating scalable web solutions and mentoring junior developers. Always eager to take on challenging projects.",
+                "Senior developer with {$courseCount} certifications under the belt. Expert in multiple programming languages and frameworks. Known for problem-solving skills and delivering projects on time.",
+                "Professional developer with {$courseCount} completed courses. Strong background in both frontend and backend technologies. Enjoys collaborating with teams to build innovative solutions.",
+                "Skilled developer who earned {$courseCount} certifications. Experienced in agile development methodologies and code review processes. Committed to continuous learning and improvement."
+            ];
+            return $talentBios[array_rand($talentBios)];
+        }
+
         return "Junior developer passionate about continuous learning. Recently completed {$courseCount} comprehensive courses in web development and programming. Looking to apply newly acquired skills in real-world projects and grow as a professional developer. Eager to contribute to innovative teams and tackle challenging technical problems.";
     }
 }

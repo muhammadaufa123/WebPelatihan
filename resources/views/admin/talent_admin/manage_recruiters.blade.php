@@ -1,6 +1,6 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'Manage Recruiters')
+@section('title', 'Kelola Perekrut')
 
 @section('container')
 <div class="min-h-screen bg-gray-50 p-6">
@@ -9,14 +9,14 @@
         <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-2">
                 <i class="fas fa-building text-indigo-600 mr-3"></i>
-                Manage Recruiters
+                Kelola Perekrut
             </h1>
-            <p class="text-gray-600">Manage recruiter accounts and their status</p>
+            <p class="text-gray-600">Kelola akun perekrut dan status mereka</p>
         </div>
         <div class="mt-4 sm:mt-0">
             <a href="{{ route('talent_admin.dashboard') }}" class="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
                 <i class="fas fa-arrow-left mr-2"></i>
-                Back to Dashboard
+                Kembali ke Dashboard
             </a>
         </div>
     </div>
@@ -50,7 +50,7 @@
                 <div class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mr-3">
                     <i class="fas fa-users text-white"></i>
                 </div>
-                <h3 class="text-lg font-semibold text-white">Recruiters List</h3>
+                <h3 class="text-lg font-semibold text-white">Daftar Perekrut</h3>
             </div>
         </div>
         <div class="p-6">
@@ -60,11 +60,11 @@
                     <table class="w-full">
                         <thead>
                             <tr class="bg-gray-50 border-b-2 border-gray-200">
-                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Recruiter</th>
+                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Perekrut</th>
                                 <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Email</th>
                                 <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Status</th>
-                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Joined Date</th>
-                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Actions</th>
+                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Tanggal Bergabung</th>
+                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
@@ -96,12 +96,12 @@
                                         @if($recruiter->is_active)
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                                                 <i class="fas fa-check-circle mr-1"></i>
-                                                Active
+                                                Aktif
                                             </span>
                                         @else
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
                                                 <i class="fas fa-pause-circle mr-1"></i>
-                                                Inactive
+                                                Tidak Aktif
                                             </span>
                                         @endif
                                     </td>
@@ -114,7 +114,7 @@
                                             <button onclick="viewRecruiterDetails({{ $recruiter->id }})"
                                                     class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all duration-200 font-medium text-sm shadow-lg hover:shadow-xl">
                                                 <i class="fas fa-eye mr-2"></i>
-                                                View Details
+                                                Lihat Detail
                                             </button>
                                             <button onclick="editRecruiter({{ $recruiter->id }})"
                                                     class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200 font-medium text-sm shadow-lg hover:shadow-xl">
@@ -126,7 +126,7 @@
                                                 @method('PATCH')
                                                 <button type="submit"
                                                         class="inline-flex items-center px-3 py-2 {{ $recruiter->is_active ? 'bg-orange-600 hover:bg-orange-700' : 'bg-green-600 hover:bg-green-700' }} text-white rounded-lg transition-all duration-200 font-medium text-sm shadow-lg hover:shadow-xl"
-                                                        onclick="return confirm('Are you sure you want to {{ $recruiter->is_active ? 'deactivate' : 'activate' }} this recruiter?')">
+                                                        onclick="return confirm('Apakah Anda yakin ingin {{ $recruiter->is_active ? 'menonaktifkan' : 'mengaktifkan' }} perekrut ini?')">
                                                     <i class="fas fa-{{ $recruiter->is_active ? 'pause' : 'play' }} mr-1"></i>
                                                 </button>
                                             </form>
@@ -168,12 +168,12 @@
                                 @if($recruiter->is_active)
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                                         <i class="fas fa-check-circle mr-1"></i>
-                                        Active
+                                        Aktif
                                     </span>
                                 @else
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
                                         <i class="fas fa-pause-circle mr-1"></i>
-                                        Inactive
+                                        Tidak Aktif
                                     </span>
                                 @endif
                             </div>
@@ -185,7 +185,7 @@
                                     <div class="text-gray-900 font-medium">{{ $recruiter->user->email }}</div>
                                 </div>
                                 <div class="bg-white p-4 rounded-xl border border-gray-200">
-                                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Joined Date</div>
+                                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Tanggal Bergabung</div>
                                     <div class="text-gray-900 font-medium">{{ $recruiter->created_at->format('M d, Y H:i') }}</div>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                                 <button onclick="viewRecruiterDetails({{ $recruiter->id }})"
                                         class="flex-1 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
                                     <i class="fas fa-eye mr-2"></i>
-                                    View Details
+                                    Lihat Detail
                                 </button>
                                 <button onclick="editRecruiter({{ $recruiter->id }})"
                                         class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
@@ -207,7 +207,7 @@
                                     @method('PATCH')
                                     <button type="submit"
                                             class="px-4 py-3 {{ $recruiter->is_active ? 'bg-orange-600 hover:bg-orange-700' : 'bg-green-600 hover:bg-green-700' }} text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
-                                            onclick="return confirm('Are you sure you want to {{ $recruiter->is_active ? 'deactivate' : 'activate' }} this recruiter?')">
+                                            onclick="return confirm('Apakah Anda yakin ingin {{ $recruiter->is_active ? 'menonaktifkan' : 'mengaktifkan' }} perekrut ini?')">
                                         <i class="fas fa-{{ $recruiter->is_active ? 'pause' : 'play' }}"></i>
                                     </button>
                                 </form>
@@ -231,8 +231,8 @@
                     <div class="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-users text-4xl text-gray-400"></i>
                     </div>
-                    <h5 class="text-xl font-semibold text-gray-700 mb-3">No recruiters found</h5>
-                    <p class="text-gray-500 max-w-md mx-auto">No recruiters have registered yet.</p>
+                    <h5 class="text-xl font-semibold text-gray-700 mb-3">Tidak ada perekrut ditemukan</h5>
+                    <p class="text-gray-500 max-w-md mx-auto">Belum ada perekrut yang terdaftar.</p>
                 </div>
             @endif
         </div>
@@ -247,7 +247,7 @@
             <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
                 <h3 class="text-2xl font-bold text-gray-900 flex items-center">
                     <i class="fas fa-building text-indigo-600 mr-3"></i>
-                    Recruiter Details
+                    Detail Perekrut
                 </h3>
                 <button onclick="closeRecruiterModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fas fa-times text-xl"></i>

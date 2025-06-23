@@ -59,7 +59,7 @@
 
 </head>
 
-<body class="sidebar-toggled">
+<body>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -178,6 +178,21 @@
     @stack('scripts')
 
     <!-- Page level plugins -->
+
+    <!-- Custom Sidebar Script -->
+    <script>
+        $(document).ready(function() {
+            // Ensure sidebar is expanded and shows text
+            $('.sidebar').removeClass('toggled');
+            $('body').removeClass('sidebar-toggled');
+
+            // Handle sidebar toggle button click
+            $('#sidebarToggle').click(function() {
+                $('.sidebar').toggleClass('toggled');
+                $('body').toggleClass('sidebar-toggled');
+            });
+        });
+    </script>
 
 
 </body>

@@ -1,6 +1,6 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'Recruiter Dashboard')
+@section('title', 'Dashboard Perekrut')
 @section('container')
 
 {{-- Dashboard Container with Flexbox Layout --}}
@@ -18,7 +18,7 @@
                     <i class="fas fa-star text-4xl text-yellow-300 mb-2"></i>
                     <div class="text-sm font-medium">Status Akun</div>
                     <div class="text-xs opacity-90">
-                        {{ $user->is_active_talent ? 'Active' : 'Inactive' }}
+                        {{ $user->is_active_talent ? 'Aktif' : 'Tidak Aktif' }}
                     </div>
                 </div>
             </div>
@@ -29,89 +29,88 @@
     <div class="flex flex-wrap gap-[2%]">
         {{-- Available Talents Card - 32% Width --}}
         <div class="w-[32%] bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300">
-        <div class="flex items-center mb-4">
-            <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
-                <i class="fas fa-users text-xl text-white"></i>
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-users text-xl text-white"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-blue-600 uppercase">Kandidat terseida</p>
+                    <p class="text-gray-500 text-sm">Siap untuk berkolaborasi</p>
+                </div>
             </div>
-            <div>
-                <p class="text-sm font-semibold text-blue-600 uppercase">Kandidat terseida</p>
-                <p class="text-gray-500 text-sm">Siap untuk berkolaborasi</p>
-            </div>
-        </div>
 
-        <div class="mb-4">
-            <div class="text-4xl font-bold text-gray-900 mb-1">
-                {{ $talents->total() }}
+            <div class="mb-4">
+                <div class="text-4xl font-bold text-gray-900 mb-1">
+                    {{ $talents->total() }}
+                </div>
+                <p class="text-gray-600">Kandidat aktif</p>
             </div>
-            <p class="text-gray-600">Kandidat aktif</p>
-        </div>
 
-        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div class="flex items-center text-sm text-green-600">
-                <i class="fas fa-check-circle mr-2"></i>
-                <span class="font-medium">Ready to hire</span>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div class="flex items-center text-sm text-green-600">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span class="font-medium">Siap untuk merekrut</span>
+                </div>
             </div>
         </div>
-    </div>
 
         {{-- Account Status Card - 32% Width --}}
-    <div class="w-[32%] bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300">
-        <div class="flex items-center mb-4">
-            <div class="w-12 h-12 bg-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-500 rounded-xl flex items-center justify-center mr-4">
-                <i class="fas fa-{{ $user->recruiter && $user->recruiter->is_active ? 'shield-check' : 'shield-exclamation' }} text-xl text-white"></i>
+        <div class="w-[32%] bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-500 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-{{ $user->recruiter && $user->recruiter->is_active ? 'shield-check' : 'shield-exclamation' }} text-xl text-white"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-600 uppercase">Status Akun</p>
+                    <p class="text-gray-500 text-sm">Akses rekrutmen Anda</p>
+                </div>
             </div>
-            <div>
-                <p class="text-sm font-semibold text-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-600 uppercase">Status Akun</p>
-                <p class="text-gray-500 text-sm">Akses rekrutmen Anda</p>
-            </div>
-        </div>
 
-        <div class="mb-4">
-            <div class="text-4xl font-bold text-gray-900 mb-1">
-                {{ $user->recruiter && $user->recruiter->is_active ? 'Active' : 'Inactive' }}
+            <div class="mb-4">
+                <div class="text-4xl font-bold text-gray-900 mb-1">
+                    {{ $user->recruiter && $user->recruiter->is_active ? 'Aktif' : 'Tidak Aktif' }}
+                </div>
+                <p class="text-gray-600">{{ $user->recruiter && $user->recruiter->is_active ? 'Semua sistem beroperasi' : 'Mode akses terbatas' }}</p>
             </div>
-            <p class="text-gray-600">{{ $user->recruiter && $user->recruiter->is_active ? 'All systems operational' : 'Limited access mode' }}</p>
-        </div>
 
-        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div class="flex items-center text-sm text-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-600">
-                <i class="fas fa-{{ $user->recruiter && $user->recruiter->is_active ? 'check-circle' : 'exclamation-triangle' }} mr-2"></i>
-                <span class="font-medium">{{ $user->recruiter && $user->recruiter->is_active ? 'Ready to use' : 'Contact admin' }}</span>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div class="flex items-center text-sm text-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-600">
+                    <i class="fas fa-{{ $user->recruiter && $user->recruiter->is_active ? 'check-circle' : 'exclamation-triangle' }} mr-2"></i>
+                    <span class="font-medium">{{ $user->recruiter && $user->recruiter->is_active ? 'Siap digunakan' : 'Hubungi admin' }}</span>
+                </div>
+                <div class="inline-flex items-center px-3 py-1 bg-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-50 text-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-700 text-xs font-medium rounded-full">
+                    <div class="w-2 h-2 bg-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-500 rounded-full mr-2"></div>
+                    {{ $user->recruiter && $user->recruiter->is_active ? 'Aktif' : 'Offline' }}
+                </div>
             </div>
-            <div class="inline-flex items-center px-3 py-1 bg-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-50 text-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-700 text-xs font-medium rounded-full">
-                <div class="w-2 h-2 bg-{{ $user->recruiter && $user->recruiter->is_active ? 'emerald' : 'red' }}-500 rounded-full mr-2"></div>
-                {{ $user->recruiter && $user->recruiter->is_active ? 'Live' : 'Offline' }}
+        </div>        {{-- My Requests Card - 32% Width --}}
+        <div class="w-[32%] bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mr-4">
+                    <i class="fas fa-paper-plane text-xl text-white"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-purple-600 uppercase">Permintaan saya</p>
+                    <p class="text-gray-500 text-sm">Permintaan kolaborasi</p>
+                </div>
             </div>
-        </div>
-    </div>
 
-        {{-- My Requests Card - 32% Width --}}
-    <div class="w-[32%] bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300">
-        <div class="flex items-center mb-4">
-            <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mr-4">
-                <i class="fas fa-paper-plane text-xl text-white"></i>
+            <div class="mb-4">
+                <div class="text-4xl font-bold text-gray-900 mb-1">
+                    {{ isset($myRequests) && (method_exists($myRequests, 'count') ? $myRequests->count() : (is_countable($myRequests) ? count($myRequests) : 0)) }}
+                </div>
+                <p class="text-gray-600">Pengajuan aktif</p>
             </div>
-            <div>
-                <p class="text-sm font-semibold text-purple-600 uppercase">Permintaan saya</p>
-                <p class="text-gray-500 text-sm">Permintaan kolaborasi</p>
-            </div>
-        </div>
 
-        <div class="mb-4">
-            <div class="text-4xl font-bold text-gray-900 mb-1">
-                {{ isset($myRequests) && (method_exists($myRequests, 'count') ? $myRequests->count() : (is_countable($myRequests) ? count($myRequests) : 0)) }}
-            </div>
-            <p class="text-gray-600">Pengajuan aktif</p>
-        </div>
-
-        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div class="flex items-center text-sm text-purple-600">
-                <i class="fas fa-chart-line mr-2"></i>
-                <span class="font-medium">Track progress</span>
-            </div>
-            <div class="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-full">
-                <div class="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                Active
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div class="flex items-center text-sm text-purple-600">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    <span class="font-medium">Lacak progres</span>
+                </div>
+                <div class="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-full">
+                    <div class="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                    Aktif
+                </div>
             </div>
         </div>
     </div>
@@ -123,42 +122,14 @@
         <div class="bg-blue-600 text-white p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-2xl font-bold mb-2">Recent Requests</h2>
-                    <p class="text-blue-100">Your collaboration pipeline</p>
+                    <h2 class="text-2xl font-bold mb-2">Permintaan Terbaru</h2>
+                    <p class="text-blue-100">Pipeline kolaborasi Anda</p>
                 </div>
                 <div class="flex gap-3">
                     <a href="{{ route('recruiter.my_requests') }}"
                        class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-colors font-medium">
-                        <i class="fas fa-eye mr-2"></i>View All
+                        <i class="fas fa-eye mr-2"></i>Lihat Semua
                     </a>
-
-                    <!-- PDF Export Dropdown -->
-                    <div class="relative">
-                        <button id="exportDropdownButton" class="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-colors font-medium flex items-center">
-                            <i class="fas fa-download mr-2"></i>Export PDF
-                            <i class="fas fa-chevron-down ml-2 text-xs"></i>
-                        </button>
-                        <div id="exportDropdownMenu" class="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible transition-all duration-200 z-10">
-                            <div class="py-2">
-                                <a href="{{ route('recruiter.export_request_history') }}"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                    <i class="fas fa-history mr-3 text-blue-500"></i>
-                                    <div>
-                                        <div class="font-medium">Request History</div>
-                                        <div class="text-xs text-gray-500">All your talent requests</div>
-                                    </div>
-                                </a>
-                                <a href="{{ route('recruiter.export_onboarded_talents') }}"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                    <i class="fas fa-user-check mr-3 text-green-500"></i>
-                                    <div>
-                                        <div class="font-medium">Onboarded Talents</div>
-                                        <div class="text-xs text-gray-500">Successfully hired talents</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -184,7 +155,7 @@
                             <!-- Project Title -->
                             <div class="text-center mb-4">
                                 <div class="bg-gray-50 py-2 px-3 rounded-lg">
-                                    <div class="text-xs text-gray-600">Project</div>
+                                    <div class="text-xs text-gray-600">Proyek</div>
                                     <div class="font-medium text-sm">{{ $request->project_title }}</div>
                                 </div>
                             </div>
@@ -203,7 +174,7 @@
                                     </span>
                                 </div>
                                 <div class="bg-gray-50 py-2 rounded">
-                                    <div class="text-xs text-gray-600">Requested</div>
+                                    <div class="text-xs text-gray-600">Diminta</div>
                                     <div class="font-bold text-sm">{{ $request->created_at->diffForHumans() }}</div>
                                 </div>
                             </div>
@@ -213,7 +184,7 @@
                                 <div class="grid grid-cols-2 gap-2">
                                     <button onclick="viewRequestDetails('{{ $request->id }}')"
                                             class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
-                                        <i class="fas fa-eye mr-1"></i>Details
+                                        <i class="fas fa-eye mr-1"></i>Detail
                                     </button>
                                     <a href="mailto:{{ $request->talent->user->email }}"
                                        class="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-center text-sm">
@@ -229,8 +200,8 @@
                     <div class="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                         <i class="fas fa-inbox text-2xl text-gray-400"></i>
                     </div>
-                    <h5 class="text-lg font-medium text-gray-700 mb-2">No requests yet</h5>
-                    <p class="text-gray-500">Start discovering talents to see your requests here.</p>
+                    <h5 class="text-lg font-medium text-gray-700 mb-2">Belum ada permintaan</h5>
+                    <p class="text-gray-500">Mulai mencari talenta untuk melihat permintaan Anda di sini.</p>
                 </div>
             @endif
         </div>
@@ -243,17 +214,17 @@
         <div class="bg-emerald-600 text-white p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-2xl font-bold mb-2">Talent Scouting</h2>
-                    <p class="text-emerald-100">Discover and connect with talented professionals</p>
+                    <h2 class="text-2xl font-bold mb-2">Pencarian Talenta</h2>
+                    <p class="text-emerald-100">Temukan dan terhubung dengan profesional berbakat</p>
                 </div>
                 <div class="flex gap-3">
                     <button onclick="toggleScoutingFilters()"
                             class="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors">
-                        <i class="fas fa-filter mr-2"></i>Filters
+                        <i class="fas fa-filter mr-2"></i>Filter
                     </button>
                     <button onclick="toggleCompareMode()"
                             class="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors" id="compareModeBtn">
-                        <i class="fas fa-balance-scale mr-2"></i>Compare
+                        <i class="fas fa-balance-scale mr-2"></i>Bandingkan
                     </button>
                     <button onclick="refreshTalents()"
                             class="px-4 py-2 bg-white text-emerald-600 rounded-lg hover:bg-gray-50 transition-colors font-medium">
@@ -267,23 +238,23 @@
         <div id="scoutingFilters" class="hidden bg-gray-50 border-b p-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <select class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500">
-                    <option value="">All Performance Levels</option>
-                    <option value="5">Elite Performance (95-100%)</option>
-                    <option value="4">High Performance (85-94%)</option>
-                    <option value="3">Good Performance (75-84%)</option>
-                    <option value="2">Average Performance (65-74%)</option>
-                    <option value="1">Below Average (50-64%)</option>
+                    <option value="">Semua Level Performa</option>
+                    <option value="5">Performa Elite (95-100%)</option>
+                    <option value="4">Performa Tinggi (85-94%)</option>
+                    <option value="3">Performa Baik (75-84%)</option>
+                    <option value="2">Performa Rata-rata (65-74%)</option>
+                    <option value="1">Di Bawah Rata-rata (50-64%)</option>
                 </select>
                 <select class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500">
-                    <option value="">All Skill Levels</option>
-                    <option value="expert">Expert Level</option>
-                    <option value="advanced">Advanced</option>
-                    <option value="intermediate">Intermediate</option>
+                    <option value="">Semua Level Keahlian</option>
+                    <option value="expert">Level Ahli</option>
+                    <option value="advanced">Lanjutan</option>
+                    <option value="intermediate">Menengah</option>
                 </select>
                 <div class="flex gap-2">
                     <button onclick="resetFilters()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Reset</button>
                     <button onclick="applyFilters()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
-                        Apply
+                        Terapkan
                     </button>
                 </div>
             </div>
@@ -333,7 +304,7 @@
                                        data-talent-id="{{ $talent->id }}"
                                        data-talent-name="{{ $talent->user->name }}"
                                        data-talent-email="{{ $talent->user->email }}"
-                                       data-talent-position="{{ $talent->user->pekerjaan ?? 'Not specified' }}"
+                                       data-talent-position="{{ $talent->user->pekerjaan ?? 'Tidak ditentukan' }}"
                                        data-talent-score="{{ $overallScore }}"
                                        data-talent-courses="{{ $metrics['progress_tracking']['completed_courses'] ?? 0 }}"
                                        data-talent-certificates="{{ $metrics['certifications']['total_certificates'] ?? 0 }}"
@@ -364,7 +335,7 @@
                                         </span>
                                         <button onclick="showTalentRedflagHistory('{{ $talent->id }}', '{{ $talent->user->name }}')"
                                                 class="text-xs text-red-600 hover:text-red-800 hover:bg-red-50 px-2 py-1 rounded transition-all duration-200 border border-transparent hover:border-red-200">
-                                            <i class="fas fa-history mr-1"></i>View History
+                                            <i class="fas fa-history mr-1"></i>Lihat Riwayat
                                         </button>
                                     </div>
                                 @endif
@@ -373,22 +344,22 @@
                             <!-- Score -->
                             <div class="text-center mb-4">
                                 <div class="inline-flex items-center px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full">
-                                    <span class="font-bold">Score: {{ $overallScore }}/100</span>
+                                    <span class="font-bold">Skor: {{ $overallScore }}/100</span>
                                 </div>
                             </div>
 
                             <!-- Quick Stats -->
                             <div class="grid grid-cols-3 gap-2 mb-4 text-center">
                                 <div class="bg-gray-50 py-2 rounded">
-                                    <div class="text-xs text-gray-600">Courses</div>
+                                    <div class="text-xs text-gray-600">Kursus</div>
                                     <div class="font-bold">{{ $metrics['progress_tracking']['completed_courses'] ?? 0 }}</div>
                                 </div>
                                 <div class="bg-gray-50 py-2 rounded">
-                                    <div class="text-xs text-gray-600">Certificates</div>
+                                    <div class="text-xs text-gray-600">Sertifikat</div>
                                     <div class="font-bold">{{ $metrics['certifications']['total_certificates'] ?? 0 }}</div>
                                 </div>
                                 <div class="bg-gray-50 py-2 rounded">
-                                    <div class="text-xs text-gray-600">Quiz Avg</div>
+                                    <div class="text-xs text-gray-600">Rata-rata Kuis</div>
                                     <div class="font-bold">{{ $metrics['quiz_performance']['average_score'] ?? 0 }}%</div>
                                 </div>
                             </div>
@@ -399,7 +370,7 @@
                                     @if($talent->availability_status['available'])
                                         <div class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                                             <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                                            Available Now
+                                            Tersedia Sekarang
                                         </div>
                                     @else
                                         <div class="inline-flex items-center px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
@@ -415,7 +386,7 @@
                                 @else
                                     <div class="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
                                         <div class="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                                        Status Unknown
+                                        Status Tidak Diketahui
                                     </div>
                                 @endif
                             </div>
@@ -428,7 +399,7 @@
                                 @if(!empty($skills))
                                     <div class="bg-gray-50 rounded-lg p-3">
                                         <h4 class="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-                                            <i class="fas fa-star text-yellow-500 mr-1"></i>Skills
+                                            <i class="fas fa-star text-yellow-500 mr-1"></i>Keahlian
                                         </h4>
                                         <div class="space-y-1">
                                             @foreach(array_slice($skills, 0, 3) as $skill)
@@ -457,7 +428,7 @@
                                                 <div class="mt-2 text-center">
                                                     <button onclick="showAllSkills('{{ $talent->id }}', '{{ $talent->user->name }}', {{ json_encode($skills) }}, {{ $talent->redflagged ? 'true' : 'false' }}, '{{ e($talent->redflag_reason ?? '') }}')"
                                                             class="text-xs text-blue-600 hover:text-blue-800 font-medium underline decoration-dotted hover:decoration-solid transition-all">
-                                                        <i class="fas fa-eye mr-1"></i>See all {{ count($skills) }} skills
+                                                        <i class="fas fa-eye mr-1"></i>Lihat semua {{ count($skills) }} keahlian
                                                     </button>
                                                 </div>
                                             @endif
@@ -467,7 +438,7 @@
                                     <div class="bg-gray-50 rounded-lg p-3">
                                         <div class="text-center text-gray-500 text-sm">
                                             <i class="fas fa-graduation-cap text-gray-400 mb-1"></i>
-                                            <div>No skills acquired yet</div>
+                                            <div>Belum ada keahlian yang diperoleh</div>
                                         </div>
                                     </div>
                                 @endif
@@ -1462,66 +1433,7 @@ $(document).ready(function() {
             }
         }
     });
-
-    // Initialize Export PDF Dropdown
-    initializeExportDropdown();
 });
-
-// Export PDF Dropdown Functionality
-function initializeExportDropdown() {
-    const dropdownButton = document.getElementById('exportDropdownButton');
-    const dropdownMenu = document.getElementById('exportDropdownMenu');
-
-    if (dropdownButton && dropdownMenu) {
-        // Toggle dropdown on button click
-        dropdownButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleExportDropdown();
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                closeExportDropdown();
-            }
-        });
-
-        // Close dropdown on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeExportDropdown();
-            }
-        });
-    }
-}
-
-function toggleExportDropdown() {
-    const dropdownMenu = document.getElementById('exportDropdownMenu');
-    if (!dropdownMenu) {
-        return;
-    }
-
-    const isVisible = dropdownMenu.classList.contains('opacity-100');
-
-    if (isVisible) {
-        closeExportDropdown();
-    } else {
-        openExportDropdown();
-    }
-}
-
-function openExportDropdown() {
-    const dropdownMenu = document.getElementById('exportDropdownMenu');
-    dropdownMenu.classList.remove('opacity-0', 'invisible');
-    dropdownMenu.classList.add('opacity-100', 'visible');
-}
-
-function closeExportDropdown() {
-    const dropdownMenu = document.getElementById('exportDropdownMenu');
-    dropdownMenu.classList.remove('opacity-100', 'visible');
-    dropdownMenu.classList.add('opacity-0', 'invisible');
-}
 
 // ===== TALENT COMPARISON FUNCTIONALITY =====
 let isCompareMode = false;
@@ -1728,14 +1640,14 @@ function closeComparisonModal() {
 }
 
 function generateComparisonTable() {
-    if (selectedTalents.length === 0) return '<p>No talents selected for comparison.</p>';
+    if (selectedTalents.length === 0) return '<p>Tidak ada talenta yang dipilih untuk dibandingkan.</p>';
 
     return `
         <div class="overflow-x-auto">
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-gray-50">
-                        <th class="border border-gray-200 p-4 text-left font-semibold">Criteria</th>
+                        <th class="border border-gray-200 p-4 text-left font-semibold">Kriteria</th>
                         ${selectedTalents.map(talent => `
                             <th class="border border-gray-200 p-4 text-center font-semibold min-w-48">
                                 <div class="flex flex-col items-center">
@@ -1751,7 +1663,7 @@ function generateComparisonTable() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Overall Score</td>
+                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Skor Keseluruhan</td>
                         ${selectedTalents.map(talent => `
                             <td class="border border-gray-200 p-4 text-center">
                                 <span class="inline-flex items-center px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-bold">
@@ -1761,19 +1673,19 @@ function generateComparisonTable() {
                         `).join('')}
                     </tr>
                     <tr>
-                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Completed Courses</td>
+                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Kursus Selesai</td>
                         ${selectedTalents.map(talent => `
                             <td class="border border-gray-200 p-4 text-center font-semibold">${talent.courses}</td>
                         `).join('')}
                     </tr>
                     <tr>
-                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Certificates Earned</td>
+                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Sertifikat Diperoleh</td>
                         ${selectedTalents.map(talent => `
                             <td class="border border-gray-200 p-4 text-center font-semibold">${talent.certificates}</td>
                         `).join('')}
                     </tr>
                     <tr>
-                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Quiz Average</td>
+                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Rata-rata Kuis</td>
                         ${selectedTalents.map(talent => `
                             <td class="border border-gray-200 p-4 text-center font-semibold">${talent.quizAvg}%</td>
                         `).join('')}
@@ -1796,15 +1708,15 @@ function generateComparisonTable() {
                                                 </span>
                                             </div>
                                         `).join('') +
-                                        (talent.skills.length > 4 ? `<div class="text-xs text-gray-500 text-center mt-1">+${talent.skills.length - 4} more</div>` : '')
-                                        : '<div class="text-xs text-gray-500 text-center">No skills acquired</div>'
+                                        (talent.skills.length > 4 ? `<div class="text-xs text-gray-500 text-center mt-1">+${talent.skills.length - 4} lainnya</div>` : '')
+                                        : '<div class="text-xs text-gray-500 text-center">Belum ada keahlian yang diperoleh</div>'
                                     }
                                 </div>
                             </td>
                         `).join('')}
                     </tr>
                     <tr>
-                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Contact</td>
+                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Kontak</td>
                         ${selectedTalents.map(talent => `
                             <td class="border border-gray-200 p-4 text-center">
                                 <a href="mailto:${talent.email}" class="inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
@@ -1814,13 +1726,13 @@ function generateComparisonTable() {
                         `).join('')}
                     </tr>
                     <tr>
-                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Actions</td>
+                        <td class="border border-gray-200 p-4 font-medium bg-gray-50">Aksi</td>
                         ${selectedTalents.map(talent => `
                             <td class="border border-gray-200 p-4 text-center">
                                 <div class="flex flex-col gap-2">
                                     <button onclick="openRequestModal('${talent.id}', '${talent.name.replace(/'/g, "\\'")}', ${talent.redflagged}, '${(talent.redflagReason || '').replace(/'/g, "\\'")}')"
                                             class="px-3 py-1 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm">
-                                        <i class="fas fa-handshake mr-1"></i>Request
+                                        <i class="fas fa-handshake mr-1"></i>Minta
                                     </button>
                                     <button onclick="viewScoutingReport('${talent.id}', '${talent.name.replace(/'/g, "\\'")}', {
                                         progress_tracking: { completed_courses: ${talent.courses} },
@@ -2004,7 +1916,7 @@ document.getElementById('talentRequestForm').addEventListener('submit', function
 // Project-based Redflag Modal Functions
 function showTalentRedflagHistory(talentId, talentName) {
     // Show loading
-    showNotification('Loading project history...', 'info');
+    showNotification('Memuat riwayat proyek...', 'info');
 
     // Fetch redflag history via AJAX
     fetch(`/recruiter/talent/${talentId}/redflag-history`)
@@ -2013,12 +1925,12 @@ function showTalentRedflagHistory(talentId, talentName) {
             if (data.success) {
                 displayRedflagHistoryModal(talentName, data.redflag_summary, data.redflagged_projects);
             } else {
-                showNotification('Failed to load project history', 'error');
+                showNotification('Gagal memuat riwayat proyek', 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showNotification('Error loading project history', 'error');
+            showNotification('Terjadi kesalahan saat memuat riwayat proyek', 'error');
         });
 }
 
@@ -2112,27 +2024,27 @@ function closeRedflagHistoryModal() {
 
 // Legacy function - kept for backward compatibility but will be deprecated
 function showRedFlagDetails(talentName, reason, flagDate) {
-    showNotification('This feature has been updated. Please use the "View History" button for detailed project information.', 'info');
+    showNotification('Fitur ini telah diperbarui. Silakan gunakan tombol "Lihat Riwayat" untuk informasi proyek yang detail.', 'info');
 }
 
 function contactTalentAdmin() {
     // Create contact information alert
-    const message = `To inquire about this talent's red flag status, please contact:\n\n` +
-                   `Talent Administration\n` +
+    const message = `Untuk menanyakan status red flag talenta ini, silakan hubungi:\n\n` +
+                   `Administrasi Talenta\n` +
                    `Email: talent-admin@webpelatihan.com\n` +
-                   `Phone: +62-XXX-XXXX-XXXX\n\n` +
-                   `Please include the talent's name in your inquiry.`;
+                   `Telepon: +62-XXX-XXXX-XXXX\n\n` +
+                   `Mohon sertakan nama talenta dalam pertanyaan Anda.`;
 
-    if (confirm(message + '\n\nWould you like to copy the email address?')) {
+    if (confirm(message + '\n\nApakah Anda ingin menyalin alamat email?')) {
         // Copy email to clipboard if supported
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText('talent-admin@webpelatihan.com').then(() => {
-                showNotification('Email address copied to clipboard!', 'success');
+                showNotification('Alamat email berhasil disalin ke clipboard!', 'success');
             }).catch(() => {
-                showNotification('Please manually copy: talent-admin@webpelatihan.com', 'info');
+                showNotification('Silakan salin manual: talent-admin@webpelatihan.com', 'info');
             });
         } else {
-            showNotification('Please manually copy: talent-admin@webpelatihan.com', 'info');
+            showNotification('Silakan salin manual: talent-admin@webpelatihan.com', 'info');
         }
     }
 }

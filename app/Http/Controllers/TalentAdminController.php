@@ -6,6 +6,7 @@ use App\Models\Talent;
 use App\Models\Recruiter;
 use App\Models\TalentRequest;
 use App\Models\User;
+use App\Models\Project;
 use App\Services\AdvancedSkillAnalyticsService;
 use App\Services\SmartConversionTrackingService;
 use App\Services\TalentRequestNotificationService;
@@ -120,6 +121,8 @@ class TalentAdminController extends Controller
                     'latestRecruiters' => Recruiter::with(['user:id,name,email'])->latest()->take(5)->get(['id', 'user_id', 'is_active', 'created_at']),
                     'latestRequests' => TalentRequest::with(['talent.user:id,name', 'recruiter.user:id,name'])
                         ->latest()->take(5)->get(['id', 'talent_id', 'recruiter_id', 'project_title', 'status', 'created_at']),
+                    'recentProjects' => Project::with(['recruiter.user:id,name', 'assignments.talent.user:id,name'])
+                        ->latest()->take(5)->get(['id', 'title', 'status', 'recruiter_id', 'overall_budget_min', 'overall_budget_max', 'estimated_duration_days', 'industry', 'created_at']),
                 ];
             } catch (\Exception $e) {
                 Log::error('Dashboard recent activity query failed: ' . $e->getMessage());
@@ -127,6 +130,7 @@ class TalentAdminController extends Controller
                     'latestTalents' => collect([]),
                     'latestRecruiters' => collect([]),
                     'latestRequests' => collect([]),
+                    'recentProjects' => collect([]),
                 ];
             }
         });
@@ -137,6 +141,7 @@ class TalentAdminController extends Controller
                 'latestTalents' => collect([]),
                 'latestRecruiters' => collect([]),
                 'latestRequests' => collect([]),
+                'recentProjects' => collect([]),
             ];
         }
 
@@ -159,7 +164,7 @@ class TalentAdminController extends Controller
             'latestTalents' => $recentActivity['latestTalents'] ?? collect([]),
             'latestRecruiters' => $recentActivity['latestRecruiters'] ?? collect([]),
             'latestRequests' => $recentActivity['latestRequests'] ?? collect([]),
-            'recentProjects' => collect([]), // Add this for the dashboard view
+            'recentProjects' => $recentActivity['recentProjects'] ?? collect([]), // This will now contain actual recent projects
         ];
 
         return view('talent_admin.dashboard', $viewData);
@@ -208,7 +213,7 @@ class TalentAdminController extends Controller
 
     public function manageRequests(Request $request)
     {
-        $query = TalentRequest::with(['recruiter.user', 'talent.user']);
+        $query = TalentRequest::with(['recruiter.user', 'talent.user', 'project']);
 
         // Enhanced filter by status including acceptance states
         if ($request->filled('status')) {
@@ -290,7 +295,7 @@ class TalentAdminController extends Controller
 
     public function showRequest(TalentRequest $talentRequest)
     {
-        $talentRequest->load(['recruiter.user', 'talent.user']);
+        $talentRequest->load(['recruiter.user', 'talent.user', 'project']);
 
         $title = 'Request Details';
         $roles = 'Talent Admin';
@@ -1778,4 +1783,204 @@ class TalentAdminController extends Controller
         }
     }
 
+    /**
+     * Export talent requests summary report
+     */
+    public function exportRequestsSummary(Request $request)
+    {
+        try {
+            // Apply the same filters as the manage requests page
+            $query = TalentRequest::with([
+                'talent.user',
+                'recruiter.user',
+                'project'
+            ]);
+
+            // Apply status filter
+            if ($request->filled('status')) {
+                $status = $request->get('status');
+
+                switch ($status) {
+                    case 'pending_review':
+                        $query->where('status', 'pending');
+                        break;
+                    case 'talent_awaiting_admin':
+                        $query->where('talent_accepted', true)->where('admin_accepted', false);
+                        break;
+                    case 'admin_awaiting_talent':
+                        $query->where('admin_accepted', true)->where('talent_accepted', false);
+                        break;
+                    case 'both_accepted':
+                        $query->where('talent_accepted', true)->where('admin_accepted', true);
+                        break;
+                    default:
+                        $query->where('status', $status);
+                        break;
+                }
+            }
+
+            // Apply search filter
+            if ($request->filled('search')) {
+                $search = $request->get('search');
+                $query->where(function($q) use ($search) {
+                    $q->whereHas('recruiter.user', function($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('talent.user', function($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%");
+                    });
+                });
+            }
+
+            $requests = $query->orderBy('created_at', 'desc')->get();
+
+            // Calculate summary statistics
+            $stats = [
+                'total_requests' => $requests->count(),
+                'pending_requests' => $requests->where('status', 'pending')->count(),
+                'approved_requests' => $requests->where('status', 'approved')->count(),
+                'completed_requests' => $requests->where('status', 'completed')->count(),
+                'rejected_requests' => $requests->where('status', 'rejected')->count(),
+                'talent_awaiting_admin' => $requests->where('talent_accepted', true)->where('admin_accepted', false)->count(),
+                'admin_awaiting_talent' => $requests->where('admin_accepted', true)->where('talent_accepted', false)->count(),
+                'both_accepted' => $requests->where('talent_accepted', true)->where('admin_accepted', true)->count(),
+            ];
+
+            $data = [
+                'title' => 'Talent Requests Summary Report',
+                'subtitle' => 'Comprehensive overview of talent acquisition requests',
+                'exportDate' => now(),
+                'generatedBy' => Auth::user()->name,
+                'filters' => [
+                    'status' => $request->get('status'),
+                    'search' => $request->get('search'),
+                    'applied_at' => now()
+                ],
+                'requests' => $requests,
+                'stats' => $stats
+            ];
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.talent_admin.requests-summary', $data);
+            $pdf->setPaper('a4', 'landscape');
+
+            $filename = 'talent-requests-summary-' . now()->format('Y-m-d-H-i-s') . '.pdf';
+
+            return $pdf->download($filename);
+
+        } catch (\Exception $e) {
+            Log::error('Export requests summary error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to export requests summary report.');
+        }
+    }
+
+    /**
+     * Export detailed talent requests report
+     */
+    public function exportRequestsDetailed(Request $request)
+    {
+        try {
+            $query = TalentRequest::with([
+                'talent.user',
+                'recruiter.user',
+                'project',
+                'talent.assignments',
+                'talent.talentRequests'
+            ]);
+
+            // Apply status filter
+            if ($request->filled('status')) {
+                $status = $request->get('status');
+
+                switch ($status) {
+                    case 'pending_review':
+                        $query->where('status', 'pending');
+                        break;
+                    case 'talent_awaiting_admin':
+                        $query->where('talent_accepted', true)->where('admin_accepted', false);
+                        break;
+                    case 'admin_awaiting_talent':
+                        $query->where('admin_accepted', true)->where('talent_accepted', false);
+                        break;
+                    case 'both_accepted':
+                        $query->where('talent_accepted', true)->where('admin_accepted', true);
+                        break;
+                    default:
+                        $query->where('status', $status);
+                        break;
+                }
+            }
+
+            // Apply search filter
+            if ($request->filled('search')) {
+                $search = $request->get('search');
+                $query->where(function($q) use ($search) {
+                    $q->whereHas('recruiter.user', function($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('talent.user', function($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%");
+                    });
+                });
+            }
+
+            $requests = $query->orderBy('created_at', 'desc')->get();
+
+            // Enrich requests with additional data
+            $enrichedRequests = $requests->map(function($request) {
+                $talentMetrics = null;
+                if ($request->talent && !empty($request->talent->scouting_metrics)) {
+                    if (is_string($request->talent->scouting_metrics)) {
+                        $talentMetrics = json_decode($request->talent->scouting_metrics, true);
+                    } else {
+                        $talentMetrics = $request->talent->scouting_metrics;
+                    }
+                }
+
+                return [
+                    'id' => $request->id,
+                    'recruiter_name' => $request->recruiter && $request->recruiter->user ? $request->recruiter->user->name : 'Unknown',
+                    'recruiter_company' => $request->recruiter ? $request->recruiter->company_name : 'Unknown',
+                    'talent_name' => $request->talent && $request->talent->user ? $request->talent->user->name : 'Unknown',
+                    'talent_email' => $request->talent && $request->talent->user ? $request->talent->user->email : 'Unknown',
+                    'status' => $request->getUnifiedDisplayStatus(),
+                    'status_raw' => $request->status,
+                    'talent_accepted' => $request->talent_accepted,
+                    'admin_accepted' => $request->admin_accepted,
+                    'project_title' => $request->project ? $request->project->title : ($request->project_title ?? 'N/A'),
+                    'project_end_date' => $request->project ? ($request->project->expected_end_date ? $request->project->expected_end_date->format('d M Y') : 'N/A') : ($request->project_end_date ? $request->project_end_date->format('d M Y') : 'N/A'),
+                    'created_at' => $request->created_at->format('d M Y H:i'),
+                    'updated_at' => $request->updated_at->format('d M Y H:i'),
+                    'talent_project_count' => $request->talent ? $request->talent->assignments->count() : 0,
+                    'talent_redflag_count' => $request->talent ? $request->talent->getRedflagCount() : 0,
+                    'talent_metrics' => $talentMetrics,
+                    'workflow_completed_at' => $request->workflow_completed_at ? $request->workflow_completed_at->format('d M Y H:i') : null
+                ];
+            });
+
+            $data = [
+                'title' => 'Detailed Talent Requests Report',
+                'subtitle' => 'Comprehensive detailed analysis of talent acquisition requests',
+                'exportDate' => now(),
+                'generatedBy' => Auth::user()->name,
+                'filters' => [
+                    'status' => $request->get('status'),
+                    'search' => $request->get('search'),
+                    'applied_at' => now()
+                ],
+                'requests' => $enrichedRequests,
+                'total_count' => $enrichedRequests->count()
+            ];
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.talent_admin.requests-detailed', $data);
+            $pdf->setPaper('a4', 'landscape');
+
+            $filename = 'talent-requests-detailed-' . now()->format('Y-m-d-H-i-s') . '.pdf';
+
+            return $pdf->download($filename);
+
+        } catch (\Exception $e) {
+            Log::error('Export detailed requests error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to export detailed requests report.');
+        }
+    }
 }

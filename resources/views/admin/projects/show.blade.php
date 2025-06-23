@@ -1,6 +1,6 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'Project Details - Admin')
+@section('title', 'Detail Proyek - Admin')
 @section('container')
 <div class="container mx-auto px-6 py-8">
     <!-- Header -->
@@ -16,16 +16,16 @@
                     {{ ucwords(str_replace('_', ' ', $project->status)) }}
                 </span>
             </div>
-            <p class="text-gray-600">{{ $project->recruiter->company_name ?? 'Unknown Company' }}</p>
+            <p class="text-gray-600">{{ $project->recruiter->company_name ?? 'Perusahaan Tidak Diketahui' }}</p>
         </div>
 
         @if($project->status === 'pending_admin')
             <div class="flex space-x-3">
                 <button onclick="openApprovalModal()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                    Approve Project
+                    Setujui Proyek
                 </button>
                 <button onclick="openRejectionModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
-                    Reject Project
+                    Tolak Proyek
                 </button>
             </div>
         @endif
@@ -36,24 +36,24 @@
         <div class="lg:col-span-2 space-y-6">
             <!-- Project Details -->
             <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Project Overview</h2>
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Ringkasan Proyek</h2>
                 <div class="prose max-w-none">
                     <p class="text-gray-700 mb-4">{{ $project->description }}</p>
                 </div>                <div class="grid grid-cols-2 gap-4 mt-6">
                     <div>
-                        <h3 class="font-medium text-gray-900 mb-2">Project Details</h3>
+                        <h3 class="font-medium text-gray-900 mb-2">Detail Proyek</h3>
                         <dl class="space-y-2">
                             <div class="flex justify-between">
-                                <dt class="text-gray-600">Budget Range:</dt>
+                                <dt class="text-gray-600">Rentang Anggaran:</dt>
                                 <dd class="font-medium">Rp {{ number_format($project->overall_budget_min ?? 0, 0, ',', '.') }} - Rp {{ number_format($project->overall_budget_max ?? 0, 0, ',', '.') }}</dd>
                             </div>
                             <div class="flex justify-between">
-                                <dt class="text-gray-600">Duration:</dt>
-                                <dd class="font-medium">{{ $project->estimated_duration_days ?? 0 }} days</dd>
+                                <dt class="text-gray-600">Durasi:</dt>
+                                <dd class="font-medium">{{ $project->estimated_duration_days ?? 0 }} hari</dd>
                             </div>
                             <div class="flex justify-between">
-                                <dt class="text-gray-600">Industry:</dt>
-                                <dd class="font-medium">{{ $project->industry ?? 'Not specified' }}</dd>
+                                <dt class="text-gray-600">Industri:</dt>
+                                <dd class="font-medium">{{ $project->industry ?? 'Tidak ditentukan' }}</dd>
                             </div>
                             <div class="flex justify-between">
                                 <dt class="text-gray-600">Status:</dt>
@@ -62,23 +62,23 @@
                         </dl>
                     </div>
                     <div>
-                        <h3 class="font-medium text-gray-900 mb-2">Timeline</h3>
+                        <h3 class="font-medium text-gray-900 mb-2">Jadwal</h3>
                         <dl class="space-y-2">
                             <div class="flex justify-between">
-                                <dt class="text-gray-600">Created:</dt>
+                                <dt class="text-gray-600">Dibuat:</dt>
                                 <dd class="font-medium">{{ $project->created_at->format('M j, Y') }}</dd>
                             </div>
                             <div class="flex justify-between">
-                                <dt class="text-gray-600">Start Date:</dt>
-                                <dd class="font-medium">{{ $project->expected_start_date ? $project->expected_start_date->format('M j, Y') : 'TBD' }}</dd>
+                                <dt class="text-gray-600">Tanggal Mulai:</dt>
+                                <dd class="font-medium">{{ $project->expected_start_date ? $project->expected_start_date->format('M j, Y') : 'Belum Ditentukan' }}</dd>
                             </div>
                             <div class="flex justify-between">
-                                <dt class="text-gray-600">End Date:</dt>
-                                <dd class="font-medium">{{ $project->expected_end_date ? $project->expected_end_date->format('M j, Y') : 'TBD' }}</dd>
+                                <dt class="text-gray-600">Tanggal Selesai:</dt>
+                                <dd class="font-medium">{{ $project->expected_end_date ? $project->expected_end_date->format('M j, Y') : 'Belum Ditentukan' }}</dd>
                             </div>
                             @if($project->admin_approved_at)
                             <div class="flex justify-between">
-                                <dt class="text-gray-600">Approved:</dt>
+                                <dt class="text-gray-600">Disetujui:</dt>
                                 <dd class="font-medium">{{ $project->admin_approved_at->format('M j, Y') }}</dd>
                             </div>
                             @endif
@@ -88,7 +88,7 @@
 
                 @if($project->general_requirements)
                     <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-                        <h3 class="font-medium text-gray-900 mb-2">Requirements</h3>
+                        <h3 class="font-medium text-gray-900 mb-2">Persyaratan</h3>
                         <p class="text-gray-700">{{ $project->general_requirements }}</p>
                     </div>
                 @endif
@@ -96,8 +96,8 @@
 
             <!-- Project Assignments -->            <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-900">Talent Assignments</h2>
-                    <span class="text-sm text-gray-600">{{ $project->assignments->count() }} assigned</span>
+                    <h2 class="text-xl font-semibold text-gray-900">Penugasan Talenta</h2>
+                    <span class="text-sm text-gray-600">{{ $project->assignments->count() }} ditugaskan</span>
                 </div>
 
                 @if($project->assignments->count() > 0)
@@ -109,7 +109,7 @@
                                         <h3 class="font-medium text-gray-900">{{ $assignment->talent->user->name }}</h3>
                                         <p class="text-sm text-gray-600">{{ $assignment->talent->user->email }}</p>
                                         @if($assignment->specific_role)
-                                            <p class="text-sm text-gray-600 mt-1"><strong>Role:</strong> {{ $assignment->specific_role }}</p>
+                                            <p class="text-sm text-gray-600 mt-1"><strong>Peran:</strong> {{ $assignment->specific_role }}</p>
                                         @endif
                                         <div class="mt-2 flex items-center space-x-2">
                                             <span class="@if($assignment->status === 'assigned') bg-yellow-100 text-yellow-800 @elseif($assignment->status === 'accepted') bg-green-100 text-green-800 @elseif($assignment->status === 'declined') bg-red-100 text-red-800 @elseif($assignment->status === 'active') bg-blue-100 text-blue-800 @else bg-gray-100 text-gray-800 @endif px-2 py-1 rounded-full text-xs font-medium">
@@ -118,22 +118,22 @@
                                             @if($assignment->status === 'assigned' && in_array($project->status, ['approved', 'active']))
                                                 <button onclick="onboardTalent({{ $assignment->id }})"
                                                         class="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700 transition-colors">
-                                                    Onboard Talent
+                                                    Onboard Talenta
                                                 </button>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        <div class="text-sm text-gray-600">Assigned: {{ $assignment->created_at->format('M j, Y') }}</div>
+                                        <div class="text-sm text-gray-600">Ditugaskan: {{ $assignment->created_at->format('M j, Y') }}</div>
                                         @if($assignment->talent_accepted_at)
-                                            <div class="text-sm text-gray-600">Accepted: {{ $assignment->talent_accepted_at->format('M j, Y') }}</div>
+                                            <div class="text-sm text-gray-600">Diterima: {{ $assignment->talent_accepted_at->format('M j, Y') }}</div>
                                         @endif
                                     </div>
                                 </div>
 
                                 @if($assignment->specific_requirements)
                                     <div class="mt-3 p-3 bg-gray-50 rounded text-sm">
-                                        <strong>Requirements:</strong> {{ $assignment->specific_requirements }}
+                                        <strong>Persyaratan:</strong> {{ $assignment->specific_requirements }}
                                     </div>
                                 @endif
                             </div>
@@ -144,8 +144,8 @@
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">No talents assigned</h3>
-                        <p class="mt-1 text-sm text-gray-500">This project doesn't have any assigned talents yet.</p>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada talenta yang ditugaskan</h3>
+                        <p class="mt-1 text-sm text-gray-500">Proyek ini belum memiliki talenta yang ditugaskan.</p>
                     </div>
                 @endif
             </div>
@@ -153,14 +153,14 @@
             <!-- Extension Requests -->
             @if($project->extensions->count() > 0)
                 <div class="bg-white rounded-lg shadow-md p-6">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Extension Requests</h2>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Permintaan Perpanjangan</h2>
                     <div class="space-y-4">
                         @foreach($project->extensions as $extension)
                             <div class="border border-gray-200 rounded-lg p-4">
                                 <div class="flex justify-between items-start mb-3">
                                     <div>
-                                        <h3 class="font-medium text-gray-900">Extension Request</h3>
-                                        <p class="text-sm text-gray-600">Requested by: {{ $extension->requester->name }}</p>
+                                        <h3 class="font-medium text-gray-900">Permintaan Perpanjangan</h3>
+                                        <p class="text-sm text-gray-600">Diminta oleh: {{ $extension->requester->name }}</p>
                                     </div>
                                     <span class="@if($extension->status === 'pending') bg-yellow-100 text-yellow-800 @elseif($extension->status === 'approved') bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif px-2 py-1 rounded-full text-xs font-medium">
                                         {{ ucfirst($extension->status) }}
@@ -168,34 +168,34 @@
                                 </div>
                                   <div class="grid grid-cols-2 gap-4 text-sm">
                                     <div>
-                                        <span class="text-gray-600">Extension Days:</span>
-                                        <span class="font-medium ml-2">{{ $extension->extension_days }} days</span>
+                                        <span class="text-gray-600">Hari Perpanjangan:</span>
+                                        <span class="font-medium ml-2">{{ $extension->extension_days }} hari</span>
                                     </div>
                                     <div>
-                                        <span class="text-gray-600">New End Date:</span>
+                                        <span class="text-gray-600">Tanggal Selesai Baru:</span>
                                         <span class="font-medium ml-2">{{ $extension->new_end_date->format('M j, Y') }}</span>
                                     </div>
                                 </div>
 
                                 <div class="mt-3">
-                                    <p class="text-sm text-gray-700"><strong>Justification:</strong> {{ $extension->justification }}</p>
+                                    <p class="text-sm text-gray-700"><strong>Justifikasi:</strong> {{ $extension->justification }}</p>
                                 </div>
 
                                 @if($extension->status === 'pending')
                                     <div class="mt-4 flex space-x-3">
                                         <button onclick="reviewExtension({{ $extension->id }}, 'approved')"
                                                 class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 transition-colors">
-                                            Approve
+                                            Setujui
                                         </button>
                                         <button onclick="reviewExtension({{ $extension->id }}, 'rejected')"
                                                 class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 transition-colors">
-                                            Reject
+                                            Tolak
                                         </button>
                                     </div>
                                 @endif
                                   @if($extension->review_notes)
                                     <div class="mt-3 p-3 bg-gray-50 rounded text-sm">
-                                        <strong>Admin Response:</strong> {{ $extension->review_notes }}
+                                        <strong>Respon Admin:</strong> {{ $extension->review_notes }}
                                     </div>
                                 @endif
                             </div>
@@ -209,20 +209,20 @@
         <div class="space-y-6">
             <!-- Recruiter Info -->
             <div class="bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Recruiter Information</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Informasi Perekrut</h3>
                 <div class="space-y-3">
                     <div>
-                        <span class="text-gray-600">Company:</span>
+                        <span class="text-gray-600">Perusahaan:</span>
                         <p class="font-medium">{{ $project->recruiter->company_name ?? 'N/A' }}</p>
                     </div>
                     <div>
-                        <span class="text-gray-600">Contact:</span>
+                        <span class="text-gray-600">Kontak:</span>
                         <p class="font-medium">{{ $project->recruiter->user->name }}</p>
                         <p class="text-sm text-gray-600">{{ $project->recruiter->user->email }}</p>
                     </div>
                     @if($project->recruiter->phone)
                         <div>
-                            <span class="text-gray-600">Phone:</span>
+                            <span class="text-gray-600">Telepon:</span>
                             <p class="font-medium">{{ $project->recruiter->phone }}</p>
                         </div>
                     @endif
@@ -231,26 +231,26 @@
 
             <!-- Project Stats -->
             <div class="bg-white rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Project Statistics</h3>                <div class="space-y-3">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Statistik Proyek</h3>                <div class="space-y-3">
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Budget Range:</span>
+                        <span class="text-gray-600">Rentang Anggaran:</span>
                         <span class="font-medium">Rp {{ number_format($project->overall_budget_min ?? 0, 0, ',', '.') }} - Rp {{ number_format($project->overall_budget_max ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Assignments:</span>
+                        <span class="text-gray-600">Penugasan:</span>
                         <span class="font-medium">{{ $project->assignments->count() }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Accepted:</span>
+                        <span class="text-gray-600">Diterima:</span>
                         <span class="font-medium">{{ $project->assignments->where('status', 'accepted')->count() }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Extensions:</span>
+                        <span class="text-gray-600">Perpanjangan:</span>
                         <span class="font-medium">{{ $project->extensions->count() }}</span>
                     </div>
                     @if($project->expected_start_date && $project->expected_end_date)
                         <div class="flex justify-between">
-                            <span class="text-gray-600">Progress:</span>
+                            <span class="text-gray-600">Progres:</span>
                             <span class="font-medium">{{ $project->getProgressPercentage() }}%</span>
                         </div>
                     @endif
@@ -260,7 +260,7 @@
             <!-- Timeline Events -->
             @if($project->timelineEvents->count() > 0)
                 <div class="bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Timeline Events</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Timeline Peristiwa</h3>
                     <div class="space-y-3">
                         @foreach($project->timelineEvents->take(5) as $event)
                             <div class="flex">
@@ -285,27 +285,27 @@
 <div id="approvalModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Approve Project</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Setujui Proyek</h3>
             <form method="POST" action="{{ route('admin.projects.approve', $project) }}">
                 @csrf
                 @method('PATCH')
                 <input type="hidden" name="status" value="approved">
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Approval Notes</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Persetujuan</label>
                     <textarea name="admin_notes" rows="3"
                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              placeholder="Add any approval notes or requirements..."></textarea>
+                              placeholder="Tambahkan catatan persetujuan atau persyaratan..."></textarea>
                 </div>
 
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeApprovalModal()"
                             class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
-                        Cancel
+                        Batal
                     </button>
                     <button type="submit"
                             class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                        Approve Project
+                        Setujui Proyek
                     </button>
                 </div>
             </form>
@@ -317,27 +317,27 @@
 <div id="rejectionModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Reject Project</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Tolak Proyek</h3>
             <form method="POST" action="{{ route('admin.projects.approve', $project) }}">
                 @csrf
                 @method('PATCH')
                 <input type="hidden" name="status" value="rejected">
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Rejection Reason</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Alasan Penolakan</label>
                     <textarea name="admin_notes" rows="3" required
                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              placeholder="Please provide a reason for rejection..."></textarea>
+                              placeholder="Mohon berikan alasan penolakan..."></textarea>
                 </div>
 
                 <div class="flex justify-end space-x-3">
                     <button type="button" onclick="closeRejectionModal()"
                             class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
-                        Cancel
+                        Batal
                     </button>
                     <button type="submit"
                             class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                        Reject Project
+                        Tolak Proyek
                     </button>
                 </div>
             </form>
@@ -363,7 +363,7 @@ function closeRejectionModal() {
 }
 
 function reviewExtension(extensionId, status) {
-    if (confirm(`Are you sure you want to ${status} this extension request?`)) {
+    if (confirm(`Apakah Anda yakin ingin ${status === 'approved' ? 'menyetujui' : 'menolak'} permintaan perpanjangan ini?`)) {
         fetch(`/admin/projects/extensions/${extensionId}/review`, {
             method: 'PUT',
             headers: {
@@ -377,12 +377,12 @@ function reviewExtension(extensionId, status) {
             if (data.success) {
                 location.reload();
             } else {
-                alert('Error updating extension request');
+                alert('Terjadi kesalahan saat memperbarui permintaan perpanjangan');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error updating extension request');
+            alert('Terjadi kesalahan saat memperbarui permintaan perpanjangan');
         });
     }
 }

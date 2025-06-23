@@ -237,7 +237,7 @@ class RecruiterController extends Controller
     public function submitTalentRequest(Request $request)
     {
         $request->validate([
-            'talent_id' => 'required|exists:talents,id',
+            'talent_id' => 'required|string', // Changed to string to accept comma-separated values
             'project_title' => 'required|string|max:255',
             'project_description' => 'required|string',
             'requirements' => 'nullable|string',
@@ -254,113 +254,164 @@ class RecruiterController extends Controller
             return response()->json(['error' => 'Recruiter profile not found'], 404);
         }
 
-        // Get talent user ID for later checks
-        $talent = \App\Models\Talent::findOrFail($request->talent_id);
-        $talentUserId = $talent->user_id;
+        // Parse talent IDs (handle both single ID and comma-separated multiple IDs)
+        $talentIdsString = $request->talent_id;
+        $talentIds = array_map('trim', explode(',', $talentIdsString));
+        $talentIds = array_filter($talentIds); // Remove empty values
 
-        // Check if request already exists for this talent FIRST (before time-blocking check)
-        // This ensures specific error messages for duplicate/onboarded requests
-        $existingRequest = TalentRequest::where('recruiter_id', $recruiter->id)
-            ->where('talent_id', $request->talent_id)
-            ->whereNotIn('status', ['rejected', 'completed'])
-            ->first();
-
-        if ($existingRequest) {
-            // Check if this is an already onboarded talent (more specific UX)
-            if ($existingRequest->status === 'onboarded') {
-                return response()->json([
-                    'error' => 'talent_already_onboarded',
-                    'message' => 'This talent is already onboarded in your organization',
-                    'details' => 'You cannot request a talent who is already working with you. The talent is currently onboarded for your project "' . $existingRequest->project_title . '".',
-                    'existing_project' => [
-                        'title' => $existingRequest->project_title,
-                        'onboarded_date' => $existingRequest->onboarded_at ? $existingRequest->onboarded_at->format('M d, Y') : 'N/A',
-                        'status' => $existingRequest->getRecruiterDisplayStatus()
-                    ]
-                ], 400);
-            }
-
-            // Generic message for other active request types
-            return response()->json([
-                'error' => 'active_request_exists',
-                'message' => 'You already have an active request for this talent',
-                'details' => 'Please wait for your current request to be processed or completed before submitting a new one.',
-                'existing_request' => [
-                    'status' => $existingRequest->getRecruiterDisplayStatus(),
-                    'submitted_date' => $existingRequest->created_at->format('M d, Y'),
-                    'project_title' => $existingRequest->project_title
-                ]
-            ], 400);
+        if (empty($talentIds)) {
+            return response()->json(['error' => 'No valid talent IDs provided'], 400);
         }
 
-        // Now calculate project dates and check availability
+        // Validate that all talent IDs exist
+        $existingTalents = \App\Models\Talent::whereIn('id', $talentIds)->get();
+        if ($existingTalents->count() !== count($talentIds)) {
+            return response()->json(['error' => 'One or more talent IDs are invalid'], 400);
+        }
+
+        // Variables to track results
+        $successfulRequests = [];
+        $failedRequests = [];
         $projectDuration = $request->project_duration;
         $durationInMonths = TalentRequest::parseDurationToMonths($projectDuration);
         $projectStartDate = now()->addDays(7); // Projects start 1 week from request
         $projectEndDate = $projectStartDate->copy()->addMonths($durationInMonths);
 
-        // Check if talent is available for the proposed project duration
-        if (!TalentRequest::isTalentAvailable($talentUserId, $projectStartDate, $projectEndDate)) {
-            $activeRequests = TalentRequest::getActiveBlockingRequestsForTalent($talentUserId);
-            $nextAvailable = $activeRequests->max('project_end_date');
+        // Process each talent ID
+        foreach ($existingTalents as $talent) {
+            $talentUserId = $talent->user_id;
 
-            return response()->json([
-                'error' => 'Talent is not available for the requested project duration',
-                'message' => "This talent is already committed to other projects until " .
-                           $nextAvailable->format('M d, Y') . ". Please consider a different talent or wait until " .
-                           $nextAvailable->copy()->addDay()->format('M d, Y') . ".",
-                'next_available_date' => $nextAvailable->copy()->addDay()->format('Y-m-d'),
-                'blocking_projects' => $activeRequests->map(function($req) {
-                    return [
-                        'title' => $req->project_title,
-                        'company' => $req->recruiter->user->name ?? 'Unknown',
-                        'end_date' => $req->project_end_date->format('M d, Y')
+            // Check if request already exists for this talent FIRST (before time-blocking check)
+            // This ensures specific error messages for duplicate/onboarded requests
+            $existingRequest = TalentRequest::where('recruiter_id', $recruiter->id)
+                ->where('talent_user_id', $talentUserId)
+                ->whereIn('status', ['pending', 'approved', 'meeting_arranged', 'onboarded'])
+                ->first();
+
+            if ($existingRequest) {
+                // Check if the talent is already onboarded for a different request
+                if ($existingRequest->status === 'onboarded') {
+                    $failedRequests[] = [
+                        'talent_name' => $talent->user->name,
+                        'error' => 'talent_already_onboarded',
+                        'message' => 'This talent is already onboarded in your organization',
+                        'details' => 'The talent is currently onboarded for project "' . $existingRequest->project_title . '".'
                     ];
-                })->toArray()
-            ], 409); // 409 Conflict status code
+                    continue; // Skip this talent and move to next
+                }
+
+                // Generic message for other active request types
+                $failedRequests[] = [
+                    'talent_name' => $talent->user->name,
+                    'error' => 'active_request_exists',
+                    'message' => 'You already have an active request for this talent',
+                    'details' => 'Please wait for your current request to be processed or completed before submitting a new one.'
+                ];
+                continue; // Skip this talent and move to next
+            }
+
+            // Check if talent is available for the proposed project duration
+            if (!TalentRequest::isTalentAvailable($talentUserId, $projectStartDate, $projectEndDate)) {
+                $activeRequests = TalentRequest::getActiveBlockingRequestsForTalent($talentUserId);
+                $nextAvailable = $activeRequests->max('project_end_date');
+
+                $failedRequests[] = [
+                    'talent_name' => $talent->user->name,
+                    'error' => 'talent_not_available',
+                    'message' => "This talent is not available for the requested project duration",
+                    'details' => "Already committed to other projects until " . $nextAvailable->format('M d, Y'),
+                    'next_available_date' => $nextAvailable->copy()->addDay()->format('Y-m-d')
+                ];
+                continue; // Skip this talent and move to next
+            }
+
+            // Create talent request for this talent
+            try {
+                $talentRequestData = [
+                    'recruiter_id' => $recruiter->id,
+                    'talent_id' => $talent->id, // Single talent ID
+                    'talent_user_id' => $talentUserId,
+                    'project_title' => $request->project_title,
+                    'project_description' => $request->project_description,
+                    'requirements' => $request->requirements,
+                    'budget_range' => $request->budget_range,
+                    'project_duration' => $request->project_duration,
+                    'status' => 'pending',
+                    'project_start_date' => $projectStartDate,
+                    'project_end_date' => $projectEndDate,
+                    'is_blocking_talent' => true,
+                    'blocking_notes' => "Project duration: {$projectDuration}, estimated from {$projectStartDate->format('M d, Y')} to {$projectEndDate->format('M d, Y')}"
+                ];
+
+                // Add project-specific fields if this is a project assignment
+                if ($request->project_id) {
+                    $talentRequestData['project_id'] = $request->project_id;
+                }
+
+                $talentRequest = TalentRequest::create($talentRequestData);
+
+                // Send notifications to both talent and admin
+                $notificationsSent = $this->notificationService->notifyNewTalentRequest($talentRequest);
+
+                $successfulRequests[] = [
+                    'talent_name' => $talent->user->name,
+                    'request_id' => $talentRequest->id,
+                    'notifications_sent' => $notificationsSent
+                ];
+
+            } catch (\Exception $e) {
+                $failedRequests[] = [
+                    'talent_name' => $talent->user->name,
+                    'error' => 'creation_failed',
+                    'message' => 'Failed to create talent request',
+                    'details' => $e->getMessage()
+                ];
+            }
         }
 
-        // Prepare the talent request data
-        $talentRequestData = [
-            'recruiter_id' => $recruiter->id,
-            'talent_id' => $request->talent_id,
-            'talent_user_id' => $talentUserId, // Add for direct user reference
-            'project_title' => $request->project_title,
-            'project_description' => $request->project_description,
-            'requirements' => $request->requirements,
-            'budget_range' => $request->budget_range,
-            'project_duration' => $request->project_duration,
-            'status' => 'pending',
-            // Time-blocking fields
-            'project_start_date' => $projectStartDate,
-            'project_end_date' => $projectEndDate,
-            'is_blocking_talent' => true, // This request will block the talent if approved
-            'blocking_notes' => "Project duration: {$projectDuration}, estimated from {$projectStartDate->format('M d, Y')} to {$projectEndDate->format('M d, Y')}"
-        ];
+        // Prepare response based on results
+        $totalRequested = count($talentIds);
+        $successCount = count($successfulRequests);
+        $failedCount = count($failedRequests);
 
-        // Add project-specific fields if this is a project assignment
-        if ($request->project_id) {
-            $talentRequestData['project_id'] = $request->project_id;
+        if ($successCount > 0 && $failedCount === 0) {
+            // All requests successful
+            $talentNames = array_column($successfulRequests, 'talent_name');
+            return response()->json([
+                'success' => true,
+                'message' => $request->is_project_assignment ?
+                    "Project talent assignment requests submitted successfully for {$successCount} talent(s): " . implode(', ', $talentNames) :
+                    "Talent requests submitted successfully for {$successCount} talent(s): " . implode(', ', $talentNames),
+                'successful_requests' => $successfulRequests,
+                'project_timeline' => [
+                    'start_date' => $projectStartDate->format('M d, Y'),
+                    'end_date' => $projectEndDate->format('M d, Y'),
+                    'duration' => $projectDuration
+                ]
+            ]);
+        } elseif ($successCount > 0 && $failedCount > 0) {
+            // Partial success
+            $successNames = array_column($successfulRequests, 'talent_name');
+            return response()->json([
+                'success' => true,
+                'partial' => true,
+                'message' => "Requests submitted for {$successCount} out of {$totalRequested} talents: " . implode(', ', $successNames),
+                'successful_requests' => $successfulRequests,
+                'failed_requests' => $failedRequests,
+                'project_timeline' => [
+                    'start_date' => $projectStartDate->format('M d, Y'),
+                    'end_date' => $projectEndDate->format('M d, Y'),
+                    'duration' => $projectDuration
+                ]
+            ]);
+        } else {
+            // All requests failed
+            return response()->json([
+                'success' => false,
+                'message' => "Unable to submit talent requests for any of the selected talents",
+                'failed_requests' => $failedRequests
+            ], 400);
         }
-
-        $talentRequest = TalentRequest::create($talentRequestData);
-
-        // Send notifications to both talent and admin
-        $notificationsSent = $this->notificationService->notifyNewTalentRequest($talentRequest);
-
-        return response()->json([
-            'success' => true,
-            'message' => $request->is_project_assignment ?
-                'Project talent assignment request submitted successfully! Both the talent and admin have been notified.' :
-                'Talent request submitted successfully! Both the talent and admin have been notified.',
-            'request_id' => $talentRequest->id,
-            'notifications_sent' => $notificationsSent,
-            'project_timeline' => [
-                'start_date' => $projectStartDate->format('M d, Y'),
-                'end_date' => $projectEndDate->format('M d, Y'),
-                'duration' => $projectDuration
-            ]
-        ]);
     }
 
     public function myRequests()
@@ -854,6 +905,70 @@ class RecruiterController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to load redflag history'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get talent details for recruiter view
+     */
+    public function getTalentDetails(Talent $talent)
+    {
+        try {
+            // Eager load necessary relationships
+            $talent->load(['user']);
+
+            // Transform the data to match JavaScript expectations
+            $talentData = [
+                'id' => $talent->id,
+                'name' => $talent->user->name,
+                'email' => $talent->user->email,
+                'phone' => $talent->user->phone ?? null,
+                'location' => $talent->user->alamat ?? null,
+                'job' => $talent->user->pekerjaan ?? null,
+                'is_active' => $talent->is_active,
+                'avatar' => $talent->user->avatar ? asset('storage/' . $talent->user->avatar) : null,
+                'joined_date' => $talent->created_at->format('M d, Y'),
+                'skills' => $talent->user->getTalentSkillsArray() ?? [],
+                'portfolio' => [], // Can be extended later if needed
+            ];
+
+            return response()->json([
+                'success' => true,
+                'talent' => $talentData
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Error fetching talent details for recruiter - talent ID {$talent->id}: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while retrieving talent details.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get talent details by user ID for recruiter view
+     */
+    public function getTalentDetailsByUserId(User $user)
+    {
+        try {
+            $talent = $user->talent;
+            if (!$talent) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Talent profile not found for this user'
+                ], 404);
+            }
+
+            // Use the existing getTalentDetails logic
+            return $this->getTalentDetails($talent);
+        } catch (\Exception $e) {
+            Log::error("Error fetching talent details by user ID for recruiter - user ID {$user->id}: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while retrieving talent details.',
+                'error' => $e->getMessage()
             ], 500);
         }
     }

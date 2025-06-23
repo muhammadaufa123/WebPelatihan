@@ -457,10 +457,6 @@ class TalentController extends Controller
                 'id' => $talentRequest->id,
                 'title' => $talentRequest->project_title ?? 'Collaboration Request',
                 'description' => $talentRequest->project_description ?? 'No description provided',
-                'skills_required' => $talentRequest->skills_required ?
-                    (is_string($talentRequest->skills_required) ?
-                        json_decode($talentRequest->skills_required, true) ?? [] :
-                        $talentRequest->skills_required) : [],
                 'budget_range' => $talentRequest->budget_range ?? 'Not specified',
                 'project_duration' => $talentRequest->project_duration ?? 'Not specified',
                 'collaboration_type' => $talentRequest->collaboration_type ?? 'General',

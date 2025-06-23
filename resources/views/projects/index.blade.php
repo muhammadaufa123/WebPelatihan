@@ -1,18 +1,55 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'My Projects')
+@section('title', 'Proyek Saya')
 @section('container')
 <div class="container mx-auto px-4 py-8">
     <!-- Header -->
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">My Projects</h1>
-            <p class="text-gray-600 mt-2">Manage your project-based talent recruitment</p>
+            <h1 class="text-3xl font-bold text-gray-900">Proyek Saya</h1>
+            <p class="text-gray-600 mt-2">Kelola rekrutmen talent berbasis proyek Anda</p>
         </div>
-        <a href="{{ route('projects.create') }}"
-           class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200">
-            <i class="fas fa-plus mr-2"></i>Create New Project
-        </a>
+        <div class="flex items-center space-x-3">
+            <!-- Export PDF Dropdown -->
+            <div class="relative">
+                <button id="exportDropdownButton" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200 flex items-center">
+                    <i class="fas fa-download mr-2"></i>Ekspor PDF
+                    <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                </button>
+                <div id="exportDropdownMenu" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible transition-all duration-200 z-10">
+                    <div class="py-2">
+                        <a href="{{ route('projects.export_project_history') }}"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-project-diagram mr-3 text-blue-500"></i>
+                            <div>
+                                <div class="font-medium">Riwayat Proyek</div>
+                                <div class="text-xs text-gray-500">Semua proyek dengan detail talent</div>
+                            </div>
+                        </a>
+                        <a href="{{ route('projects.export_completed_projects') }}"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-check-circle mr-3 text-green-500"></i>
+                            <div>
+                                <div class="font-medium">Proyek Selesai</div>
+                                <div class="text-xs text-gray-500">Proyek yang berhasil diselesaikan</div>
+                            </div>
+                        </a>
+                        <a href="{{ route('projects.export_talent_participation') }}"
+                           class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-users mr-3 text-purple-500"></i>
+                            <div>
+                                <div class="font-medium">Partisipasi Talent</div>
+                                <div class="text-xs text-gray-500">Proyek berdasarkan talent yang berpartisipasi</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ route('projects.create') }}"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200">
+                <i class="fas fa-plus mr-2"></i>Buat Proyek Baru
+            </a>
+        </div>
     </div>
 
     <!-- Success/Error Messages -->
@@ -21,7 +58,7 @@
             <div class="flex items-center">
                 <i class="fas fa-check-circle mr-3 text-lg"></i>
                 <div>
-                    <h4 class="font-semibold">Success!</h4>
+                    <h4 class="font-semibold">Berhasil!</h4>
                     <p>{{ session('success') }}</p>
                 </div>
             </div>
@@ -89,7 +126,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                             <div class="flex items-center text-sm text-gray-600">
                                 <i class="fas fa-industry mr-2"></i>
-                                <span>{{ $project->industry ?? 'Not specified' }}</span>
+                                <span>{{ $project->industry ?? 'Tidak ditentukan' }}</span>
                             </div>
                             <div class="flex items-center text-sm text-gray-600">
                                 <i class="fas fa-calendar mr-2"></i>
@@ -97,7 +134,7 @@
                             </div>
                             <div class="flex items-center text-sm text-gray-600">
                                 <i class="fas fa-clock mr-2"></i>
-                                <span>{{ $project->estimated_duration_days }} days</span>
+                                <span>{{ $project->estimated_duration_days }} hari</span>
                             </div>
                         </div>
 
@@ -106,13 +143,13 @@
                             <div class="flex items-center text-sm text-gray-600 mb-4">
                                 <i class="fas fa-rupiah-sign mr-2"></i>
                                 <span>
-                                    Budget:
+                                    Anggaran:
                                     @if($project->overall_budget_min && $project->overall_budget_max)
                                         Rp {{ number_format($project->overall_budget_min, 0, ',', '.') }} - Rp {{ number_format($project->overall_budget_max, 0, ',', '.') }}
                                     @elseif($project->overall_budget_min)
-                                        From Rp {{ number_format($project->overall_budget_min, 0, ',', '.') }}
+                                        Dari Rp {{ number_format($project->overall_budget_min, 0, ',', '.') }}
                                     @else
-                                        Up to Rp {{ number_format($project->overall_budget_max, 0, ',', '.') }}
+                                        Hingga Rp {{ number_format($project->overall_budget_max, 0, ',', '.') }}
                                     @endif
                                 </span>
                             </div>
@@ -123,18 +160,18 @@
                             <div class="flex items-center space-x-4 text-sm">
                                 <span class="flex items-center text-gray-600">
                                     <i class="fas fa-users mr-2"></i>
-                                    {{ $project->assignments->count() }} assigned
+                                    {{ $project->assignments->count() }} ditugaskan
                                 </span>
                                 @if($project->assignments->where('status', 'accepted')->count() > 0)
                                     <span class="flex items-center text-green-600">
                                         <i class="fas fa-check mr-2"></i>
-                                        {{ $project->assignments->where('status', 'accepted')->count() }} accepted
+                                        {{ $project->assignments->where('status', 'accepted')->count() }} diterima
                                     </span>
                                 @endif
                                 @if($project->assignments->where('status', 'declined')->count() > 0)
                                     <span class="flex items-center text-red-600">
                                         <i class="fas fa-times mr-2"></i>
-                                        {{ $project->assignments->where('status', 'declined')->count() }} declined
+                                        {{ $project->assignments->where('status', 'declined')->count() }} ditolak
                                     </span>
                                 @endif
                             </div>
@@ -143,7 +180,7 @@
                             <div class="flex space-x-2">
                                 <a href="{{ route('projects.show', $project) }}"
                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition duration-200">
-                                    View Details
+                                    Lihat Detail
                                 </a>
 
                                 @if($project->status === 'pending_approval')
@@ -156,7 +193,7 @@
                                 @if(in_array($project->status, ['active', 'overdue']))
                                     <button onclick="showClosureRequestModal({{ $project->id }}, {{ json_encode($project->title) }})"
                                             class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition duration-200">
-                                        <i class="fas fa-times mr-1"></i>Request Closure
+                                        <i class="fas fa-times mr-1"></i>Minta Penutupan
                                     </button>
                                 @endif
 
@@ -165,11 +202,11 @@
                                         <div class="flex items-center">
                                             <i class="fas fa-clock text-yellow-600 mr-2"></i>
                                             <span class="text-yellow-800 text-sm font-medium">
-                                                Closure request pending admin approval
+                                                Permintaan penutupan menunggu persetujuan admin
                                             </span>
                                         </div>
                                         <p class="text-yellow-700 text-xs mt-1">
-                                            A talent admin will review your closure request shortly.
+                                            Seorang talent admin akan meninjau permintaan penutupan Anda segera.
                                         </p>
                                     </div>
                                 @endif
@@ -182,7 +219,7 @@
                         <div class="border-t border-gray-200 bg-gray-50 px-6 py-3">
                             <div class="flex items-center text-sm text-gray-600">
                                 <i class="fas fa-history mr-2"></i>
-                                <span>Latest: {{ $project->timelineEvents->first()->description }}</span>
+                                <span>Terbaru: {{ $project->timelineEvents->first()->description }}</span>
                                 <span class="ml-auto">{{ $project->timelineEvents->first()->created_at->diffForHumans() }}</span>
                             </div>
                         </div>
@@ -202,14 +239,14 @@
                 <div class="bg-gray-100 rounded-full p-6 w-24 h-24 mx-auto mb-6 flex items-center justify-center">
                     <i class="fas fa-project-diagram text-3xl text-gray-400"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">No Projects Yet</h3>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Belum Ada Proyek</h3>
                 <p class="text-gray-600 mb-6">
-                    Start your talent recruitment journey by creating your first project.
-                    Once approved, you can assign multiple talents and manage the complete project lifecycle.
+                    Mulai perjalanan rekrutmen talent Anda dengan membuat proyek pertama.
+                    Setelah disetujui, Anda dapat menugaskan beberapa talent dan mengelola siklus proyek yang lengkap.
                 </p>
                 <a href="{{ route('projects.create') }}"
                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200">
-                    <i class="fas fa-plus mr-2"></i>Create Your First Project
+                    <i class="fas fa-plus mr-2"></i>Buat Proyek Pertama Anda
                 </a>
             </div>
         </div>
@@ -225,7 +262,7 @@
             <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
                 <h3 class="text-2xl font-bold text-gray-900 flex items-center">
                     <i class="fas fa-times text-red-600 mr-3"></i>
-                    Request Project Closure
+                    Minta Penutupan Proyek
                 </h3>
                 <button onclick="hideClosureRequestModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fas fa-times text-xl"></i>
@@ -240,10 +277,10 @@
                         <div class="flex items-start">
                             <i class="fas fa-exclamation-triangle text-yellow-600 mt-1 mr-3"></i>
                             <div>
-                                <h4 class="font-semibold text-yellow-800 mb-2">Important Notice</h4>
+                                <h4 class="font-semibold text-yellow-800 mb-2">Pemberitahuan Penting</h4>
                                 <p class="text-yellow-700 text-sm">
-                                    Requesting project closure will notify the talent admin for review.
-                                    If the project has not reached its deadline, admin approval is required to force-close the project.
+                                    Meminta penutupan proyek akan memberitahu talent admin untuk ditinjau.
+                                    Jika proyek belum mencapai tenggat waktu, persetujuan admin diperlukan untuk menutup paksa proyek.
                                 </p>
                             </div>
                         </div>
@@ -251,14 +288,14 @@
 
                     <div>
                         <label for="project_title_display" class="block text-sm font-medium text-gray-700 mb-2">
-                            Project
+                            Proyek
                         </label>
                         <input type="text" id="project_title_display" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50" readonly>
                     </div>
 
                     <div>
                         <label for="closure_reason" class="block text-sm font-medium text-gray-700 mb-2">
-                            Reason for Closure <span class="text-red-500">*</span>
+                            Alasan Penutupan <span class="text-red-500">*</span>
                         </label>
                         <textarea
                             id="closure_reason"
@@ -315,7 +352,66 @@
                 }, 500);
             }, 7000); // Keep error messages visible longer
         }
+
+        // Initialize Export PDF Dropdown
+        initializeExportDropdown();
     });
+
+    // Export PDF Dropdown Functionality
+    function initializeExportDropdown() {
+        const dropdownButton = document.getElementById('exportDropdownButton');
+        const dropdownMenu = document.getElementById('exportDropdownMenu');
+
+        if (dropdownButton && dropdownMenu) {
+            // Toggle dropdown on button click
+            dropdownButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleExportDropdown();
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    closeExportDropdown();
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeExportDropdown();
+                }
+            });
+        }
+    }
+
+    function toggleExportDropdown() {
+        const dropdownMenu = document.getElementById('exportDropdownMenu');
+        if (!dropdownMenu) {
+            return;
+        }
+
+        const isVisible = dropdownMenu.classList.contains('opacity-100');
+
+        if (isVisible) {
+            closeExportDropdown();
+        } else {
+            openExportDropdown();
+        }
+    }
+
+    function openExportDropdown() {
+        const dropdownMenu = document.getElementById('exportDropdownMenu');
+        dropdownMenu.classList.remove('opacity-0', 'invisible');
+        dropdownMenu.classList.add('opacity-100', 'visible');
+    }
+
+    function closeExportDropdown() {
+        const dropdownMenu = document.getElementById('exportDropdownMenu');
+        dropdownMenu.classList.remove('opacity-100', 'visible');
+        dropdownMenu.classList.add('opacity-0', 'invisible');
+    }
 
     // Auto-refresh status badges every 30 seconds for active projects
     setInterval(function() {

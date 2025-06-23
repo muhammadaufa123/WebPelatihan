@@ -142,6 +142,7 @@ class ProjectController extends Controller
             'recruiter.user',
             'assignments.talent.user',
             'talentRequests.talent.user',
+            'talentRequests.talentUser', // Add direct user relationship for talent requests
             'timelineEvents' => function($query) {
                 $query->latest();
             },
@@ -153,12 +154,11 @@ class ProjectController extends Controller
         ]);
 
         // Get available talents for assignment (if project is approved)
-        // Using the simplified canonical logic from RecruiterController
+        // Enhanced with scouting metrics and red flag data like dashboard
         $availableTalents = collect();
         if ($project->status === Project::STATUS_APPROVED) {
             try {
-                // Use the canonical, simplified approach from RecruiterController
-                $availableTalents = Talent::with(['user'])
+                $availableTalents = Talent::with(['user', 'assignments'])
                     ->where('is_active', true)
                     ->whereHas('user', function($query) {
                         $query->whereNotNull('name')
@@ -171,9 +171,26 @@ class ProjectController extends Controller
                               ->whereColumn('project_assignments.talent_id', 'talents.id')
                               ->where('project_assignments.project_id', $project->id);
                     })
-                    ->get();
+                    ->get()
+                    ->map(function($talent) {
+                        // Enhance talent data with metrics and red flag info
+                        $metrics = $talent->scouting_metrics;
+                        if (is_string($metrics)) {
+                            $metrics = json_decode($metrics, true);
+                        }
+
+                        $talent->parsed_metrics = $metrics ?: [
+                            'learning_velocity' => 0,
+                            'consistency' => 0,
+                            'adaptability' => 0
+                        ];
+
+                        $talent->redflag_summary = $talent->getRedflagSummary();
+                        $talent->project_count = $talent->assignments->count();
+
+                        return $talent;
+                    });
             } catch (\Exception $e) {
-                // Fallback to empty collection
                 $availableTalents = collect();
             }
         }        return view('projects.show', compact('project', 'availableTalents', 'user', 'title', 'roles', 'assignedKelas'));

@@ -12,11 +12,19 @@
 
                 {{-- Brand Content --}}
                 <div class="flex flex-col">
-                    <h1 class="text-xl font-bold text-gray-800 tracking-tight">WebPelatihan</h1>
-                    <div class="flex items-center space-x-1 text-sm text-blue-600">
-                        <i class="fas fa-book-open text-xs"></i>
-                        <span class="font-medium">Learning Platform</span>
-                    </div>
+                    @if(Auth::user()->hasRole(['talent_admin', 'talent', 'recruiter']))
+                        <h1 class="text-xl font-bold text-gray-800 tracking-tight">Web Scouting</h1>
+                        <div class="flex items-center space-x-1 text-sm text-blue-600">
+                            <i class="fas fa-search text-xs"></i>
+                            <span class="font-medium">Talent Platform</span>
+                        </div>
+                    @else
+                        <h1 class="text-xl font-bold text-gray-800 tracking-tight">WebPelatihan</h1>
+                        <div class="flex items-center space-x-1 text-sm text-blue-600">
+                            <i class="fas fa-book-open text-xs"></i>
+                            <span class="font-medium">Learning Platform</span>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

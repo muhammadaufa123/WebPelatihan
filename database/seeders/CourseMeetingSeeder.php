@@ -13,14 +13,14 @@ class CourseMeetingSeeder extends Seeder
     public function run(): void
     {
         echo "🏢 Creating course meetings...\n";
-        
+
         $courses = Course::take(2)->get();
-        
+
         if ($courses->isEmpty()) {
             echo "⚠️ No courses found. Please run course seeders first.\n";
             return;
         }
-        
+
         foreach ($courses as $course) {
             // Kickoff Meeting
             $kickoffMeeting = CourseMeeting::firstOrCreate([
@@ -30,7 +30,6 @@ class CourseMeetingSeeder extends Seeder
                 'start_datetime' => Carbon::now()->addDays(1)->setTime(10, 0),
                 'end_datetime' => Carbon::now()->addDays(1)->setTime(12, 0),
                 'location' => 'Room 101',
-                'description' => 'Course introduction and overview session',
             ]);
 
             // Mid-course Session
@@ -41,9 +40,8 @@ class CourseMeetingSeeder extends Seeder
                 'start_datetime' => Carbon::now()->addDays(7)->setTime(14, 0),
                 'end_datetime' => Carbon::now()->addDays(7)->setTime(16, 0),
                 'location' => 'Room 102',
-                'description' => 'Progress review and Q&A session',
             ]);
-            
+
             // Final Session
             $finalMeeting = CourseMeeting::firstOrCreate([
                 'course_id' => $course->id,
@@ -52,12 +50,11 @@ class CourseMeetingSeeder extends Seeder
                 'start_datetime' => Carbon::now()->addDays(14)->setTime(13, 0),
                 'end_datetime' => Carbon::now()->addDays(14)->setTime(17, 0),
                 'location' => 'Auditorium A',
-                'description' => 'Final presentations and certificate ceremony',
             ]);
-            
+
             echo "   ✓ Created 3 meetings for course: {$course->name}\n";
         }
-        
+
         echo "✅ Course meetings created successfully!\n";
     }
 }

@@ -126,12 +126,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="font-weight-bold">Skills Required:</label>
-                        <p class="text-muted">Not specified in request</p>
-                    </div>
-
                     @if($talentRequest->project_description)
                     <div class="form-group">
                         <label class="font-weight-bold">Project Description:</label>
@@ -151,6 +145,160 @@
                                 <p class="mb-0">{{ $talentRequest->requirements }}</p>
                             </div>
                         </div>
+                    </div>
+                    @endif
+
+                    {{-- Enhanced Project Timeline Information --}}
+                    @if($talentRequest->project)
+                    <hr class="my-4">
+                    <div class="alert alert-info" role="alert">
+                        <h6 class="alert-heading mb-3">
+                            <i class="fas fa-project-diagram me-2"></i>
+                            Linked Project Information
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">Project Name:</label>
+                                    <p class="mb-1 text-dark">{{ $talentRequest->project->title }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">Project Status:</label>
+                                    <p class="mb-1">
+                                        <span class="badge
+                                            @if($talentRequest->project->status === 'active') badge-success
+                                            @elseif($talentRequest->project->status === 'completed') badge-primary
+                                            @elseif($talentRequest->project->status === 'overdue') badge-danger
+                                            @elseif($talentRequest->project->status === 'pending_admin') badge-warning
+                                            @else badge-secondary
+                                            @endif">
+                                            {{ ucwords(str_replace('_', ' ', $talentRequest->project->status)) }}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">
+                                        <i class="fas fa-calendar-alt me-1 text-success"></i>
+                                        Project Start Date:
+                                    </label>
+                                    <p class="mb-1 text-dark">
+                                        {{ optional($talentRequest->project->expected_start_date)->format('F d, Y') ?? 'Not set' }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">
+                                        <i class="fas fa-calendar-times me-1 text-danger"></i>
+                                        Project End Date:
+                                    </label>
+                                    <p class="mb-1 text-dark">
+                                        <strong>{{ optional($talentRequest->project->expected_end_date)->format('F d, Y') ?? 'Not set' }}</strong>
+                                        @if($talentRequest->project->expected_end_date)
+                                            <br>
+                                            <small class="text-muted">
+                                                @php
+                                                    $daysLeft = now()->diffInDays($talentRequest->project->expected_end_date, false);
+                                                @endphp
+                                                @if($daysLeft > 0)
+                                                    <i class="fas fa-clock text-info"></i> {{ $daysLeft }} days remaining
+                                                @elseif($daysLeft == 0)
+                                                    <i class="fas fa-exclamation-triangle text-warning"></i> Due today
+                                                @else
+                                                    <i class="fas fa-exclamation-circle text-danger"></i> {{ abs($daysLeft) }} days overdue
+                                                @endif
+                                            </small>
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        @if($talentRequest->project->estimated_duration_days)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">
+                                        <i class="fas fa-hourglass-half me-1 text-primary"></i>
+                                        Estimated Duration:
+                                    </label>
+                                    <p class="mb-1 text-dark">{{ $talentRequest->project->estimated_duration_days }} days</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">
+                                        <i class="fas fa-dollar-sign me-1 text-success"></i>
+                                        Budget Range:
+                                    </label>
+                                    <p class="mb-1 text-dark">
+                                        @if($talentRequest->project->overall_budget_min && $talentRequest->project->overall_budget_max)
+                                            ${{ number_format($talentRequest->project->overall_budget_min) }} - ${{ number_format($talentRequest->project->overall_budget_max) }}
+                                        @elseif($talentRequest->project->overall_budget_min)
+                                            From ${{ number_format($talentRequest->project->overall_budget_min) }}
+                                        @elseif($talentRequest->project->overall_budget_max)
+                                            Up to ${{ number_format($talentRequest->project->overall_budget_max) }}
+                                        @else
+                                            Not specified
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        @if($talentRequest->project->description)
+                        <div class="form-group mb-0">
+                            <label class="font-weight-bold">
+                                <i class="fas fa-info-circle me-1 text-info"></i>
+                                Project Description:
+                            </label>
+                            <div class="bg-light p-3 rounded border">
+                                <p class="mb-0 text-dark">{{ $talentRequest->project->description }}</p>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
+
+                    {{-- Legacy Project Information from Talent Request --}}
+                    @if(!$talentRequest->project && ($talentRequest->project_start_date || $talentRequest->project_end_date))
+                    <hr class="my-4">
+                    <div class="alert alert-warning" role="alert">
+                        <h6 class="alert-heading mb-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Request Timeline Information (Legacy)
+                        </h6>
+                        <div class="row">
+                            @if($talentRequest->project_start_date)
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">Requested Start Date:</label>
+                                    <p class="mb-1 text-dark">
+                                        {{ optional($talentRequest->project_start_date)->format('F d, Y') }}
+                                    </p>
+                                </div>
+                            </div>
+                            @endif
+                            @if($talentRequest->project_end_date)
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">Requested End Date:</label>
+                                    <p class="mb-1 text-dark">
+                                        <strong>{{ optional($talentRequest->project_end_date)->format('F d, Y') }}</strong>
+                                    </p>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                        <small class="text-muted">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            This request is not linked to the new project system. Timeline information is based on the original request data.
+                        </small>
                     </div>
                     @endif
                 </div>

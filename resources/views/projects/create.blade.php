@@ -1,6 +1,6 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'Create New Project')
+@section('title', 'Buat Proyek Baru')
 @section('container')
 <div class="container mx-auto px-4 py-8">
     <!-- Success/Error Messages -->
@@ -9,7 +9,7 @@
             <div class="flex items-center">
                 <i class="fas fa-check-circle mr-3 text-lg"></i>
                 <div>
-                    <h4 class="font-semibold">Success!</h4>
+                    <h4 class="font-semibold">Berhasil!</h4>
                     <p>{{ session('success') }}</p>
                 </div>
             </div>
@@ -25,8 +25,8 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">Create New Project</h1>
-            <p class="text-gray-600 mt-2">Set up your project details and submit for admin approval</p>
+            <h1 class="text-3xl font-bold text-gray-900">Buat Proyek Baru</h1>
+            <p class="text-gray-600 mt-2">Atur detail proyek Anda dan kirim untuk persetujuan admin</p>
         </div>
     </div>
 
@@ -54,82 +54,82 @@
         <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
             <!-- Basic Information -->
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Informasi Dasar</h2>
 
                 <div class="grid grid-cols-1 gap-6">
                     <!-- Project Title -->
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                            Project Title <span class="text-red-500">*</span>
+                            Judul Proyek <span class="text-red-500">*</span>
                         </label>
                         <input type="text"
                                id="title"
                                name="title"
                                value="{{ old('title') }}"
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                               placeholder="Enter a descriptive project title"
+                               placeholder="Masukkan judul proyek yang deskriptif"
                                required>
-                        <p class="text-sm text-gray-500 mt-1">This will be visible to all assigned talents</p>
+                        <p class="text-sm text-gray-500 mt-1">Ini akan terlihat oleh semua talenta yang ditugaskan</p>
                     </div>
 
                     <!-- Industry -->
                     <div>
                         <label for="industry" class="block text-sm font-medium text-gray-700 mb-2">
-                            Industry
+                            Industri
                         </label>
                         <select id="industry"
                                 name="industry"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Select an industry</option>
-                            <option value="Technology" {{ old('industry') === 'Technology' ? 'selected' : '' }}>Technology</option>
-                            <option value="Finance" {{ old('industry') === 'Finance' ? 'selected' : '' }}>Finance</option>
-                            <option value="Healthcare" {{ old('industry') === 'Healthcare' ? 'selected' : '' }}>Healthcare</option>
-                            <option value="Education" {{ old('industry') === 'Education' ? 'selected' : '' }}>Education</option>
+                            <option value="">Pilih industri</option>
+                            <option value="Technology" {{ old('industry') === 'Technology' ? 'selected' : '' }}>Teknologi</option>
+                            <option value="Finance" {{ old('industry') === 'Finance' ? 'selected' : '' }}>Keuangan</option>
+                            <option value="Healthcare" {{ old('industry') === 'Healthcare' ? 'selected' : '' }}>Kesehatan</option>
+                            <option value="Education" {{ old('industry') === 'Education' ? 'selected' : '' }}>Pendidikan</option>
                             <option value="E-commerce" {{ old('industry') === 'E-commerce' ? 'selected' : '' }}>E-commerce</option>
-                            <option value="Manufacturing" {{ old('industry') === 'Manufacturing' ? 'selected' : '' }}>Manufacturing</option>
-                            <option value="Marketing" {{ old('industry') === 'Marketing' ? 'selected' : '' }}>Marketing</option>
-                            <option value="Other" {{ old('industry') === 'Other' ? 'selected' : '' }}>Other</option>
+                            <option value="Manufacturing" {{ old('industry') === 'Manufacturing' ? 'selected' : '' }}>Manufaktur</option>
+                            <option value="Marketing" {{ old('industry') === 'Marketing' ? 'selected' : '' }}>Pemasaran</option>
+                            <option value="Other" {{ old('industry') === 'Other' ? 'selected' : '' }}>Lainnya</option>
                         </select>
                     </div>
 
                     <!-- Project Description -->
                     <div>
                         <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                            Project Description <span class="text-red-500">*</span>
+                            Deskripsi Proyek <span class="text-red-500">*</span>
                         </label>
                         <textarea id="description"
                                   name="description"
                                   rows="5"
                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                  placeholder="Provide detailed information about your project, goals, and expected outcomes"
+                                  placeholder="Berikan informasi detail tentang proyek, tujuan, dan hasil yang diharapkan"
                                   required>{{ old('description') }}</textarea>
-                        <p class="text-sm text-gray-500 mt-1">Be specific about project goals and deliverables</p>
+                        <p class="text-sm text-gray-500 mt-1">Jelaskan secara spesifik tentang tujuan proyek dan deliverable</p>
                     </div>
 
                     <!-- General Requirements -->
                     <div>
                         <label for="general_requirements" class="block text-sm font-medium text-gray-700 mb-2">
-                            General Requirements
+                            Kebutuhan Umum
                         </label>
                         <textarea id="general_requirements"
                                   name="general_requirements"
                                   rows="4"
                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                  placeholder="List general skills, experience, or qualifications needed for this project">{{ old('general_requirements') }}</textarea>
-                        <p class="text-sm text-gray-500 mt-1">These will apply to all talent assignments (you can specify individual requirements later)</p>
+                                  placeholder="Daftarkan skill umum, pengalaman, atau kualifikasi yang dibutuhkan untuk proyek ini">{{ old('general_requirements') }}</textarea>
+                        <p class="text-sm text-gray-500 mt-1">Ini akan berlaku untuk semua penugasan talenta (Anda dapat menentukan kebutuhan individual nanti)</p>
                     </div>
                 </div>
             </div>
 
             <!-- Timeline -->
             <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Project Timeline</h2>
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Timeline Proyek</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Start Date -->
                     <div>
                         <label for="expected_start_date" class="block text-sm font-medium text-gray-700 mb-2">
-                            Expected Start Date <span class="text-red-500">*</span>
+                            Tanggal Mulai yang Diharapkan <span class="text-red-500">*</span>
                         </label>
                         <input type="date"
                                id="expected_start_date"
@@ -143,7 +143,7 @@
                     <!-- End Date -->
                     <div>
                         <label for="expected_end_date" class="block text-sm font-medium text-gray-700 mb-2">
-                            Expected End Date <span class="text-red-500">*</span>
+                            Tanggal Selesai yang Diharapkan <span class="text-red-500">*</span>
                         </label>
                         <input type="date"
                                id="expected_end_date"
@@ -157,20 +157,20 @@
                 <div id="duration-display" class="mt-4 p-3 bg-blue-50 rounded-lg hidden">
                     <p class="text-sm text-blue-700">
                         <i class="fas fa-info-circle mr-2"></i>
-                        Project duration: <span id="duration-days">0</span> days
+                        Durasi proyek: <span id="duration-days">0</span> hari
                     </p>
                 </div>
             </div>
 
             <!-- Budget (Optional) -->
             <div class="p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Overall Budget (Optional)</h2>
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Anggaran Keseluruhan (Opsional)</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Minimum Budget -->
                     <div>
                         <label for="overall_budget_min" class="block text-sm font-medium text-gray-700 mb-2">
-                            Minimum Budget (Rp)
+                            Anggaran Minimum (Rp)
                         </label>
                         <input type="number"
                                id="overall_budget_min"
@@ -185,7 +185,7 @@
                     <!-- Maximum Budget -->
                     <div>
                         <label for="overall_budget_max" class="block text-sm font-medium text-gray-700 mb-2">
-                            Maximum Budget (Rp)
+                            Anggaran Maksimum (Rp)
                         </label>
                         <input type="number"
                                id="overall_budget_max"
@@ -200,7 +200,7 @@
 
                 <p class="text-sm text-gray-500 mt-4">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    Budget ranges help talents understand the project scope. You can set individual budgets for each talent assignment later.
+                    Rentang anggaran membantu talenta memahami ruang lingkup proyek. Anda dapat menetapkan anggaran individual untuk setiap penugasan talenta nanti.
                 </p>
             </div>
         </div>
@@ -209,28 +209,28 @@
         <div class="flex justify-between items-center">
             <a href="{{ route('projects.index') }}"
                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded-lg font-medium transition duration-200">
-                <i class="fas fa-times mr-2"></i>Cancel
+                <i class="fas fa-times mr-2"></i>Batal
             </a>
 
             <button type="submit"
                     id="submit-button"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-200">
                 <i id="submit-icon" class="fas fa-paper-plane mr-2"></i>
-                <span id="submit-text">Submit for Approval</span>
+                <span id="submit-text">Kirim untuk Persetujuan</span>
             </button>
         </div>
 
         <!-- Help Text -->
         <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-3">
-                <i class="fas fa-info-circle mr-2 text-blue-600"></i>What happens next?
+                <i class="fas fa-info-circle mr-2 text-blue-600"></i>Apa yang terjadi selanjutnya?
             </h3>
             <div class="space-y-2 text-sm text-gray-600">
-                <p>• Your project will be reviewed by our admin team for approval</p>
-                <p>• Once approved, you can assign talents to specific roles within your project</p>
-                <p>• Each talent can have customized requirements, budgets, and timelines</p>
-                <p>• You'll receive notifications when talents accept or decline assignments</p>
-                <p>• Track project progress through our comprehensive dashboard</p>
+                <p>• Proyek Anda akan direview oleh tim admin kami untuk persetujuan</p>
+                <p>• Setelah disetujui, Anda dapat menugaskan talenta ke peran spesifik dalam proyek Anda</p>
+                <p>• Setiap talenta dapat memiliki kebutuhan, anggaran, dan timeline yang disesuaikan</p>
+                <p>• Anda akan menerima notifikasi ketika talenta menerima atau menolak penugasan</p>
+                <p>• Lacak progress proyek melalui dashboard komprehensif kami</p>
             </div>
         </div>
     </form>
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const maxValue = parseFloat(maxBudgetInput.value) || 0;
 
         if (minValue > 0 && maxValue > 0 && minValue > maxValue) {
-            maxBudgetInput.setCustomValidity('Maximum budget must be greater than minimum budget');
+            maxBudgetInput.setCustomValidity('Anggaran maksimum harus lebih besar dari anggaran minimum');
         } else {
             maxBudgetInput.setCustomValidity('');
         }
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Change icon to spinner
         submitIcon.className = 'fas fa-spinner fa-spin mr-2';
-        submitText.textContent = 'Submitting...';
+        submitText.textContent = 'Mengirim...';
 
         // Optional: Add a timeout fallback in case of network issues
         setTimeout(function() {
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitButton.classList.remove('bg-blue-500', 'cursor-not-allowed');
                 submitButton.classList.add('hover:bg-blue-700');
                 submitIcon.className = 'fas fa-paper-plane mr-2';
-                submitText.textContent = 'Submit for Approval';
+                submitText.textContent = 'Kirim untuk Persetujuan';
             }
         }, 10000); // Reset after 10 seconds if no response
     });

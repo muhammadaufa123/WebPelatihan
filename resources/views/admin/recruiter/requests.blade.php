@@ -1,6 +1,6 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'My Talent Requests')
+@section('title', 'Permintaan Talenta Saya')
 @section('container')
 
 {{-- Full Width Dashboard Container like dashboard.blade.php --}}
@@ -15,18 +15,18 @@
                 </div>
                 <div>
                     <h1 class="text-4xl lg:text-5xl font-bold text-white mb-2">
-                        My Talent Requests
+                        Permintaan Talenta Saya
                     </h1>
-                    <p class="text-lg text-emerald-100">Track and manage your collaboration requests with talented professionals</p>
+                    <p class="text-lg text-emerald-100">Lacak dan kelola permintaan kolaborasi Anda dengan profesional berbakat</p>
 
                     <!-- Quick Stats -->
                     <div class="flex flex-wrap gap-4 mt-4">
                         <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/30">
-                            <span class="text-sm text-emerald-100">Total Requests:</span>
+                            <span class="text-sm text-emerald-100">Total Permintaan:</span>
                             <span class="font-bold text-white ml-1">{{ $requests->total() ?? $requests->count() }}</span>
                         </div>
                         <div class="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/30">
-                            <span class="text-sm text-emerald-100">This Page:</span>
+                            <span class="text-sm text-emerald-100">Halaman Ini:</span>
                             <span class="font-bold text-white ml-1">{{ $requests->count() }}</span>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                 <!-- PDF Export Dropdown -->
                 <div class="relative">
                     <button id="exportDropdownButtonRequests" class="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl hover:bg-white/30 transition-all duration-300 font-medium border border-white/30 shadow-lg">
-                        <i class="fas fa-download mr-2"></i>Export PDF
+                        <i class="fas fa-download mr-2"></i>Ekspor PDF
                         <i class="fas fa-chevron-down ml-2 text-xs"></i>
                     </button>
                     <div id="exportDropdownMenuRequests" class="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible transition-all duration-200 z-10">
@@ -46,16 +46,16 @@
                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                 <i class="fas fa-history mr-3 text-blue-500"></i>
                                 <div>
-                                    <div class="font-medium">Request History</div>
-                                    <div class="text-xs text-gray-500">All your talent requests</div>
+                                    <div class="font-medium">Riwayat Permintaan</div>
+                                    <div class="text-xs text-gray-500">Semua permintaan talenta Anda</div>
                                 </div>
                             </a>
                             <a href="{{ route('recruiter.export_onboarded_talents') }}"
                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                 <i class="fas fa-user-check mr-3 text-green-500"></i>
                                 <div>
-                                    <div class="font-medium">Onboarded Talents</div>
-                                    <div class="text-xs text-gray-500">Successfully hired talents</div>
+                                    <div class="font-medium">Talenta Terdaftar</div>
+                                    <div class="text-xs text-gray-500">Talenta yang berhasil dipekerjakan</div>
                                 </div>
                             </a>
                         </div>
@@ -67,11 +67,6 @@
                     <i class="fas fa-sync-alt mr-2"></i>
                     Refresh
                 </button>
-                <a href="{{ route('recruiter.dashboard') }}"
-                   class="inline-flex items-center px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl hover:bg-white/30 transition-all duration-300 font-medium border border-white/30 shadow-lg">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    Back to Dashboard
-                </a>
             </div>
         </div>
     </div>
@@ -86,8 +81,8 @@
                         <i class="fas fa-handshake text-xl text-white"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold mb-1">Talent Collaboration Requests</h2>
-                        <p class="text-emerald-100">Professional network management hub</p>
+                        <h2 class="text-2xl font-bold mb-1">Permintaan Kolaborasi Talenta</h2>
+                        <p class="text-emerald-100">Hub manajemen jaringan profesional</p>
                     </div>
                 </div>
 
@@ -101,57 +96,57 @@
                         <!-- Filter Dropdown -->
                         <div id="filterDropdown" class="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-200 z-50 hidden">
                             <div class="p-4">
-                                <h4 class="font-semibold text-gray-800 mb-3">Filter by Status</h4>
+                                <h4 class="font-semibold text-gray-800 mb-3">Filter berdasarkan Status</h4>
                                 <div class="space-y-2">
                                     <label class="flex items-center">
                                         <input type="checkbox" value="all" class="filter-status rounded text-emerald-600 mr-2" checked>
-                                        <span class="text-sm text-gray-700">All Requests</span>
+                                        <span class="text-sm text-gray-700">Semua Permintaan</span>
                                     </label>
                                             <label class="flex items-center">
                                                 <input type="checkbox" value="pending" class="filter-status rounded text-yellow-600 mr-2">
-                                                <span class="text-sm text-gray-700">Pending</span>
+                                                <span class="text-sm text-gray-700">Menunggu</span>
                                             </label>
                                             <label class="flex items-center">
                                                 <input type="checkbox" value="approved" class="filter-status rounded text-green-600 mr-2">
-                                                <span class="text-sm text-gray-700">Approved</span>
+                                                <span class="text-sm text-gray-700">Disetujui</span>
                                             </label>
                                             <label class="flex items-center">
                                                 <input type="checkbox" value="rejected" class="filter-status rounded text-red-600 mr-2">
-                                                <span class="text-sm text-gray-700">Rejected</span>
+                                                <span class="text-sm text-gray-700">Ditolak</span>
                                             </label>
                                             <label class="flex items-center">
                                                 <input type="checkbox" value="meeting_arranged" class="filter-status rounded text-blue-600 mr-2">
-                                                <span class="text-sm text-gray-700">Meeting Arranged</span>
+                                                <span class="text-sm text-gray-700">Pertemuan Dijadwalkan</span>
                                             </label>
                                         </div>
                                         <div class="mt-4 flex gap-2">
-                                            <button onclick="applyFilters()" class="flex-1 px-3 py-2 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700">Apply</button>
-                                            <button onclick="clearFilters()" class="flex-1 px-3 py-2 bg-gray-400 text-white rounded-lg text-sm hover:bg-gray-500">Clear</button>
+                                            <button onclick="applyFilters()" class="flex-1 px-3 py-2 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700">Terapkan</button>
+                                            <button onclick="clearFilters()" class="flex-1 px-3 py-2 bg-gray-400 text-white rounded-lg text-sm hover:bg-gray-500">Bersihkan</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="relative">
                                 <button id="sortButton" class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition-all duration-300 border border-white/30 flex items-center">
-                                    <i class="fas fa-sort mr-2"></i>Sort
+                                    <i class="fas fa-sort mr-2"></i>Urutkan
                                     <i class="fas fa-chevron-down ml-2 text-sm"></i>
                                 </button>
                                 <!-- Sort Dropdown -->
                                 <div id="sortDropdown" class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 z-50 hidden">
                                     <div class="p-4">
-                                        <h4 class="font-semibold text-gray-800 mb-3">Sort by</h4>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Urutkan berdasarkan</h4>
                                         <div class="space-y-2">
                                             <button onclick="sortRequests('date_desc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm text-black">
-                                                <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Newest First
+                                                <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Terbaru Dahulu
                                             </button>
                                             <button onclick="sortRequests('date_asc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm text-black">
-                                                <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Oldest First
+                                                <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Terlama Dahulu
                                             </button>
                                             <button onclick="sortRequests('title_asc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm text-black">
-                                                <i class="fas fa-sort-alpha-down mr-2 text-gray-500"></i>Project Title A-Z
+                                                <i class="fas fa-sort-alpha-down mr-2 text-gray-500"></i>Judul Proyek A-Z
                                             </button>
                                             <button onclick="sortRequests('title_desc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm text-black">
-                                                <i class="fas fa-sort-alpha-up mr-2 text-gray-500"></i>Project Title Z-A
+                                                <i class="fas fa-sort-alpha-up mr-2 text-gray-500"></i>Judul Proyek Z-A
                                             </button>
                                             <button onclick="sortRequests('status')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm text-black">
                                                 <i class="fas fa-tasks mr-2 text-gray-500"></i>Status
@@ -173,57 +168,57 @@
                         <!-- Mobile Filter Dropdown -->
                         <div id="mobileFilterDropdown" class="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-50 hidden">
                             <div class="p-4">
-                                <h4 class="font-semibold text-gray-800 mb-3">Filter by Status</h4>
+                                <h4 class="font-semibold text-gray-800 mb-3">Filter berdasarkan Status</h4>
                                 <div class="space-y-2">
                                     <label class="flex items-center">
                                         <input type="checkbox" value="all" class="mobile-filter-status rounded text-emerald-600 mr-2" checked>
-                                        <span class="text-sm text-gray-700">All Requests</span>
+                                        <span class="text-sm text-gray-700">Semua Permintaan</span>
                                     </label>
                                     <label class="flex items-center">
                                         <input type="checkbox" value="pending" class="mobile-filter-status rounded text-yellow-600 mr-2">
-                                        <span class="text-sm text-gray-700">Pending</span>
+                                        <span class="text-sm text-gray-700">Menunggu</span>
                                     </label>
                                     <label class="flex items-center">
                                         <input type="checkbox" value="approved" class="mobile-filter-status rounded text-green-600 mr-2">
-                                        <span class="text-sm text-gray-700">Approved</span>
+                                        <span class="text-sm text-gray-700">Disetujui</span>
                                     </label>
                                     <label class="flex items-center">
                                         <input type="checkbox" value="rejected" class="mobile-filter-status rounded text-red-600 mr-2">
-                                        <span class="text-sm text-gray-700">Rejected</span>
+                                        <span class="text-sm text-gray-700">Ditolak</span>
                                     </label>
                                     <label class="flex items-center">
                                         <input type="checkbox" value="meeting_arranged" class="mobile-filter-status rounded text-blue-600 mr-2">
-                                        <span class="text-sm text-gray-700">Meeting Arranged</span>
+                                        <span class="text-sm text-gray-700">Pertemuan Dijadwalkan</span>
                                     </label>
                                 </div>
                                 <div class="mt-4 flex gap-2">
-                                    <button onclick="applyMobileFilters()" class="flex-1 px-3 py-2 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700">Apply</button>
-                                    <button onclick="clearMobileFilters()" class="flex-1 px-3 py-2 bg-gray-400 text-white rounded-lg text-sm hover:bg-gray-500">Clear</button>
+                                    <button onclick="applyMobileFilters()" class="flex-1 px-3 py-2 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700">Terapkan</button>
+                                    <button onclick="clearMobileFilters()" class="flex-1 px-3 py-2 bg-gray-400 text-white rounded-lg text-sm hover:bg-gray-500">Bersihkan</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="relative flex-1">
                         <button id="mobileSortButton" class="w-full px-4 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl hover:bg-white/30 transition-all duration-300 flex items-center justify-center border border-white/30">
-                            <i class="fas fa-sort mr-2"></i>Sort
+                            <i class="fas fa-sort mr-2"></i>Urutkan
                             <i class="fas fa-chevron-down ml-2 text-sm"></i>
                         </button>
                         <!-- Mobile Sort Dropdown -->
                         <div id="mobileSortDropdown" class="absolute left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-50 hidden">
                             <div class="p-4">
-                                <h4 class="font-semibold text-gray-800 mb-3">Sort by</h4>
+                                <h4 class="font-semibold text-gray-800 mb-3">Urutkan berdasarkan</h4>
                                 <div class="space-y-2">
                                     <button onclick="sortMobileRequests('date_desc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm">
-                                        <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Newest First
+                                        <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Terbaru Dahulu
                                     </button>
                                     <button onclick="sortMobileRequests('date_asc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm">
-                                        <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Oldest First
+                                        <i class="fas fa-calendar-alt mr-2 text-gray-500"></i>Terlama Dahulu
                                     </button>
                                     <button onclick="sortMobileRequests('title_asc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm">
-                                        <i class="fas fa-sort-alpha-down mr-2 text-gray-500"></i>Project Title A-Z
+                                        <i class="fas fa-sort-alpha-down mr-2 text-gray-500"></i>Judul Proyek A-Z
                                     </button>
                                     <button onclick="sortMobileRequests('title_desc')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm">
-                                        <i class="fas fa-sort-alpha-up mr-2 text-gray-500"></i>Project Title Z-A
+                                        <i class="fas fa-sort-alpha-up mr-2 text-gray-500"></i>Judul Proyek Z-A
                                     </button>
                                     <button onclick="sortMobileRequests('status')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm">
                                         <i class="fas fa-tasks mr-2 text-gray-500"></i>Status
@@ -247,17 +242,17 @@
                                     <tr class="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                                         <th class="text-left py-6 px-6 font-bold text-gray-800 uppercase tracking-wider text-sm">
                                             <div class="flex items-center">
-                                                <i class="fas fa-user-tie mr-2 text-emerald-600"></i>Talent
+                                                <i class="fas fa-user-tie mr-2 text-emerald-600"></i>Talenta
                                             </div>
                                         </th>
                                         <th class="text-left py-6 px-6 font-bold text-gray-800 uppercase tracking-wider text-sm">
                                             <div class="flex items-center">
-                                                <i class="fas fa-project-diagram mr-2 text-blue-600"></i>Project Title
+                                                <i class="fas fa-project-diagram mr-2 text-blue-600"></i>Judul Proyek
                                             </div>
                                         </th>
                                         <th class="text-left py-6 px-6 font-bold text-gray-800 uppercase tracking-wider text-sm">
                                             <div class="flex items-center">
-                                                <i class="fas fa-money-bill mr-2 text-green-600"></i>Budget & Duration
+                                                <i class="fas fa-money-bill mr-2 text-green-600"></i>Budget & Durasi
                                             </div>
                                         </th>
                                         <th class="text-left py-6 px-6 font-bold text-gray-800 uppercase tracking-wider text-sm">
@@ -267,12 +262,12 @@
                                         </th>
                                         <th class="text-left py-6 px-6 font-bold text-gray-800 uppercase tracking-wider text-sm">
                                             <div class="flex items-center">
-                                                <i class="fas fa-calendar mr-2 text-orange-600"></i>Submitted
+                                                <i class="fas fa-calendar mr-2 text-orange-600"></i>Dikirim
                                             </div>
                                         </th>
                                         <th class="text-left py-6 px-6 font-bold text-gray-800 uppercase tracking-wider text-sm">
                                             <div class="flex items-center">
-                                                <i class="fas fa-cogs mr-2 text-gray-600"></i>Actions
+                                                <i class="fas fa-cogs mr-2 text-gray-600"></i>Aksi
                                             </div>
                                         </th>
                                     </tr>
@@ -337,7 +332,7 @@
                                                                 <i class="fas fa-clock text-white text-sm"></i>
                                                             </div>
                                                             <div>
-                                                                <div class="text-xs text-purple-600 font-semibold uppercase tracking-wide">Duration</div>
+                                                                <div class="text-xs text-purple-600 font-semibold uppercase tracking-wide">Durasi</div>
                                                                 <div class="font-bold text-purple-800">{{ $request->project_duration }}</div>
                                                             </div>
                                                         </div>
@@ -383,14 +378,14 @@
                                                                 {{ json_encode($request->project_title) }},
                                                                 {{ json_encode($request->project_description) }},
                                                                 {{ json_encode($request->requirements ?? '') }},
-                                                                {{ json_encode($request->budget_range ?? 'Not specified') }},
-                                                                {{ json_encode($request->project_duration ?? 'Not specified') }}
+                                                                {{ json_encode($request->budget_range ?? 'Tidak ditentukan') }},
+                                                                {{ json_encode($request->project_duration ?? 'Tidak ditentukan') }}
                                                             )">>
-                                                        <i class="fas fa-eye mr-1.5 text-xs"></i>View Details
+                                                        <i class="fas fa-eye mr-1.5 text-xs"></i>Lihat Detail
                                                     </button>
                                                     <a href="mailto:{{ $request->talent->user->email }}"
                                                        class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-xs font-medium shadow-lg hover:shadow-xl hover:scale-105">
-                                                        <i class="fas fa-envelope mr-1.5 text-xs"></i>Contact
+                                                        <i class="fas fa-envelope mr-1.5 text-xs"></i>Kontak
                                                     </a>
                                                 </div>
                                             </td>
@@ -462,7 +457,7 @@
 
                                     @if($request->requirements)
                                         <div class="text-gray-700 text-sm p-3 bg-white rounded-xl border border-blue-200">
-                                            <span class="font-semibold text-blue-800">Requirements:</span><br>
+                                            <span class="font-semibold text-blue-800">Persyaratan:</span><br>
                                             <span class="text-xs">{{ Str::limit($request->requirements, 120) }}</span>
                                         </div>
                                     @endif
@@ -488,7 +483,7 @@
                                                 <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-xl flex items-center justify-center mr-2">
                                                     <i class="fas fa-clock text-white text-sm"></i>
                                                 </div>
-                                                <span class="text-xs text-purple-600 font-bold uppercase tracking-wide">Duration</span>
+                                                <span class="text-xs text-purple-600 font-bold uppercase tracking-wide">Durasi</span>
                                             </div>
                                             <div class="font-bold text-purple-800 text-sm">{{ $request->project_duration }}</div>
                                         </div>
@@ -502,7 +497,7 @@
                                             <i class="fas fa-calendar text-white text-sm"></i>
                                         </div>
                                         <div>
-                                            <div class="text-xs text-gray-600 font-semibold uppercase tracking-wide">Submitted</div>
+                                            <div class="text-xs text-gray-600 font-semibold uppercase tracking-wide">Dikirim</div>
                                             <div class="font-bold text-gray-800">{{ $request->created_at->format('M d, Y') }}</div>
                                             <div class="text-gray-500 text-xs">{{ $request->created_at->diffForHumans() }}</div>
                                         </div>
@@ -517,14 +512,14 @@
                                                 {{ json_encode($request->project_title) }},
                                                 {{ json_encode($request->project_description) }},
                                                 {{ json_encode($request->requirements ?? '') }},
-                                                {{ json_encode($request->budget_range ?? 'Not specified') }},
-                                                {{ json_encode($request->project_duration ?? 'Not specified') }}
+                                                {{ json_encode($request->budget_range ?? 'Tidak ditentukan') }},
+                                                {{ json_encode($request->project_duration ?? 'Tidak ditentukan') }}
                                             )">
-                                        <i class="fas fa-eye mr-2"></i>View Details
+                                        <i class="fas fa-eye mr-2"></i>Lihat Detail
                                     </button>
                                     <a href="mailto:{{ $request->talent->user->email }}"
                                        class="flex-1 px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-sm font-bold text-center shadow-lg hover:shadow-xl transform hover:scale-105">
-                                        <i class="fas fa-envelope mr-2"></i>Contact
+                                        <i class="fas fa-envelope mr-2"></i>Kontak
                                     </a>
                                 </div>
                             </div>
@@ -544,12 +539,12 @@
                     <div class="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-clipboard-list text-4xl text-gray-400"></i>
                     </div>
-                    <h5 class="text-xl font-semibold text-gray-700 mb-3">No Talent Requests Yet</h5>
-                    <p class="text-gray-500 max-w-md mx-auto mb-6">You haven't submitted any talent requests yet. Start discovering and connecting with talented professionals.</p>
+                    <h5 class="text-xl font-semibold text-gray-700 mb-3">Belum Ada Permintaan Talenta</h5>
+                    <p class="text-gray-500 max-w-md mx-auto mb-6">Anda belum mengirimkan permintaan talenta apapun. Mulai temukan dan terhubung dengan profesional berbakat.</p>
                     <a href="{{ route('recruiter.dashboard') }}"
                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 font-medium shadow-lg">
                         <i class="fas fa-search mr-2"></i>
-                        Discover Talents
+                        Temukan Talenta
                     </a>
                 </div>
             @endif
@@ -572,7 +567,7 @@
                         <div class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mr-3">
                             <i class="fas fa-clipboard-list text-white"></i>
                         </div>
-                        <h3 class="text-lg font-semibold text-white" id="modal-title">Request Details</h3>
+                        <h3 class="text-lg font-semibold text-white" id="modal-title">Detail Permintaan</h3>
                     </div>
                     <button type="button"
                             class="text-white hover:text-gray-200 transition-colors duration-200 p-2 hover:bg-white hover:bg-opacity-20 rounded-lg"
@@ -588,17 +583,17 @@
                     <!-- Left Column -->
                     <div class="space-y-6">
                         <div class="bg-gray-50 rounded-xl p-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Project Title</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Judul Proyek</label>
                             <p id="modalProjectTitle" class="text-gray-900 text-lg font-medium"></p>
                         </div>
 
                         <div class="bg-gray-50 rounded-xl p-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Budget Range</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Rentang Budget</label>
                             <p id="modalBudgetRange" class="text-gray-900 font-medium"></p>
                         </div>
 
                         <div class="bg-gray-50 rounded-xl p-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Project Duration</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Durasi Proyek</label>
                             <p id="modalProjectDuration" class="text-gray-900 font-medium"></p>
                         </div>
                     </div>
@@ -606,12 +601,12 @@
                     <!-- Right Column -->
                     <div class="space-y-6">
                         <div class="bg-gray-50 rounded-xl p-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Project Description</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi Proyek</label>
                             <p id="modalProjectDescription" class="text-gray-900 leading-relaxed"></p>
                         </div>
 
                         <div class="bg-gray-50 rounded-xl p-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Requirements</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Persyaratan</label>
                             <p id="modalRequirements" class="text-gray-900 leading-relaxed"></p>
                         </div>
                     </div>
@@ -624,7 +619,7 @@
                     <button type="button"
                             class="px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all duration-200 font-medium shadow-lg"
                             onclick="closeRequestModal()">
-                        <i class="fas fa-times mr-2"></i>Close
+                        <i class="fas fa-times mr-2"></i>Tutup
                     </button>
                 </div>
             </div>
@@ -699,7 +694,7 @@ function viewRequestDetails(title, description, requirements, budget, duration) 
         // Populate modal content
         document.getElementById('modalProjectTitle').textContent = title;
         document.getElementById('modalProjectDescription').textContent = description;
-        document.getElementById('modalRequirements').textContent = requirements || 'Not specified';
+        document.getElementById('modalRequirements').textContent = requirements || 'Tidak ditentukan';
         document.getElementById('modalBudgetRange').textContent = budget;
         document.getElementById('modalProjectDuration').textContent = duration;
 
@@ -721,7 +716,7 @@ function viewRequestDetails(title, description, requirements, budget, duration) 
         console.log('Modal opened successfully');
     } catch (error) {
         console.error('Error in viewRequestDetails:', error);
-        alert('Error opening request details. Please check the console for more information.');
+        alert('Terjadi kesalahan saat membuka detail permintaan. Silakan periksa konsol untuk informasi lebih lanjut.');
     }
 }
 
@@ -939,10 +934,10 @@ function sortRequests(sortType) {
     // Update sort button text
     const sortButton = document.getElementById('sortButton');
     const sortLabels = {
-        'date_desc': 'Newest First',
-        'date_asc': 'Oldest First',
-        'title_asc': 'Title A-Z',
-        'title_desc': 'Title Z-A',
+        'date_desc': 'Terbaru Dahulu',
+        'date_asc': 'Terlama Dahulu',
+        'title_asc': 'Judul A-Z',
+        'title_desc': 'Judul Z-A',
         'status': 'Status'
     };
 
@@ -984,10 +979,10 @@ function updateNoResultsMessage(visibleCount) {
                 <div class="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-search text-4xl text-gray-400"></i>
                 </div>
-                <h5 class="text-xl font-semibold text-gray-700 mb-3">No Matching Requests</h5>
-                <p class="text-gray-500 max-w-md mx-auto mb-6">No requests match your current filter criteria. Try adjusting your filters.</p>
+                <h5 class="text-xl font-semibold text-gray-700 mb-3">Tidak Ada Permintaan yang Cocok</h5>
+                <p class="text-gray-500 max-w-md mx-auto mb-6">Tidak ada permintaan yang sesuai dengan kriteria filter Anda saat ini. Coba sesuaikan filter Anda.</p>
                 <button onclick="clearFilters()" class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-medium shadow-lg">
-                    <i class="fas fa-times mr-2"></i>Clear Filters
+                    <i class="fas fa-times mr-2"></i>Bersihkan Filter
                 </button>
             `;
 
@@ -1083,10 +1078,10 @@ function sortMobileRequests(sortType) {
     // Update sort button text
     const sortButton = document.getElementById('mobileSortButton');
     const sortLabels = {
-        'date_desc': 'Newest First',
-        'date_asc': 'Oldest First',
-        'title_asc': 'Title A-Z',
-        'title_desc': 'Title Z-A',
+        'date_desc': 'Terbaru Dahulu',
+        'date_asc': 'Terlama Dahulu',
+        'title_asc': 'Judul A-Z',
+        'title_desc': 'Judul Z-A',
         'status': 'Status'
     };
 

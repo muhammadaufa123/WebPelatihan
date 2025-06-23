@@ -1,4 +1,4 @@
-<ul class="navbar-nav  bg-gradient-primary  sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+<ul class="navbar-nav  bg-gradient-primary  sidebar sidebar-dark accordion" id="accordionSidebar">
 
      <!-- Sidebar - Brand -->
      <a class=" d-flex align-items-center justify-content-center" href="/dashboard">
@@ -6,11 +6,11 @@
              {{-- <div class=" col-sm-3 d-sm-block d-none"><img class="img-fluid" src="asset/img/logo.png" alt="">
              </div> --}}
              <div class=" my-auto col-sm-12 d-none d-sm-block text-center"><img class="img-fluid w-75"
-                     src="{{ url('/asset/img/cbt.png') }}" alt="">
+                     src="{{ asset('images/Logo_Fiks_PUI-11.png') }}" alt="Logo PUI">
              </div>
 
              <div class=" my-auto col-12 d-block d-sm-none text-center"><img class="img-fluid w-75"
-                     src="{{ url('/asset/img/cbt.png') }}" alt="">
+                     src="{{ asset('images/Logo_Fiks_PUI-11.png') }}" alt="Logo PUI">
              </div>
          </div>
      </a>
@@ -19,7 +19,7 @@
      <hr class="sidebar-divider my-0">
 
      <div class="sidebar-heading">
-         Home
+         Daftar menu
      </div>
      @if (Auth()->user()->roles_id == 2 || Auth()->user()->roles_id == 1)
          <!-- Nav Item - Dashboard -->
@@ -43,21 +43,21 @@
          <li class="nav-item  {{ Request::is('talent-admin/dashboard') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent_admin.dashboard') }}">
                  <i class="fas fa-fw fa-tachometer-alt"></i>
-                 <span>Dashboard</span></a>
+                 <span>Beranda</span></a>
          </li>
 
          <!-- Nav Item - Analytics (Phase 1 Enhancement) -->
          <li class="nav-item  {{ Request::is('talent-admin/analytics') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent_admin.analytics') }}">
                  <i class="fas fa-fw fa-chart-bar"></i>
-                 <span>Analytics</span></a>
+                 <span>Analitik</span></a>
          </li>
 
          <!-- Nav Item - Manage Requests -->
          <li class="nav-item  {{ Request::is('talent-admin/manage-requests*') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent_admin.manage_requests') }}">
                  <i class="fas fa-fw fa-handshake"></i>
-                 <span>Manage Requests</span></a>
+                 <span>Permintaan Talent</span></a>
          </li>
 
          <!-- PROJECT-CENTRIC SYSTEM -->
@@ -65,28 +65,28 @@
          <li class="nav-item  {{ Request::is('admin/projects*') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('admin.projects.index') }}">
                  <i class="fas fa-fw fa-cogs"></i>
-                 <span>Project Management</span></a>
+                 <span>Permintaan Proyek</span></a>
          </li>
 
          <!-- Nav Item - Manage Talents -->
          <li class="nav-item  {{ Request::is('talent-admin/manage-talents') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent_admin.manage_talents') }}">
                  <i class="fas fa-fw fa-user-tie"></i>
-                 <span>Manage Talents</span></a>
+                 <span>Manajemen Talent</span></a>
          </li>
 
          <!-- Nav Item - Manage Recruiters -->
          <li class="nav-item  {{ Request::is('talent-admin/manage-recruiters') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent_admin.manage_recruiters') }}">
                  <i class="fas fa-fw fa-briefcase"></i>
-                 <span>Manage Recruiters</span></a>
+                 <span>Manajemen Rekruter</span></a>
          </li>
 
          <!-- Nav Item - Manage Talent Admins -->
          <li class="nav-item  {{ Request::is('talent-admin/manage-talent-admins*') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent_admin.manage_talent_admins') }}">
                  <i class="fas fa-fw fa-user-shield"></i>
-                 <span>Manage Admins</span></a>
+                 <span>Manajemen Admin</span></a>
          </li>
      @endif
 
@@ -95,14 +95,14 @@
          <li class="nav-item  {{ Request::is('talent/dashboard') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent.dashboard') }}">
                  <i class="fas fa-fw fa-user-tie"></i>
-                 <span>Talent Dashboard</span></a>
+                 <span>Beranda</span></a>
          </li>
 
          <!-- Nav Item - My Requests (Legacy System) -->
          <li class="nav-item  {{ Request::is('talent/my-requests*') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent.my_requests') }}">
                  <i class="fas fa-fw fa-tasks"></i>
-                 <span>My Requests</span></a>
+                 <span>Permintaan Saya</span></a>
          </li>
 
          <!-- PROJECT-CENTRIC SYSTEM -->
@@ -110,7 +110,7 @@
          <li class="nav-item  {{ Request::is('talent/assignments*') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('talent.assignments.index') }}">
                  <i class="fas fa-fw fa-briefcase"></i>
-                 <span>My Assignments</span></a>
+                 <span>Penugasan Saya</span></a>
          </li>
      @endif
 
@@ -119,14 +119,14 @@
          <li class="nav-item  {{ Request::is('recruiter/dashboard') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('recruiter.dashboard') }}">
                  <i class="fas fa-fw fa-search"></i>
-                 <span>Recruiter Dashboard</span></a>
+                 <span>Beranda</span></a>
          </li>
 
          <!-- Nav Item - My Requests (Legacy System) -->
          <li class="nav-item  {{ Request::is('recruiter/my-requests*') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('recruiter.my_requests') }}">
                  <i class="fas fa-fw fa-clipboard-list"></i>
-                 <span>My Requests</span></a>
+                 <span>Permintaan Saya</span></a>
          </li>
 
          <!-- PROJECT-CENTRIC SYSTEM -->
@@ -134,25 +134,20 @@
          <li class="nav-item  {{ Request::is('projects') || Request::is('projects/index') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('projects.index') }}">
                  <i class="fas fa-fw fa-project-diagram"></i>
-                 <span>My Projects</span></a>
+                 <span>Proyek Saya</span></a>
          </li>
 
          <!-- Nav Item - Create Project -->
          <li class="nav-item  {{ Request::is('projects/create') ? 'active' : '' }} animate-btn">
              <a class="nav-link" href="{{ route('projects.create') }}">
                  <i class="fas fa-fw fa-plus-circle"></i>
-                 <span>Create Project</span></a>
+                 <span>Buat Proyek</span></a>
          </li>
      @endif
 
 
      <!-- Divider -->
      <hr class="sidebar-divider">
-
-     <!-- Heading -->
-     <div class="sidebar-heading">
-         Menu
-     </div>
 
      {{-- ADMIN --}}
      @if (Auth()->User()->roles_id == 1)

@@ -1,6 +1,6 @@
 @extends('layout.template.mainTemplate')
 
-@section('title', 'Manage Talents')
+@section('title', 'Kelola Talent')
 
 @section('container')
 <div class="min-h-screen bg-gray-50 p-6">
@@ -9,14 +9,14 @@
         <div>
             <h1 class="text-3xl font-bold text-gray-900 mb-2">
                 <i class="fas fa-user-tie text-blue-600 mr-3"></i>
-                Manage Talents
+                Kelola Talent
             </h1>
-            <p class="text-gray-600">Manage talent profiles and their status</p>
+            <p class="text-gray-600">Kelola profil talent dan status mereka</p>
         </div>
         <div class="mt-4 sm:mt-0">
             <a href="{{ route('talent_admin.dashboard') }}" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
                 <i class="fas fa-arrow-left mr-2"></i>
-                Back to Dashboard
+                Kembali ke Dashboard
             </a>
         </div>
     </div>
@@ -39,7 +39,7 @@
                 <div class="w-10 h-10 bg-white bg-opacity-20 rounded-xl flex items-center justify-center mr-3">
                     <i class="fas fa-star text-white"></i>
                 </div>
-                <h3 class="text-lg font-semibold text-white">Talents List</h3>
+                <h3 class="text-lg font-semibold text-white">Daftar Talent</h3>
             </div>
         </div>
         <div class="p-6">
@@ -52,9 +52,9 @@
                                 <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Talent</th>
                                 <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Email</th>
                                 <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Status</th>
-                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Redflag</th>
-                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Joined</th>
-                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Actions</th>
+                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Bendera Merah</th>
+                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Bergabung</th>
+                                <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
@@ -84,12 +84,12 @@
                                         @if($talent->is_active)
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                                                 <i class="fas fa-check-circle mr-1"></i>
-                                                Active
+                                                Aktif
                                             </span>
                                         @else
                                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
                                                 <i class="fas fa-pause-circle mr-1"></i>
-                                                Inactive
+                                                Tidak Aktif
                                             </span>
                                         @endif
                                     </td>
@@ -106,20 +106,20 @@
                                                 <div class="text-xs text-red-700">Rate: {{ $redflagSummary['rate'] }}%</div>
                                                 <button onclick="viewProjectRedflags({{ $talent->id }}, '{{ $talent->user->name }}')"
                                                         class="text-xs text-blue-600 hover:text-blue-800 underline">
-                                                    <i class="fas fa-list mr-1"></i>View Projects
+                                                    <i class="fas fa-list mr-1"></i>Lihat Proyek
                                                 </button>
                                             @else
                                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                                                     <i class="fas fa-check-circle mr-1"></i>
-                                                    No Flags
+                                                    Tidak Ada Bendera
                                                 </span>
-                                                <div class="text-xs text-gray-500">{{ $redflagSummary['total_completed'] }} completed projects</div>
+                                                <div class="text-xs text-gray-500">{{ $redflagSummary['total_completed'] }} proyek selesai</div>
                                             @endif
 
                                             <!-- New Project Redflag Button -->
                                             <button onclick="openProjectRedflagModal({{ $talent->id }}, '{{ $talent->user->name }}')"
                                                     class="block w-full text-xs text-white bg-orange-600 hover:bg-orange-700 px-2 py-1 rounded transition-colors">
-                                                <i class="fas fa-flag mr-1"></i>Flag Project
+                                                <i class="fas fa-flag mr-1"></i>Tandai Proyek
                                             </button>
                                         </div>
                                     </td>
@@ -132,14 +132,14 @@
                                             <button onclick="viewTalentDetails({{ $talent->id }})"
                                                     class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200 font-medium text-sm shadow-lg hover:shadow-xl">
                                                 <i class="fas fa-eye mr-2"></i>
-                                                View Details
+                                                Lihat Detail
                                             </button>
                                             <form action="{{ route('talent_admin.toggle_talent_status', $talent) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit"
                                                         class="inline-flex items-center px-3 py-2 {{ $talent->is_active ? 'bg-orange-600 hover:bg-orange-700' : 'bg-green-600 hover:bg-green-700' }} text-white rounded-lg transition-all duration-200 font-medium text-sm shadow-lg hover:shadow-xl"
-                                                        onclick="return confirm('Are you sure you want to {{ $talent->is_active ? 'deactivate' : 'activate' }} this talent?')">
+                                                        onclick="return confirm('Apakah Anda yakin ingin {{ $talent->is_active ? 'menonaktifkan' : 'mengaktifkan' }} talent ini?')">>
                                                     <i class="fas fa-{{ $talent->is_active ? 'pause' : 'play' }} mr-1"></i>
                                                 </button>
                                             </form>
@@ -175,12 +175,12 @@
                                 @if($talent->is_active)
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                                         <i class="fas fa-check-circle mr-1"></i>
-                                        Active
+                                        Aktif
                                     </span>
                                 @else
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
                                         <i class="fas fa-pause-circle mr-1"></i>
-                                        Inactive
+                                        Tidak Aktif
                                     </span>
                                 @endif
                             </div>
@@ -192,7 +192,7 @@
                                     <div class="text-gray-900 font-medium">{{ $talent->user->email }}</div>
                                 </div>
                                 <div class="bg-white p-4 rounded-xl border border-gray-200">
-                                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Joined Date</div>
+                                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Tanggal Bergabung</div>
                                     <div class="text-gray-900 font-medium">{{ $talent->created_at->format('M d, Y H:i') }}</div>
                                 </div>
                             </div>
@@ -202,14 +202,14 @@
                                 <button onclick="viewTalentDetails({{ $talent->id }})"
                                         class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
                                     <i class="fas fa-eye mr-2"></i>
-                                    View Details
+                                    Lihat Detail
                                 </button>
                                 <form action="{{ route('talent_admin.toggle_talent_status', $talent) }}" method="POST" class="flex-shrink-0">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
                                             class="px-4 py-3 {{ $talent->is_active ? 'bg-orange-600 hover:bg-orange-700' : 'bg-green-600 hover:bg-green-700' }} text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
-                                            onclick="return confirm('Are you sure you want to {{ $talent->is_active ? 'deactivate' : 'activate' }} this talent?')">
+                                            onclick="return confirm('Apakah Anda yakin ingin {{ $talent->is_active ? 'menonaktifkan' : 'mengaktifkan' }} talent ini?')">>
                                         <i class="fas fa-{{ $talent->is_active ? 'pause' : 'play' }}"></i>
                                     </button>
                                 </form>
@@ -229,8 +229,8 @@
                     <div class="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-user-tie text-4xl text-gray-400"></i>
                     </div>
-                    <h5 class="text-xl font-semibold text-gray-700 mb-3">No talents found</h5>
-                    <p class="text-gray-500 max-w-md mx-auto">No talents have registered yet.</p>
+                    <h5 class="text-xl font-semibold text-gray-700 mb-3">Tidak ada talent ditemukan</h5>
+                    <p class="text-gray-500 max-w-md mx-auto">Belum ada talent yang terdaftar.</p>
                 </div>
             @endif
         </div>
@@ -245,7 +245,7 @@
             <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
                 <h3 class="text-2xl font-bold text-gray-900 flex items-center">
                     <i class="fas fa-user-tie text-blue-600 mr-3"></i>
-                    Talent Details
+                    Detail Talent
                 </h3>
                 <button onclick="closeTalentModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <i class="fas fa-times text-xl"></i>
@@ -257,7 +257,7 @@
                 <!-- Content will be loaded here -->
                 <div class="text-center py-8">
                     <i class="fas fa-spinner fa-spin text-3xl text-blue-600 mb-4"></i>
-                    <p class="text-gray-600">Loading talent details...</p>
+                    <p class="text-gray-600">Memuat detail talent...</p>
                 </div>
             </div>
         </div>
@@ -289,7 +289,7 @@ function viewTalentDetails(talentId) {
     contentElement.innerHTML = `
         <div class="text-center py-8">
             <i class="fas fa-spinner fa-spin text-3xl text-blue-600 mb-4"></i>
-            <p class="text-gray-600">Loading talent details...</p>
+            <p class="text-gray-600">Memuat detail talent...</p>
         </div>
     `;
 
