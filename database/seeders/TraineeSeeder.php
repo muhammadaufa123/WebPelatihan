@@ -12,6 +12,7 @@ use App\Models\Certificate;
 use App\Models\Trainer;
 use App\Models\FinalQuiz;
 use App\Models\QuizAttempt;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 
@@ -87,11 +88,14 @@ class TraineeSeeder extends Seeder
                 'quiz_passed' => true,
                 'progress' => 100.0,
             ]);            // Generate certificate
+            $path = 'certificates/' . $traineeUser->id . '_' . $course->id . '.pdf';
+            Storage::disk('public')->put($path, '');
+
             Certificate::firstOrCreate([
                 'user_id' => $traineeUser->id,
                 'course_id' => $course->id,
             ], [
-                'path' => '/certificates/' . $traineeUser->id . '/' . $course->id . '.pdf',
+                'path' => $path,
                 'generated_at' => $faker->dateTimeBetween('-3 months', '-1 month'),
             ]);
 
