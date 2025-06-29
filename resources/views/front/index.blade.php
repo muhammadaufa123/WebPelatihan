@@ -128,7 +128,7 @@
             </button>
             <div id="course-slider" class="w-full">
 
-            <div id="courseContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+            <div id="courseContent" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
                     @forelse($courses as $course)
                     <div class="course-card px-3 pb-[70px] mt-[2px]">
                         <div class="flex flex-col rounded-t-[12px] rounded-b-[24px] gap-[32px] bg-white w-full pb-[10px] overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]">
