@@ -1,6 +1,6 @@
 <div class="flex flex-wrap" id="ajax-course-wrapper">
     @forelse($courses as $course)
-    <div class="course-card w-1/3 px-3 pb-[70px] mt-[2px]">
+    <div class="course-card w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-3 pb-[70px] mt-[2px]">
         <div class="flex flex-col rounded-t-[12px] rounded-b-[24px] gap-[32px] bg-white w-full pb-[10px] overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-[#FF6129]">
             <a href="{{ route('front.details', $course->slug) }}" class="thumbnail w-full h-[200px] shrink-0 rounded-[10px] overflow-hidden">
             <img src="{{ asset(path: 'storage/' . $course->thumbnail) }}" class="rounded-2xl object-cover w-[120px] h-[90px]" alt="thumbnail">
