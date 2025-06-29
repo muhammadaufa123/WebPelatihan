@@ -88,6 +88,8 @@ class DashboardController extends Controller
         $students = $trainees;
         $teachers = $trainers;
 
-        return view('dashboard', compact('title', 'roles', 'assignedKelas', 'categories', 'courses', 'transactions', 'students', 'teachers'));
+        $view = $user->roles_id == 1 ? 'adashboard' : 'dashboard';
+
+        return view($view, compact('title', 'roles', 'assignedKelas', 'categories', 'courses', 'transactions', 'students', 'teachers'));
     }
 }
