@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{{asset('css//output.css')}}" rel="stylesheet">
+  <link href="{{asset('css/output.css')}}" rel="stylesheet">
 </head>
 <body class="text-black font-poppins pt-10 pb-[50px]">
     <div class="max-w-[1200px] mx-auto w-full flex flex-col gap-10">

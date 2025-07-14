@@ -34,7 +34,7 @@
                 <h3 class="font-bold text-2xl mb-6 text-center text-gray-800">{{ $quiz->title ?? 'Judul Quiz' }}</h3> {{-- Changed to text-gray-800 --}}
 
                 @if(session('result'))
-                    <div class="mb-6 p-4 rounded-lg {{ session('result.passed') ? 'bg-green-500/70' : 'bg-red-500/70' }} text-white text-center">
+                    <div class="mb-6 p-4 rounded-lg {{ session('result.passed') ? 'bg-green-500/70' : 'bg-red-500/70' }} text-black text-center">
                         <h4 class="font-bold text-xl">Hasil Kuis Anda</h4>
                         <p>Skor: {{ session('result.score') }}%</p>
                         <p>{{ session('result.passed') ? 'Selamat, Anda Lulus!' : 'Maaf, Anda belum lulus. Coba lagi nanti.' }}</p>

@@ -103,12 +103,11 @@
                     <p class="font-semibold">Rp {{ number_format($course->price,0,',','.') }}</p>
                 </div>
             </div>
+            <div class="max-w-[1100px] w-full mx-auto mt-5">
+            <a href="{{ route('front.pricing', $course->slug) }}" class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">Daftar Kursus Ini</a>
         </div>
         <div class="max-w-[1100px] w-full mx-auto mt-10 tablink-container flex gap-3 px-4 sm:p-0 no-scrollbar overflow-x-scroll">
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]" onclick="openPage('About', this)"  id="defaultOpen">About</div>
-            <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]" onclick="openPage('Resources', this)">Resources</div>
-            <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]" onclick="openPage('Reviews', this)">Reviews</div>
-            <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]" onclick="openPage('Discussions', this)">Discussions</div>
             <div class="tablink font-semibold text-lg h-[47px] transition-all duration-300 cursor-pointer hover:text-[#FF6129]" onclick="openPage('Rewards', this)">Rewards</div>
         </div>
         <div class="bg-[#F5F8FA] py-[50px]">
@@ -129,35 +128,11 @@
         </div>
     </div>
 </div>
-                        <div id="Resources" class="tabcontent hidden">
-                            <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Resources</h3>
-                                <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
-                                </p>
-                            </div>
-                        </div>
-                        <div id="Reviews" class="tabcontent hidden">
-                            <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Reviews</h3>
-                                <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
-                                </p>                        
-                            </div>
-                        </div>
-                        <div id="Discussions" class="tabcontent hidden">
-                            <div class="flex flex-col gap-5 w-[700px] shrink-0">
-                                <h3 class="font-bold text-2xl">Discussions</h3>
-                                <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
-                                </p>                        
-                            </div>
-                        </div>
                         <div id="Rewards" class="tabcontent hidden">
                             <div class="flex flex-col gap-5 w-[700px] shrink-0">
                                 <h3 class="font-bold text-2xl">Rewards</h3>
                                 <p class="font-medium leading-[30px]">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eos et accusantium quia exercitationem reiciendis? Doloribus, voluptate natus voluptas deserunt aliquam nesciunt blanditiis ipsum porro hic! Iusto maxime ullam soluta.
+                                        Tonton semua video, download semua materi, dan kerjakan kuis untuk mendapatkan sertifikat.
                                 </p>                        
                             </div>
                         </div>
@@ -178,60 +153,12 @@
                             </div>
                         </div>
                         </div>
-                        <div class="bg-white flex flex-col gap-5 rounded-2xl p-5">
-                            <p class="font-bold text-lg text-left w-full">Unlock Badges</p>
-                            
-                            <div class="flex items-center gap-3">
-                                <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
-                                    <img src="assets/icon/Group 7.svg" class="w-full h-full object-cover" alt="icon">
-                                </div>
-                                <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Spirit of Learning</div>
-                                    <p class="text-sm text-[#6D7786]">18,393 earned</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
-                                    <img src="assets/icon/Group 7-1.svg" class="w-full h-full object-cover" alt="icon">
-                                </div>
-                                <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Everyday New</div>
-                                    <p class="text-sm text-[#6D7786]">6,392 earned</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-[50px] h-[50px] flex shrink-0 rounded-full overflow-hidden">
-                                    <img src="assets/icon/Group 7-2.svg" class="w-full h-full object-cover" alt="icon">
-                                </div>
-                                <div class="flex flex-col gap-[2px]">
-                                    <div class="font-semibold">Quick Learner Pro</div>
-                                    <p class="text-sm text-[#6D7786]">44 earned</p>
-                                </div>
-                            </div>
+        
                             
                         </div>
                     </div>
                 </div>
-                <div id="Screenshots" class="flex flex-col gap-3">
-                    <h3 class="title-section font-bold text-xl leading-[30px] ">Students Portfolio</h3>
-                    <div class="grid grid-cols-4 gap-5">
-                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300" data-src="assets/thumbnail/image.png" data-fancybox="gallery" data-caption="Caption #1">
-                          <img src="assets/thumbnail/image.png" class="object-cover h-full w-full" alt="image">
-                        </div>
-                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300" data-src="assets/thumbnail/image-1.png" data-fancybox="gallery" data-caption="Caption #1">
-                          <img src="assets/thumbnail/image-1.png" class="object-cover h-full w-full" alt="image">
-                        </div>
-                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300" data-src="assets/thumbnail/image-2.png" data-fancybox="gallery" data-caption="Caption #1">
-                          <img src="assets/thumbnail/image-2.png" class="object-cover h-full w-full" alt="image">
-                        </div>
-                        <div class="rounded-[20px] overflow-hidden w-full h-[200px] hover:shadow-[0_10px_20px_0_#0D051D20] transition-all duration-300" data-src="assets/thumbnail/image-3.png" data-fancybox="gallery" data-caption="Caption #1">
-                          <img src="assets/thumbnail/image-3.png" class="object-cover h-full w-full" alt="image">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
     <section id="FAQ" class="max-w-[1200px] mx-auto flex flex-col py-[70px] px-[100px]">
         <div class="flex justify-between items-center">
             <div class="flex flex-col gap-[30px]">
@@ -245,7 +172,6 @@
                     <h2 class="font-bold text-[36px] leading-[52px]">Get Your Answers</h2>
                     <p class="text-lg text-[#475466]">It’s time to upgrade skills without limits!</p>
                 </div>
-                <a href="" class="text-white font-semibold rounded-[30px] p-[16px_32px] bg-[#FF6129] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF612980] w-fit">Contact Our Sales</a>
             </div>
             <div class="flex flex-col gap-[30px] w-[552px] shrink-0">
                 <div class="flex flex-col p-5 rounded-2xl bg-[#FFF8F4] has-[.hide]:bg-transparent border-t-4 border-[#FF6129] has-[.hide]:border-0 w-full">
